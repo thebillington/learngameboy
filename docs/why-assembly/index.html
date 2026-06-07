@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Why Assembly? - Learn Game Boy</title>
+    <link rel="stylesheet" href="../assets/css/normalize.css">
+    <link rel="stylesheet" href="../assets/css/screen.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300|Open+Sans:400,600,400italic,600italic|Merriweather:400,300,300italic,400italic,700,700italic|Roboto+Slab:400,300" rel="stylesheet">
+    <link rel="icon" href="../assets/img/favicon.png">
+</head>
+<body>
+    <header id="site-head">
+        <a id="blog-logo" href="../index.html"><div class="bloglogo" style="background: url(../assets/img/learn_gb_logo.png)"></div></a>
+        <h1 class="blog-title"><a href="../index.html">Learn Game Boy</a></h1>
+        <h2 class="blog-description">Everything you need to know to write Game Boy games in Assembly.</h2>
+        <h3>Main Menu</h3>
+        <nav class="menu" role="nav">
+            <ul>
+                
+                <li><a href="../index.html" title="About">About</a></li>
+                
+                <li><a href="../getting-started/index.html" title="Getting Started">Getting Started</a></li>
+                
+                <li><a href="../hardware/index.html" title="Hardware">Hardware</a></li>
+                
+            </ul>
+        </nav>
+        
+            
+            
+            <h3>Sub Menu</h3>
+            <nav>
+                <ul>
+                    
+                        
+                        
+                        <li class="section-title"><a href="../getting-started/index.html" title="Getting Started">Getting Started</a></li>
+                            
+                            <li><a href="../running-code/index.html" title="Running Code">Running Code</a></li>
+                            
+                            <li><a href="../maths/index.html" title="Maths">Maths</a></li>
+                            
+                            <li class="active"><a href="../why-assembly/index.html" title="Why Assembly?">Why Assembly?</a></li>
+                            
+                        
+                    
+                </ul>
+            </nav>
+            
+        
+    </header>
+
+    <main class="content" role="main">
+        
+<article>
+    <header>
+        <h1 class="post-title">Why Assembly?</h1>
+    </header>
+    <section class="post-content">
+        
+        
+        <p class="parent-link"><a href="../getting-started/index.html">&lt; Getting Started</a></p>
+        
+        <p>When getting started writing code for the Game Boy, the first question you will be asking is:</p>
+<p><strong>Why should I write code in gbZ80 Assembly instead of using the GBDK (Game Boy Development Kit)?</strong></p>
+<p>Anyone that writes home-brew for the Game Boy will undoubtedly have their own opinions on this matter, but we have opted to write code in gbZ80 for a multitude of reasons that I will outline below. Using GBDK does has its own benefits and drawbacks that need to be taken into consideration as each project you undertake for the Game Boy will have its own set of complexities, some of which may suit writing code with the GBDK. However, it is my honest opinion that anyone serious about writing code for the Game Boy should opt for gbZ80 Assembly.</p>
+<h2>What is GBDK?</h2>
+<p>The GBDK (or Game Boy Development Kit) is a C compiler written for the Game Boy built and maintained by Michael Hope. A compiler takes code written in a high-level language (closer to human language) and translates it into machine code (code that is directly executable on the CPU). The desire for a  gbZ80 C compiler becomes apparent once you look at the complexity of writing assembly code, as it is a low level language (closer to computer language). To write assembly requires a solid understanding of how a CPU works on a basic level, as when Assembling programs (translating from assembly into machine code) a one-to-one translation takes place. This means that writing assembly code is akin to talking directly to the processor.</p>
+<p>Higher level languages such as Python, Java or in this case C, have a greater level of abstraction than that of assembly which makes it (in relative terms) simpler to write and understand. However, C is in itself a highly complex programming language which requires a good understanding of how the computer performs basic functions, particularly management of memory. Therefore the belief that a C compiler will make Game Boy games 'easier' to write is a slight misnomer, as it depends on whether or not the programmer has previous experience with high or low level languages.</p>
+<p>Having been born in the mid 90s, I started programming in the early 2000s using software such as Game Maker Studio and the programming language Scratch. For formal learning I then moved onto writing code in high-level languages such as Java and Python and now as a Software Engineer I mainly work with Kotlin and Swift (for developing Android and iOS apps respectively). At this point you may then be asking why I believe that writing Game Boy games in assembly is the better route to take, especially considering my background writing in high-level languages. The answer is simple; GBDK is rife with issues.</p>
+<h2>The problems with GBDK</h2>
+<p>For Global Game Jam 2019 we developed a game in the GBDK, the source code for which can be found <a href="https://github.com/thebillington/skazka">here</a>. The project was moderately successful as we had the input of some fantastic artists who created incredible artwork with only a 2-bit colour palette and we had every intention of continuing the project after the Game Jam. Unfortunately after a couple of weeks battling with GBDK we decided that it was simply too much work to continue building with GBDK as the compiler is not robust and far from feature complete.</p>
+<p>Several occasions we ran into issues that we simply couldn't comprehend, such as the creation of a new variable or change in a loops parameters which would have large scale unintended consequences, from hard looping of sections of the game code through to complex graphics issues that caused stuttering or even for the entire tile memory to be offset or swapped out for other sections of the ROM. We also ran into trouble trying to get ROM switching (the ability to change from one ROM bank to another) working correctly, and although I believe if we spent more time on the problem we could have overcome it, we ultimately made the decision that GBDK wasn't fit for our needs and started down the long route of learning to write gbZ80 assembly.</p>
+<p>At this stage making the switch seems to have been a solid decision as although basic prototyping of almost any game features take considerably longer than with GBDK, we are improving in our understanding all the time and are confident that when making changes, we fully understand the ramifications. Bug fixing has also become much easier as it is almost impossible to debug issues with GBDK using the <a href="http://bgb.bircd.org/]">bgb</a> built in debugger as the GBDK compiler is a black box that simply produces Game Boy executable ROMs. However when writing games with gbZ80 it is much easier to identify problem code as you can check the value in the program counter to see which line of code is the likely offender. Since gbZ80 is assembled to Game Boy machine code one-to-one it is much simpler to isolate and diagnose issues.</p>
+<h2>Making your own mind up</h2>
+<p>If you are serious about learning to write code for the Game Boy then I suggest you don't take our word for it on the issues associated with building games with GBDK and actually find out for yourself. In fact, initially learning GBDK has given us a much stronger understanding of the complexity involved in writing Game Boy games, as well as offering us a familiar starting point by entering Game Boy development using the high-level language intricacies we are used to. Additionally, looking back there are many issues we ran into when using GBDK that we may be able to solve now given our deeper understanding of the hardware.</p>
+<p>Ultimately the decision comes down to preference and prior knowledge. If you are already comfortable with using high-level languages then it may be a good idea to jump right in with GBDK then come back to these tutorials once you have a better grasp of the Game Boy development basics. If you are a complete newbie with no development experience then I would fully recommend jumping straight in with writing gbZ80 code as you won't find any familiarity in using GBDK. If you are somewhere in between then you must make your own decision on which development environment will be most suitable for you.</p>
+    </section>
+    
+</article>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="inner">
+            <section class="footer-description">Everything you need to know to write Game Boy games in Assembly.</section>
+            <section class="copyright">&copy; Copyright Billy Rebecchi and Luke Wood</section>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="../assets/js/index.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-156819199-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('config', 'UA-156819199-1');
+    </script>
+</body>
+</html>

@@ -9,7 +9,7 @@ from jinja2 import Environment, FileSystemLoader
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(BASE_DIR, 'data')
 TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
-OUTPUT_DIR = os.path.join(BASE_DIR, 'output')
+OUTPUT_DIR = os.path.join(BASE_DIR, 'docs')
 ASSETS_DIR = os.path.join(BASE_DIR, 'assets')
 IMAGES_DIR = os.path.join(BASE_DIR, 'images')
 

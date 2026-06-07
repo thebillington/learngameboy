@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Maths - Learn Game Boy</title>
+    <link rel="stylesheet" href="../assets/css/normalize.css">
+    <link rel="stylesheet" href="../assets/css/screen.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300|Open+Sans:400,600,400italic,600italic|Merriweather:400,300,300italic,400italic,700,700italic|Roboto+Slab:400,300" rel="stylesheet">
+    <link rel="icon" href="../assets/img/favicon.png">
+</head>
+<body>
+    <header id="site-head">
+        <a id="blog-logo" href="../index.html"><div class="bloglogo" style="background: url(../assets/img/learn_gb_logo.png)"></div></a>
+        <h1 class="blog-title"><a href="../index.html">Learn Game Boy</a></h1>
+        <h2 class="blog-description">Everything you need to know to write Game Boy games in Assembly.</h2>
+        <h3>Main Menu</h3>
+        <nav class="menu" role="nav">
+            <ul>
+                
+                <li><a href="../index.html" title="About">About</a></li>
+                
+                <li><a href="../getting-started/index.html" title="Getting Started">Getting Started</a></li>
+                
+                <li><a href="../hardware/index.html" title="Hardware">Hardware</a></li>
+                
+            </ul>
+        </nav>
+        
+            
+            
+            <h3>Sub Menu</h3>
+            <nav>
+                <ul>
+                    
+                        <li class="section-title"><a href="../maths/index.html" title="Maths">Maths</a></li>
+                        
+                        <li><a href="../binary/index.html" title="Binary">Binary</a></li>
+                        
+                        <li><a href="../hexadecimal/index.html" title="Hex">Hex</a></li>
+                        
+                        <li><a href="../hex-binary-conversion/index.html" title="Hex &lt;=&gt; Binary">Hex &lt;=&gt; Binary</a></li>
+                        
+                    
+                </ul>
+            </nav>
+            
+        
+    </header>
+
+    <main class="content" role="main">
+        
+<article>
+    <header>
+        <h1 class="post-title">Maths</h1>
+    </header>
+    <section class="post-content">
+        
+        
+        <p class="parent-link"><a href="../getting-started/index.html">&lt; Getting Started</a></p>
+        
+        <p>For many people the word 'maths' causes apprehension and for others is is a comforting term that invokes a feeling of familiarity. Regardless of which camp you belong to, in order to develop a strong understanding of how a Game Boy works you will need to understand some very base concepts, namely binary and hexadecimal number systems. If you are already happy with using binary and hexadecimal numbers and how to convert between them then this section isn't for you. You mays still want to read through and gain some useful insights into why binary and hexadecimal numbers work as they do, but if you already have a fundamental understanding then feel free to skip this section.</p>
+<h2>Denary Numbers</h2>
+<p>If you have ever been into a shop and had to calculate that buying a drink for £2.70 and chocolate bar for £1.40 will leave you with £0.90 change from a £5 note then you already understand how to use the denary numbery system. It is also referred to as <strong>decimal</strong> or <strong>base 10</strong>. The <strong>dec</strong> in decimal means 10, just as one <em>decade</em> is ten years or a <em>decagon</em> is a 10 sided shape.</p>
+<p>You will all be familiar with the number 237. I imagine most readers would also be able to convert it to its worded format of two hundred and thirty seven. But I doubt that many readers, particularly those over the age of 10, will regularly stop to think back to their early school maths lessons and think about <strong>why</strong> this number is two hundred and thirty seven.</p>
+<p>In maths lessons at school you will have learned about a fundamental idea in mathematics known as <strong>place value</strong>. Since then you have committed this knowledge implicitly into your understanding of the world and therefore no longer need to think about calculating the place value of each digit in a number; you do it automatically. But to properly get our head around what a number system is we need to quickly revise place values for denary numbers.</p>
+<p>Let's start by looking at the number 237 again. We know that written out this is two hundred and thirty seven. This is because the two is in the column with a place value of 100, three is in the column with a place value of 10 and seven is in the column with a place value of 1:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">100</th>
+<th style="text-align: center;">10</th>
+<th style="text-align: center;">1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">7</td>
+</tr>
+</tbody>
+</table>
+<p>To calculate the numbers value we multiply the digit in each column by the place value of the column. So we have:</p>
+<pre><code>(2 * 100) + (3 * 10) + (1 * 7) = 237</code></pre>
+<p>This will seem obvious to all with a fundamental understanding of maths, but it is important we properly understand the process so that we can apply it to alternative number systems.</p>
+<p>The next thing to examine is the digit in each column. For base 10 we have the option of putting 0-9 in any particular column. If we counted the digits 0 to 9 then we would see there are a total of 10 digits we could place in each column (remember that denary is <strong>base 10</strong>):</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">0</th>
+<th style="text-align: center;">1</th>
+<th style="text-align: center;">2</th>
+<th style="text-align: center;">3</th>
+<th style="text-align: center;">4</th>
+<th style="text-align: center;">5</th>
+<th style="text-align: center;">6</th>
+<th style="text-align: center;">7</th>
+<th style="text-align: center;">8</th>
+<th>9</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p>Next, let's look at the place value of our columns. This again has a direct relationship to the fact that denary is <strong>base 10</strong>. To calculate the place value of each column, from right to left and starting with a value of 1 we are able to calculate the place value of each column by multiplying the place value of the previous column by the base (remember we are using <strong>base 10</strong>:</p>
+<ul>
+<li>1st column: 1</li>
+<li>2nd column: 1 * 10 = 10</li>
+<li>3rd column: 10 * 10 = 100</li>
+<li>4th column: 100 * 10 = 1,000</li>
+<li>5th column: 1,000 * 10 = 10,000</li>
+<li>...</li>
+</ul>
+<blockquote>
+<p>We can calculate the place value of a column by performing the calculation <strong>base<sup>(column-1)</sup></strong>:</p>
+<ul>
+<li>1st column: <strong>10<sup>(1-1)</sup> = 10<sup>0</sup> = 1</strong></li>
+<li>2nd column: <strong>10<sup>(2-1)</sup> = 10<sup>1</sup> = 10</strong></li>
+<li>3rd column: <strong>10<sup>(3-1)</sup> = 10<sup>2</sup> = 100</strong></li>
+<li>...</li>
+</ul>
+</blockquote>
+<p>The four principles you need to understand from this section are:</p>
+<ul>
+<li>The number of possible digits for any given column is the same as the base of the number system (0 to 9 = 10 individual digits)</li>
+<li>We calculate the place value of a column by multiplying the place value of the previous column by the base (always starting with a place value of 1 for our first column)</li>
+<li>You calculate the value of each column by multiplying the digit in the column by the place value</li>
+<li>We calculate the total of a number by adding up the value of each of its columns</li>
+</ul>
+<p>Once you have completed this section move on to reading about <a href="../getting-started/maths/binary/index.html">binary</a>.</p>
+    </section>
+    
+    <nav>
+        <ul>
+            
+            <li><a href="../binary/index.html" title="Binary">Binary</a></li>
+            
+            <li><a href="../hexadecimal/index.html" title="Hex">Hex</a></li>
+            
+            <li><a href="../hex-binary-conversion/index.html" title="Hex &lt;=&gt; Binary">Hex &lt;=&gt; Binary</a></li>
+            
+        </ul>
+    </nav>
+    
+</article>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="inner">
+            <section class="footer-description">Everything you need to know to write Game Boy games in Assembly.</section>
+            <section class="copyright">&copy; Copyright Billy Rebecchi and Luke Wood</section>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="../assets/js/index.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-156819199-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('config', 'UA-156819199-1');
+    </script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Getting Started - Learn Game Boy</title>
+    <link rel="stylesheet" href="../assets/css/normalize.css">
+    <link rel="stylesheet" href="../assets/css/screen.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300|Open+Sans:400,600,400italic,600italic|Merriweather:400,300,300italic,400italic,700,700italic|Roboto+Slab:400,300" rel="stylesheet">
+    <link rel="icon" href="../assets/img/favicon.png">
+</head>
+<body>
+    <header id="site-head">
+        <a id="blog-logo" href="../index.html"><div class="bloglogo" style="background: url(../assets/img/learn_gb_logo.png)"></div></a>
+        <h1 class="blog-title"><a href="../index.html">Learn Game Boy</a></h1>
+        <h2 class="blog-description">Everything you need to know to write Game Boy games in Assembly.</h2>
+        <h3>Main Menu</h3>
+        <nav class="menu" role="nav">
+            <ul>
+                
+                <li><a href="../index.html" title="About">About</a></li>
+                
+                <li><a href="../getting-started/index.html" title="Getting Started">Getting Started</a></li>
+                
+                <li><a href="../hardware/index.html" title="Hardware">Hardware</a></li>
+                
+            </ul>
+        </nav>
+        
+            
+            
+            <h3>Sub Menu</h3>
+            <nav>
+                <ul>
+                    
+                        <li class="section-title"><a href="../getting-started/index.html" title="Getting Started">Getting Started</a></li>
+                        
+                        <li><a href="../running-code/index.html" title="Running Code">Running Code</a></li>
+                        
+                        <li><a href="../maths/index.html" title="Maths">Maths</a></li>
+                        
+                        <li><a href="../why-assembly/index.html" title="Why Assembly?">Why Assembly?</a></li>
+                        
+                    
+                </ul>
+            </nav>
+            
+        
+    </header>
+
+    <main class="content" role="main">
+        
+<article>
+    <header>
+        <h1 class="post-title">Getting Started</h1>
+    </header>
+    <section class="post-content">
+        
+        <p>When first learning to write code for any system the task can seem like a daunting one, especially for those with little or no prior programming experience. The fact that the Game Boy system is (at the time of writing) 30 years old makes the prospect of learning to write games for it even more intimidating as it can be very difficult to find good sources of information.</p>
+<p>Many of the tutorials we used when learning to write code for the Game Boy ourselves would have excellent introductions, before stating that they would be completed at a later date. This meant that when transitioning from writing sample <em>Hello World</em> type programs to developing our own graphics, implementing sprites and detecting button presses we had to do much of the learning ad-lib, taking inspiration from multiple sources and doing our own investigations using the <em>bgb debugger</em> to implement new functionality.</p>
+<p>That isn't to say that there aren't excellent resources already available. In fact, you can check out the <a href="https://gbdev.github.io/list.html">Awesome Game Boy List</a> to see a full breakdown of everything home-brew for the Game Boy. There are also many examples of Game Boy source code that can be found online and on Github that include source code for how to achieve near enough anything in gbZ80 ASM - however the issue with these demo source codes is that they often aren't fully commented, or require hours of study to decipher.</p>
+<blockquote>
+<p>It is important to bear in mind that what works for one won't necessarily work for another, therefore if you struggle to engage with these tutorials or feel they are too advanced you can always try out other resources. Our starting point for Assembly programming on the Game Boy was the excellent <a href="https://eldred.fr/gb-asm-tutorial/">Eldred</a> tutorial, however it ends just as it is about to get to the real meat of gbZ80 programming. If you want to check it out and follow through make sure to head back here when you're finished to help make the transition to writing more complex code.</p>
+</blockquote>
+<p>Will all that said and done this website aims to be a one stop shop for Game Boy development in ASM with tutorials that go past the <em>Hello World</em> phase and teach you how to develop fully fledged Game Boy games. When you are ready to get started, take a look at the menu at the bottom of this page for your next steps in learning. Each page has a menu after it of <em>child</em> pages that relate in subject matter to the overall section you are currently browsing.</p>
+<p>In this section we will start to understand <strong>why</strong> it is a good idea to start programming with gbZ80 Assembly, differences in Game Boy programming to modern day languages and what tools you are going to need to get started writing and more importantly running code for the Game Boy. There is also some pre-requisite mathematical knowledge you will need to get your head around as well as a brief history of the Game Boy, developments made over its lifetime and some of the mods available for each model.</p>
+    </section>
+    
+    <nav>
+        <ul>
+            
+            <li><a href="../running-code/index.html" title="Running Code">Running Code</a></li>
+            
+            <li><a href="../maths/index.html" title="Maths">Maths</a></li>
+            
+            <li><a href="../why-assembly/index.html" title="Why Assembly?">Why Assembly?</a></li>
+            
+        </ul>
+    </nav>
+    
+</article>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="inner">
+            <section class="footer-description">Everything you need to know to write Game Boy games in Assembly.</section>
+            <section class="copyright">&copy; Copyright Billy Rebecchi and Luke Wood</section>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="../assets/js/index.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-156819199-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('config', 'UA-156819199-1');
+    </script>
+</body>
+</html>

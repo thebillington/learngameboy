@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Running Code - Learn Game Boy</title>
+    <link rel="stylesheet" href="../assets/css/normalize.css">
+    <link rel="stylesheet" href="../assets/css/screen.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300|Open+Sans:400,600,400italic,600italic|Merriweather:400,300,300italic,400italic,700,700italic|Roboto+Slab:400,300" rel="stylesheet">
+    <link rel="icon" href="../assets/img/favicon.png">
+</head>
+<body>
+    <header id="site-head">
+        <a id="blog-logo" href="../index.html"><div class="bloglogo" style="background: url(../assets/img/learn_gb_logo.png)"></div></a>
+        <h1 class="blog-title"><a href="../index.html">Learn Game Boy</a></h1>
+        <h2 class="blog-description">Everything you need to know to write Game Boy games in Assembly.</h2>
+        <h3>Main Menu</h3>
+        <nav class="menu" role="nav">
+            <ul>
+                
+                <li><a href="../index.html" title="About">About</a></li>
+                
+                <li><a href="../getting-started/index.html" title="Getting Started">Getting Started</a></li>
+                
+                <li><a href="../hardware/index.html" title="Hardware">Hardware</a></li>
+                
+            </ul>
+        </nav>
+        
+            
+            
+            <h3>Sub Menu</h3>
+            <nav>
+                <ul>
+                    
+                        
+                        
+                        <li class="section-title"><a href="../getting-started/index.html" title="Getting Started">Getting Started</a></li>
+                            
+                            <li class="active"><a href="../running-code/index.html" title="Running Code">Running Code</a></li>
+                            
+                            <li><a href="../maths/index.html" title="Maths">Maths</a></li>
+                            
+                            <li><a href="../why-assembly/index.html" title="Why Assembly?">Why Assembly?</a></li>
+                            
+                        
+                    
+                </ul>
+            </nav>
+            
+        
+    </header>
+
+    <main class="content" role="main">
+        
+<article>
+    <header>
+        <h1 class="post-title">Running Code</h1>
+    </header>
+    <section class="post-content">
+        
+        
+        <p class="parent-link"><a href="../getting-started/index.html">&lt; Getting Started</a></p>
+        
+        <p>One of the biggest barriers to entry for any prospective programmer isn't writing their first program in a new language, but understanding what tools they are going to need and how to install them. We have dedicated this section entirely to explaining the tools you are going to need to familiarise yourself with in order to get your first sample program up and running, as well as where to find and how install them.</p>
+<p>There are a number of important tools and utilities you will need to familiarise yourself with which are underlined briefly below. If you are already familiar with the ideas in this section and wish only for recommendations for tools and software to use then in each section we have made recommendations for the best Editors, Assemblers and Emulators for you to use when following these tutorials.  More detailed information and installation instructions can be found in the menu at the bottom of the page.</p>
+<blockquote>
+<p>All of this software is recommended as we use it ourselves, but this doesn't make it objectively the best software available and we aren't recommending it to the exclusion of all others. Each programmer has their own preferences and if you don't like a recommended piece of software then do some research and try out your own. There is plenty of software out there, you will find some that you like.</p>
+</blockquote>
+<h2>Code Editor - <a href="https://code.visualstudio.com/">Visual Studio Code</a></h2>
+<p>A <strong>code editor</strong> does exactly what it says on the tin; it allows you to edit code. For this purpose we couldn't recommend anything other than Visual Studio Code, the Open-Source solution developed by Microsoft for Mac, Windows and Linux. One of the key tools of any modern day editor is <em>syntax highlighting</em> which helps with identifying keywords in your code and spotting simple spelling mistakes. Visual Studio Code has an excellent <a href="https://marketplace.visualstudio.com/items?itemName=donaldhays.rgbds-z80">plugin</a> for gbZ80 developed by Donald Hays, with a wealth of tools to support writing and debugging code.</p>
+<h2>Assembler - <a href="https://github.com/rednex/rgbds">RGBDS</a></h2>
+<p>Once your code is written you need to translate it into a format that can be understood by the Game Boy. Enter the big daddy of Game Boy programming, Rednex Game Boy Development System. RGBDS is an <strong>assembler</strong>, used to convert your gbZ80 into a format that can be understood by Game Boy hardware. Written and maintained by <a href="https://eldred.fr/">Eldred Habert</a> there is no better option for Anassembling your gbZ80 into a Game Boy ROM.</p>
+<blockquote>
+<p>ROM stands for Read Only Memory, so called because Game Boy cartridges contain a very small block of memory that can only be read from. This ROM holds data in a special format called machine code that is readable by the Game Boy CPU.</p>
+</blockquote>
+<h2>Emulator - <a href="http://bgb.bircd.org/">BGB</a></h2>
+<p>Anyone who knows anything about video games will have heard the term <strong>emulator</strong> countless times before. This is because emulators are an incredibly powerful way of playing old games without needing to purchase the hardware. This is because anything that can be done with complex circuitry can also be done with software, although usually in a much more complex and roundabout way.</p>
+<p>There is a huge community around game console emulation and the Game Boy is no exception. But just as with game remakes you get some <a href="https://en.wikipedia.org/wiki/Cel_Damage">incredible work</a> and some <a href="https://en.wikipedia.org/wiki/Yoshi%27s_New_Island">less than perfect</a>. We haven't tried a large range of emulators, but bgb is the go-to since it has accurate emulation of the original hardware and excellent debugging tools.</p>
+<h2>Running on real hardware</h2>
+<p>For me, running my own games on real hardware was the ultimate goal and the whole reason I started learning to write code for the Game Boy in the first place. However, there are so many options to choose from when it comes to selecting a <a href="https://gbdev.github.io/list.html#cartridges">flash cart</a> that it can be difficult to actually settle on one. Eventually I went for an <a href="https://krikzz.com/store/home/48-everdrive-gb.html">Everdrive X3</a> by Krikzz, but each type of cart has their own price and associated costs and benefits.</p>
+<p>In this section we will look at some of the available options, the best options may be for different needs and the process we go through to get assembled ROMs <a href="https://www.instagram.com/p/B5lHi0mFai2/">running on real hardware</a>.</p>
+    </section>
+    
+</article>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="inner">
+            <section class="footer-description">Everything you need to know to write Game Boy games in Assembly.</section>
+            <section class="copyright">&copy; Copyright Billy Rebecchi and Luke Wood</section>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="../assets/js/index.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-156819199-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('config', 'UA-156819199-1');
+    </script>
+</body>
+</html>

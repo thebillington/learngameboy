@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Binary - Learn Game Boy</title>
+    <link rel="stylesheet" href="../assets/css/normalize.css">
+    <link rel="stylesheet" href="../assets/css/screen.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300|Open+Sans:400,600,400italic,600italic|Merriweather:400,300,300italic,400italic,700,700italic|Roboto+Slab:400,300" rel="stylesheet">
+    <link rel="icon" href="../assets/img/favicon.png">
+</head>
+<body>
+    <header id="site-head">
+        <a id="blog-logo" href="../index.html"><div class="bloglogo" style="background: url(../assets/img/learn_gb_logo.png)"></div></a>
+        <h1 class="blog-title"><a href="../index.html">Learn Game Boy</a></h1>
+        <h2 class="blog-description">Everything you need to know to write Game Boy games in Assembly.</h2>
+        <h3>Main Menu</h3>
+        <nav class="menu" role="nav">
+            <ul>
+                
+                <li><a href="../index.html" title="About">About</a></li>
+                
+                <li><a href="../getting-started/index.html" title="Getting Started">Getting Started</a></li>
+                
+                <li><a href="../hardware/index.html" title="Hardware">Hardware</a></li>
+                
+            </ul>
+        </nav>
+        
+            
+            
+            <h3>Sub Menu</h3>
+            <nav>
+                <ul>
+                    
+                        
+                        
+                        <li class="section-title"><a href="../maths/index.html" title="Maths">Maths</a></li>
+                            
+                            <li class="active"><a href="../binary/index.html" title="Binary">Binary</a></li>
+                            
+                            <li><a href="../hexadecimal/index.html" title="Hex">Hex</a></li>
+                            
+                            <li><a href="../hex-binary-conversion/index.html" title="Hex &lt;=&gt; Binary">Hex &lt;=&gt; Binary</a></li>
+                            
+                        
+                    
+                </ul>
+            </nav>
+            
+        
+    </header>
+
+    <main class="content" role="main">
+        
+<article>
+    <header>
+        <h1 class="post-title">Binary</h1>
+    </header>
+    <section class="post-content">
+        
+        
+        <p class="parent-link"><a href="../maths/index.html">&lt; Maths</a></p>
+        
+        <p>Anyone who is familiar with the prefix <strong>bi</strong> will know that it means two. A biplane is a plane with two wings, a bisexual is someone attracted to two genders, a bicycle has two wheels and you guessed it, the binary number system is also known as <strong>base 2</strong>.</p>
+<p>Since we already understand the base principles of a number system from the previous section, let us know examine <strong>base 2</strong> and apply the four principles we saw above to a number system with a different base.</p>
+<h4>The number of possible digits for any given column is the same as the base of the number system (0 to 9 = 10 individual digits)</h4>
+<p>In denary we used base 10, which gives us 10 possible digits to place in each column (0-9). In binary we will be using base 2, which means that for any individual column we will only be able to use two values. The two values that we are going to select are 0 and 1. Where in denary I can have a number such as 237, with two in the first column, three in the second column and seven in the last column, in binary this wouldn't be possible as I am only allowed to place a 0 or a 1 in each column e.g. <strong>10100010</strong>.</p>
+<p>When examining binary numbers we don't refer to the value of each individual column as a digit but as a <strong>bit</strong>. This makes a lot of sense when we examine the word bit as we can see it in an infliction of the words binary digit. Bit is short for  <strong>b</strong>inary dig<strong>it</strong>. In the example binary number <strong>10100010</strong> we would refer to this as an 8-bit number as we can see there are 8 binary digits (8-bits). 8-bits is also known as one <strong>byte</strong>. You will see these terms regularly throughout these tutorials and other Game Boy documentation so make sure to familiarise yourself with them.</p>
+<h4>We calculate the place value of a column by multiplying the place value of the previous column by the base (always starting with a place value of 1 for our first column)</h4>
+<p>When we looked at denary we calculated the place value of each of our columns by performing the calculations:</p>
+<ul>
+<li>1st column: 1</li>
+<li>2nd column: 1 * 10 = 10</li>
+<li>3rd column: 10 * 10 = 100</li>
+<li>4th column: 100 * 10 = 1,000</li>
+<li>5th column: 1,000 * 10 = 10,000</li>
+<li>...</li>
+</ul>
+<p>For binary we calculate the place value of each column by multiplying the place value of the previous column by the base (remember binary is <strong>base 2</strong>):</p>
+<ul>
+<li>1st column: 1</li>
+<li>2nd column: 1 * 2 = 2</li>
+<li>3rd column: 2 * 2 = 4</li>
+<li>4th column: 4 * 2 = 8</li>
+<li>5th column: 8 * 2 = 16</li>
+<li>6th column: 16 * 2 = 32</li>
+<li>7th column: 32 * 2 = 64</li>
+<li>8th column: 64 * 2 = 128</li>
+</ul>
+<p>Just as we did with our denary numbers, let us put these place values into a table where each column has the calculated place value. Remember, we populate our columns from right to left:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">128</th>
+<th style="text-align: center;">64</th>
+<th style="text-align: center;">32</th>
+<th style="text-align: center;">16</th>
+<th style="text-align: center;">8</th>
+<th style="text-align: center;">4</th>
+<th style="text-align: center;">2</th>
+<th style="text-align: center;">1</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p>And now that we have place values for each column we can put the digit of each column in for our binary number <strong>10100010</strong> (reading from left to right):</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">128</th>
+<th style="text-align: center;">64</th>
+<th style="text-align: center;">32</th>
+<th style="text-align: center;">16</th>
+<th style="text-align: center;">8</th>
+<th style="text-align: center;">4</th>
+<th style="text-align: center;">2</th>
+<th style="text-align: center;">1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+</tr>
+</tbody>
+</table>
+<h4>You calculate the value of each column by multiplying the digit in the column by the place value</h4>
+<p>Just as with our denary number we now need to multiply the digit in each column by the place value of that colum to calculate the column total:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Place Value</th>
+<th style="text-align: center;">128</th>
+<th style="text-align: center;">64</th>
+<th style="text-align: center;">32</th>
+<th style="text-align: center;">16</th>
+<th style="text-align: center;">8</th>
+<th style="text-align: center;">4</th>
+<th style="text-align: center;">2</th>
+<th style="text-align: center;">1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Digit</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Column total</td>
+<td style="text-align: center;">128</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">32</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">0</td>
+</tr>
+</tbody>
+</table>
+<h4>We calculate the total of a number by adding up the value of each of its columns</h4>
+<p>Then we add them all up to give us the total denary value:</p>
+<p><code>128 + 32 + 2 = 162</code></p>
+<blockquote>
+<p>Notice that the numbers we have for our place values are written in denary, therefore when we use this method to calculate the value of a binary number we are actually converting from binary to denary.</p>
+</blockquote>
+<p>We can now confidently state that:</p>
+<p><code>BINARY 10100010 = 162 DENARY</code></p>
+<p>To practice what you have learned try and calculate the value of these binary numbers (mouseover or click to reveal the answer):</p>
+<div class='question'>01010011 = <strong class='answer'>72</strong></div>
+<div class='question'>11001101 = <strong class='answer'>205</strong></div>
+<div class='question'>01100111 = <strong class='answer'>103</strong></div>
+<p>Next up is <a href="../getting-started/maths/hexadecimal/index.html">hexadecimal</a>.</p>
+    </section>
+    
+</article>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="inner">
+            <section class="footer-description">Everything you need to know to write Game Boy games in Assembly.</section>
+            <section class="copyright">&copy; Copyright Billy Rebecchi and Luke Wood</section>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="../assets/js/index.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-156819199-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('config', 'UA-156819199-1');
+    </script>
+</body>
+</html>

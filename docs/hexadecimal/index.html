@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hex - Learn Game Boy</title>
+    <link rel="stylesheet" href="../assets/css/normalize.css">
+    <link rel="stylesheet" href="../assets/css/screen.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300|Open+Sans:400,600,400italic,600italic|Merriweather:400,300,300italic,400italic,700,700italic|Roboto+Slab:400,300" rel="stylesheet">
+    <link rel="icon" href="../assets/img/favicon.png">
+</head>
+<body>
+    <header id="site-head">
+        <a id="blog-logo" href="../index.html"><div class="bloglogo" style="background: url(../assets/img/learn_gb_logo.png)"></div></a>
+        <h1 class="blog-title"><a href="../index.html">Learn Game Boy</a></h1>
+        <h2 class="blog-description">Everything you need to know to write Game Boy games in Assembly.</h2>
+        <h3>Main Menu</h3>
+        <nav class="menu" role="nav">
+            <ul>
+                
+                <li><a href="../index.html" title="About">About</a></li>
+                
+                <li><a href="../getting-started/index.html" title="Getting Started">Getting Started</a></li>
+                
+                <li><a href="../hardware/index.html" title="Hardware">Hardware</a></li>
+                
+            </ul>
+        </nav>
+        
+            
+            
+            <h3>Sub Menu</h3>
+            <nav>
+                <ul>
+                    
+                        
+                        
+                        <li class="section-title"><a href="../maths/index.html" title="Maths">Maths</a></li>
+                            
+                            <li><a href="../binary/index.html" title="Binary">Binary</a></li>
+                            
+                            <li class="active"><a href="../hexadecimal/index.html" title="Hex">Hex</a></li>
+                            
+                            <li><a href="../hex-binary-conversion/index.html" title="Hex &lt;=&gt; Binary">Hex &lt;=&gt; Binary</a></li>
+                            
+                        
+                    
+                </ul>
+            </nav>
+            
+        
+    </header>
+
+    <main class="content" role="main">
+        
+<article>
+    <header>
+        <h1 class="post-title">Hex</h1>
+    </header>
+    <section class="post-content">
+        
+        
+        <p class="parent-link"><a href="../maths/index.html">&lt; Maths</a></p>
+        
+        <p>Remember that the binary number system uses a base of 2 and denary uses a base of 10. The next number system we are going to look at is <strong>hexadecimal</strong> which is also known as <strong>base 16</strong>. The prefix <strong>dec</strong> means ten and (if you remember learning about shapes in school) then you may recall that a <strong>hex</strong>agon is a shape with six sides. If we add hex and dec together then we get 6 + 10 = 16.</p>
+<p>When we looked at binary we calculated the place value of each of our columns using base 2:</p>
+<ul>
+<li>1st column: 1</li>
+<li>2nd column: 1 * 2 = 2</li>
+<li>3rd column: 2 * 2 = 4</li>
+<li>4th column: 4 * 2 = 8</li>
+<li>5th column: 8 * 2 = 16</li>
+<li>6th column: 16 * 2 = 32</li>
+<li>7th column: 32 * 2 = 64</li>
+<li>8th column: 64 * 2 = 128</li>
+</ul>
+<p>In hexadecimal we will use 16 instead to calculate our place values:</p>
+<ul>
+<li>1st column: 1</li>
+<li>2nd column: 1 * 16 = 16</li>
+<li>3rd column: 16 * 16 = 256</li>
+<li>4th column: 256 * 16 = 4096</li>
+</ul>
+<p>Remember we calculate the place value of each column by multiplying the base by the value of the previous column.</p>
+<p>Next, just as we did with our binary numbers, let us now put these place values into a table. Remember we populate our columns from right to left:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">4096</th>
+<th style="text-align: center;">256</th>
+<th style="text-align: center;">16</th>
+<th style="text-align: center;">1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">-</td>
+</tr>
+</tbody>
+</table>
+<p>So what happens when we populate our columns with values? Lets explore the hex number 25:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">4096</th>
+<th style="text-align: center;">256</th>
+<th style="text-align: center;">16</th>
+<th style="text-align: center;">1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">5</td>
+</tr>
+</tbody>
+</table>
+<p>Here you can see that we have two 16s and five 1s:</p>
+<pre><code>(2 * 16) + (5 * 1) = 32 + 5 = 37</code></pre>
+<p>But what happens if we want to represent the number fifteen in hexadecimal? We can only put up to nine in our units column:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">4096</th>
+<th style="text-align: center;">256</th>
+<th style="text-align: center;">16</th>
+<th style="text-align: center;">1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">9</td>
+</tr>
+</tbody>
+</table>
+<p>And if we put a 1 in our second column then we would jump straight to 16:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">4096</th>
+<th style="text-align: center;">256</th>
+<th style="text-align: center;">16</th>
+<th style="text-align: center;">1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+</tr>
+</tbody>
+</table>
+<p>The issue is that we need to display 15 digits, but we don't have a number to represent it, therefore we use a letter:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">4096</th>
+<th style="text-align: center;">256</th>
+<th style="text-align: center;">16</th>
+<th style="text-align: center;">1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">F</td>
+</tr>
+</tbody>
+</table>
+<p>In fact, we will use letters to represent all of our numbers from 10-15:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Denary</th>
+<th style="text-align: center;">Hexadecimal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">2</td>
+</tr>
+<tr>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">3</td>
+</tr>
+<tr>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">4</td>
+</tr>
+<tr>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">5</td>
+</tr>
+<tr>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">6</td>
+</tr>
+<tr>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">7</td>
+</tr>
+<tr>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">8</td>
+</tr>
+<tr>
+<td style="text-align: center;">9</td>
+<td style="text-align: center;">9</td>
+</tr>
+<tr>
+<td style="text-align: center;">10</td>
+<td style="text-align: center;">A</td>
+</tr>
+<tr>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">B</td>
+</tr>
+<tr>
+<td style="text-align: center;">12</td>
+<td style="text-align: center;">C</td>
+</tr>
+<tr>
+<td style="text-align: center;">13</td>
+<td style="text-align: center;">D</td>
+</tr>
+<tr>
+<td style="text-align: center;">14</td>
+<td style="text-align: center;">E</td>
+</tr>
+<tr>
+<td style="text-align: center;">15</td>
+<td style="text-align: center;">F</td>
+</tr>
+</tbody>
+</table>
+<p>If we wanted to represent a value of 173 in hexadecimal we will first need to calculate how many times 16 goes into 173:</p>
+<pre><code>16 * 10 = 160</code></pre>
+<p>And then we will put the remainder in the units column:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">4096</th>
+<th style="text-align: center;">256</th>
+<th style="text-align: center;">16</th>
+<th style="text-align: center;">1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">A</td>
+<td style="text-align: center;">D</td>
+</tr>
+</tbody>
+</table>
+<p>We can now confidently state that:</p>
+<p><code>HEXADECIMAL AD = 173 DENARY</code></p>
+<p>To practice what you have learned try and calculate the value of these hexadecimal numbers (mouseover or click to reveal the answer):</p>
+<div class='question'>7A = <strong class='answer'>122</strong></div>
+<div class='question'>4B7 = <strong class='answer'>1207</strong></div>
+<div class='question'>A71D = <strong class='answer'>42781</strong></div>
+<p>To make it a bit more clear what number system we are using binary numbers will be preceded by a percent sign and hexadecimal will be preceded by a dollar sign:</p>
+<pre><code>$A7 = 167 = %10100111</code></pre>
+<p>Next up we will take a look at how we can <a href="../getting-started/maths/hex-binary-conversion/index.html">convert from hex into binary and vice versa</a>.</p>
+    </section>
+    
+</article>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="inner">
+            <section class="footer-description">Everything you need to know to write Game Boy games in Assembly.</section>
+            <section class="copyright">&copy; Copyright Billy Rebecchi and Luke Wood</section>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="../assets/js/index.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-156819199-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('config', 'UA-156819199-1');
+    </script>
+</body>
+</html>

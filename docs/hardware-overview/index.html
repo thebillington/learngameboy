@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hardware Overview - Learn Game Boy</title>
+    <link rel="stylesheet" href="../assets/css/normalize.css">
+    <link rel="stylesheet" href="../assets/css/screen.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300|Open+Sans:400,600,400italic,600italic|Merriweather:400,300,300italic,400italic,700,700italic|Roboto+Slab:400,300" rel="stylesheet">
+    <link rel="icon" href="../assets/img/favicon.png">
+</head>
+<body>
+    <header id="site-head">
+        <a id="blog-logo" href="../index.html"><div class="bloglogo" style="background: url(../assets/img/learn_gb_logo.png)"></div></a>
+        <h1 class="blog-title"><a href="../index.html">Learn Game Boy</a></h1>
+        <h2 class="blog-description">Everything you need to know to write Game Boy games in Assembly.</h2>
+        <h3>Main Menu</h3>
+        <nav class="menu" role="nav">
+            <ul>
+                
+                <li><a href="../index.html" title="About">About</a></li>
+                
+                <li><a href="../getting-started/index.html" title="Getting Started">Getting Started</a></li>
+                
+                <li><a href="../hardware/index.html" title="Hardware">Hardware</a></li>
+                
+            </ul>
+        </nav>
+        
+            
+            
+            <h3>Sub Menu</h3>
+            <nav>
+                <ul>
+                    
+                        <li class="section-title"><a href="../hardware-overview/index.html" title="Hardware Overview">Hardware Overview</a></li>
+                        
+                        <li><a href="../screen/index.html" title="Screen">Screen</a></li>
+                        
+                    
+                </ul>
+            </nav>
+            
+        
+    </header>
+
+    <main class="content" role="main">
+        
+<article>
+    <header>
+        <h1 class="post-title">Hardware Overview</h1>
+    </header>
+    <section class="post-content">
+        
+        
+        <p class="parent-link"><a href="../hardware/index.html">&lt; Hardware</a></p>
+        
+        <p>The Game Boy is considered to be quite an underpowered device considering its year of release. This is because Nintendo wanted to keep the device as cheap as possible as well as ensure that the portable handheld had an excellent battery life. This isn't to say that the simple hardware made the device easy to write code for - in fact the simplicity meant that game designers had to come up with creative ways to create great games for the console.</p>
+<blockquote>
+<p>Below is a brief overview of the CPU, Memory Map, Screen and RAM. Once you have read through everything on this page, check out the menu at the bottom to go into more depth on each individual section.</p>
+</blockquote>
+<h2>The CPU</h2>
+<p>The Game Boy CPU (Central Processing Unit) performs all of the mathematical and logical functions required in your game, as well as being in charge of moving memory from one location to another. It is not too dissimilar from any other CPU at a basic level, however there are a number of unique features that weren't used on many other mainstream CPUs of the time, particularly the use of memory mapped I/O (Input and Output).</p>
+<p>The Game Boy CPU (Sharp LR35902) was developed by Sharp and is the lovechild of 2 other popular CPUs of the time, namely the Zilog Z80 (used most famously in the ZX Spectrum) and the Intel 8080, an incredibly popular CPU used in many home computers throughout the late 70s to early 80s. The LR35902 included many features from both the Z80 and 8080 as well as including its own instructions for interacting with memory and custom routines to help with sound generation.</p>
+<blockquote>
+<p>You don't have to be an expert mathematician in order to write code, but there is a very important mathematical concept that you will need to understand in order to access the next section of the tutorials. If you don't already know what the binary and hexadecimal number systems are, or how to convert from hex to binary and vice versa then make sure you check out the introductory maths tutorials for everything you need to know.</p>
+</blockquote>
+<h2>Memory map</h2>
+<p>The Game Boy has a relatively unique way of interacting with I/O devices in so far as it does not send data through a single register as is common on many other CPUs, but instead has all of its available devices mapped directly. If you aren't familiar with the way that other CPUs operate then at this stage I wouldn't worry too much about the difference - we will show you everything you need to know to understand how the Game Boy memory map works. But bear in mind that if you ever look at writing code for other CPUs you may find there are large differences with the way you interact with I/O devices such as the screen or hardware buttons.</p>
+<p>The Game Boy has a memory map that runs from hexadecimal 0000-FFFF. The value FFFF in hex is equivalent to 65,535 in decimal. This means that the Game boy memory map has 65,536 memory locations capable of holding 8 bits each, meaning there are 65,535 locations that can hold a number between 0 and 255.</p>
+<p>The memory map is split up into multiple sections each with its own unique job, from holding the game code, to holding the game variables or managing I/O devices. The memory map looks like this:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Start</th>
+<th style="text-align: left;">End</th>
+<th style="text-align: left;">Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">0000</td>
+<td style="text-align: left;">3FFF</td>
+<td style="text-align: left;">16KB ROM Bank 0</td>
+</tr>
+<tr>
+<td style="text-align: left;">4000</td>
+<td style="text-align: left;">7FFF</td>
+<td style="text-align: left;">16KB Switchable ROM Bank</td>
+</tr>
+<tr>
+<td style="text-align: left;">8000</td>
+<td style="text-align: left;">9FFF</td>
+<td style="text-align: left;">8KB Video RAM (VRAM)</td>
+</tr>
+<tr>
+<td style="text-align: left;">A000</td>
+<td style="text-align: left;">BFFF</td>
+<td style="text-align: left;">8KB External RAM (Cartridge RAM)</td>
+</tr>
+<tr>
+<td style="text-align: left;">C000</td>
+<td style="text-align: left;">CFFF</td>
+<td style="text-align: left;">4KB Work RAM (Main RAM)</td>
+</tr>
+<tr>
+<td style="text-align: left;">D000</td>
+<td style="text-align: left;">DFFF</td>
+<td style="text-align: left;">4KB Work RAM (Switchable RAM in CGB mode)</td>
+</tr>
+<tr>
+<td style="text-align: left;">E000</td>
+<td style="text-align: left;">FDFF</td>
+<td style="text-align: left;">8KB Mirror RAM (unused)</td>
+</tr>
+<tr>
+<td style="text-align: left;">FE00</td>
+<td style="text-align: left;">FE9F</td>
+<td style="text-align: left;">Sprite Attribute Table (OAM)</td>
+</tr>
+<tr>
+<td style="text-align: left;">FEA0</td>
+<td style="text-align: left;">FEFF</td>
+<td style="text-align: left;">Hardware Reserved (not usable)</td>
+</tr>
+<tr>
+<td style="text-align: left;">FF00</td>
+<td style="text-align: left;">FF7F</td>
+<td style="text-align: left;">I/O Registers</td>
+</tr>
+<tr>
+<td style="text-align: left;">FF80</td>
+<td style="text-align: left;">FFFE</td>
+<td style="text-align: left;">High RAM (HRAM)</td>
+</tr>
+<tr>
+<td style="text-align: left;">FFFF</td>
+<td style="text-align: left;">FFFF</td>
+<td style="text-align: left;">Interrupts Enable Register (IE)</td>
+</tr>
+</tbody>
+</table>
+<p>Don't worry too much about the memory map now as we will learn more about it as we get started writing code. The main thing to understand is that the CPU can read from or write to any of the memory locations listed above which allows us to control different functions of the Game Boy, from displaying data on the screen, keeping track of important values such as player position or reading the state of the buttons to check if the A button has been pressed.</p>
+<h2>The screen</h2>
+<p>The screen of the Game Boy is known as a DMG (Dot Matrix Graphics) display. This means that all graphics displayed on the device are made up of individual 'dots' or pixels. For anyone familiar with modern day displays you may be asking why this would be an issue as all displays are made up of pixels. The difficulty lies in the resolution of the screen - the display of the Game Boy is capable of displaying 160 pixels across by 144 pixels down (160<em>144) which gives us a total resolution of 23,040 pixels. This may seem like a lot, but when you take into consideration that a 1080p HD screen has 1920 pixels across by 1080 pixels down (1920</em>1080) giving us a total resolution of 2,073,600 pixels, 100 times more than that of the Game Boy screen.</p>
+<p>The screen also has a bit depth of 2 which means each pixel on the screen can only be one of 4 colours:</p>
+<ul>
+<li>11 - White</li>
+<li>01 - Light Grey</li>
+<li>10 - Dark Grey</li>
+<li>00 - Black</li>
+</ul>
+<p>Taking all of these limitations into consideration, it is a wonder that there are any visually impressive games on the Game Boy at all. However, with some thought and consideration for the limitations of the display it is possible to produce some impressive artwork:</p>
+<p><img src="../images/skazka_intro.png" alt="Skazka Intro Screen" /></p>
+<h2>RAM</h2>
+<p>RAM (Random Access Memory) is a section of memory made available to store all of the game variables and values, similar to the information that would be stored in traditional games (e.g. is the player jumping, player position, current fall speed). There are three distinct sections of RAM:</p>
+<h4>External RAM</h4>
+<p>The first is the external RAM held between addresses A000-BFFF. This is an 8KB RAM that is held on the game cartridge itself - since the inclusion of RAM on a cartridge increases the cost to distribute games, many cartridges such as Tetris chose not to make use of this external RAM chip.</p>
+<h4>Work RAM (WRAM)</h4>
+<p>Work RAM is held between addresses C000-DFFF making for a total of 8KB. However on the CBG (Game Boy Color) there were a number of improvements made to the Game Boy hardware, including the addition of a switchable RAM bank from address D000-DFFF. Since we are going to be developing predominantly for the DMG (Original Game Boy) we won't be making use of these switchable ROM banks in these tutorials and will consider the entire Work RAM as a standalone 8KB of RAM.</p>
+<h4>High RAM (HRAM)</h4>
+<p>High RAM is a very small bank of RAM locations held from address FF80-FFFE, making it just 127 bytes in size. HRAM has a number of unique properties that set it aside from the Work RAM. Mainly when using HRAM we use it to store the code for the DMA (Direct Memory Access) routine. The DMA is used to copy the Sprite attributes from the specified RAM location into the OAM (Object Attribute Map). Whilst this transfer occurs the WRAM isn't accessible, therefore the code has to be copied directly into HRAM.</p>
+<p>Another use of HRAM is for incredibly fast memory access, as there is a specific instruction, <strong>LDH</strong> (Load from High RAM) which can be used to load data from the HRAM in one less CPU cycle than the standard <strong>LD</strong> instruction. This is useful for when we are manipulating the same piece of information many times as it reduces the overall amount of time the CPU spends locked on a single calculation.</p>
+    </section>
+    
+    <nav>
+        <ul>
+            
+            <li><a href="../screen/index.html" title="Screen">Screen</a></li>
+            
+        </ul>
+    </nav>
+    
+</article>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="inner">
+            <section class="footer-description">Everything you need to know to write Game Boy games in Assembly.</section>
+            <section class="copyright">&copy; Copyright Billy Rebecchi and Luke Wood</section>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="../assets/js/index.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-156819199-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('config', 'UA-156819199-1');
+    </script>
+</body>
+</html>

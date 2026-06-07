@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Screen - Learn Game Boy</title>
+    <link rel="stylesheet" href="../assets/css/normalize.css">
+    <link rel="stylesheet" href="../assets/css/screen.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300|Open+Sans:400,600,400italic,600italic|Merriweather:400,300,300italic,400italic,700,700italic|Roboto+Slab:400,300" rel="stylesheet">
+    <link rel="icon" href="../assets/img/favicon.png">
+</head>
+<body>
+    <header id="site-head">
+        <a id="blog-logo" href="../index.html"><div class="bloglogo" style="background: url(../assets/img/learn_gb_logo.png)"></div></a>
+        <h1 class="blog-title"><a href="../index.html">Learn Game Boy</a></h1>
+        <h2 class="blog-description">Everything you need to know to write Game Boy games in Assembly.</h2>
+        <h3>Main Menu</h3>
+        <nav class="menu" role="nav">
+            <ul>
+                
+                <li><a href="../index.html" title="About">About</a></li>
+                
+                <li><a href="../getting-started/index.html" title="Getting Started">Getting Started</a></li>
+                
+                <li><a href="../hardware/index.html" title="Hardware">Hardware</a></li>
+                
+            </ul>
+        </nav>
+        
+            
+            
+            <h3>Sub Menu</h3>
+            <nav>
+                <ul>
+                    
+                        
+                        
+                        <li class="section-title"><a href="../hardware-overview/index.html" title="Hardware Overview">Hardware Overview</a></li>
+                            
+                            <li class="active"><a href="../screen/index.html" title="Screen">Screen</a></li>
+                            
+                        
+                    
+                </ul>
+            </nav>
+            
+        
+    </header>
+
+    <main class="content" role="main">
+        
+<article>
+    <header>
+        <h1 class="post-title">Screen</h1>
+    </header>
+    <section class="post-content">
+        
+        
+        <p class="parent-link"><a href="../hardware-overview/index.html">&lt; Hardware Overview</a></p>
+        
+        <p>Understanding how graphics work on the Game Boy is not easy, despite the process of actually generating data being relatively simple through the use of tools such as <a href="https://spkelly.net/tilegen/">Sean Kellys Tile Generator</a> and <a href="https://github.com/chrisantonellis/gbtdg">Chris Antonellis Tile Data Generator</a>. But before we use tools to help speed up the process of creating graphics it is important to understand the mathematics behind how the colour of each pixel on the screen is actually calculated.</p>
+<blockquote>
+<p>When working on low-level programming we should never rely on tools to completely abstract away the complexity of building something, only using them if we actually understand what is going on under the surface. Once you are able to get results without, only then should you start using the tool to increase productivity.</p>
+</blockquote>
+<h2>Tiles</h2>
+<p>When getting graphics to display on the Game Boy screen we have to break down a larger image into a series of 8x8 pixel grids known as tiles. The Game Boy screen is 160 pixels across by 144 pixels down which gives us a grid of tiles 20 across by 18 down:</p>
+<img src="../images/screen/screen_tiles.png">
+<p>If we zoom in on a single tile we can see that it is made of of 8x8 pixels:</p>
+<img src="../images/screen/pixel_breakdown.png">
+<p>We are also heavily limited on our use of colours:</p>
+<ul>
+<li>00 - White (very light green)</li>
+<li>10 - Light Grey (light green)</li>
+<li>01 - Dark Grey (dark green)</li>
+<li>11 - Black (very dark green)</li>
+</ul>
+<p>Each pixel on the Game Boy screen requires two bits  allowing us four colours in total. This means that for a single row of pixel data within an 8x8 tile we require 16 bits (2 bytes) of data (2 bits per pixel, 8 pixels per row = 2x8 = 16 bits). Therefore an entire tile with 8 rows will require 128 bits (8 bytes) of data (16 bits per row, 8 rows per tile = 16 x 8 = 128).</p>
+<p>Now, let's have a look at the sort of images we can create with an 8x8 tile with only 4 colours:</p>
+<img src="../images/screen/pixel_character.png">
+<p>As you can see from this picture of a man it can be very difficult to create detailed images using only 4 colours and such a pixelated display. However we can easily solve this issue by putting several tiles together. In fact, this is exactly what Super Mario does to create the infamous Mario character sprite:</p>
+<img src="../images/screen/pixel_mario.png">
+<p>In order to display these images on the Game Boy we need a way to encode the data numerically. We do so by calculating the required colour value for each pixel and then encoding this using either binary or hexadecimal.</p>
+<p>Lets start by numbering each of our pixels with the correct colour code:</p>
+<img src="../images/screen/sprite_numbered.png">
+<p>Next we need to convert our image data into a format that can be read by the Game Boy screen. As you can see each row of the image contains 16 bits (2 bytes) so to create our data representation we take the first bit of each pixel and put them together to create the first byte and the second byte of each pixel to create the second byte:</p>
+<pre><code>00000000n00111100</code></pre>
+<p>When we put these two bytes one above the other you can see that it corresponds to each of the pixels in the top row of our image:</p>
+<img src="../images/screen/sprite_numbered_row.png">
+<p>First pixel (00 = White):</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong><em>0</em></strong></td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong><em>0</em></strong></td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+</tbody>
+</table>
+<p>Second pixel (00 = White):</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;"><strong><em>0</em></strong></td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;"><strong><em>0</em></strong></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+</tbody>
+</table>
+<p>Third pixel (01 = Dark Green/Grey):</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;"><strong><em>0</em></strong></td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;"><strong><em>1</em></strong></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+</tbody>
+</table>
+<p>As you can see when we take the first value from the first byte and the first value from the second byte and combine them it gives us the colour value for each pixel in the row. If we repeat this for each individual row we have 16 bytes in total (2 bytes per row):</p>
+<pre><code class="language-nasm">Man:nn    ; First rown    db %00000000n    db %00111100nn    ; Second rown    db %00111100n    db %00000000nn    ; Third rown    db %00111100n    db %00010100nn    ; Fourth rown    db %00111100n    db %00000000nn    ; Fifth rown    db %00000000n    db %00111100nn    ; Sixth rown    db %00100010n    db %00011100nn    ; Seventh rown    db %00000000n    db %00111100nn    ; Eighth rown    db %00010100n    db %00010100nnEndMan:</code></pre>
+<blockquote>
+<p>We specify a byte in gbZ80 ASM using the <strong>%</strong> sign with the <strong>db</strong> opcode.</p>
+</blockquote>
+<p>If you are still a little confused as to how the data we have relates to the image of our man then the secret to understanding is to start on the first row and read down then across. Doing so gives us:</p>
+<pre><code class="language-nasm">; First rowndb %00000000ndb %00111100</code></pre>
+<pre><code>00 00 01 01 01 01 00 00</code></pre>
+<img src="../images/screen/sprite_numbered_row.png">
+<p>Repeating this for each row will give us the correct colour code for each individual pixel.</p>
+<h2>Representing our image in Hex</h2>
+<p>Although it is very easy to read image data stored as individual bytes the majority of the time you will actually see the image data represented in hex. You will remember from our lesson on <a href="../getting-started/maths/hex-binary-conversion/index.html">binary hex conversion</a> that a hex number represents four bits. Therefore if we divide our number of bits for the full image (128 bits) by four then we get 32 hex digits to represent all of our image data.</p>
+<p>Lets start by converting the first row of our image data into hex:</p>
+<pre><code class="language-nasm">; First rowndb %00000000ndb %00111100</code></pre>
+<pre><code>BINARY 0000 = 0 HEXnBINARY 0000 = 0 HEXnBINARY 0011 = 3 HEXnBINARY 1100 = C HEX</code></pre>
+<p>Therefore we know that to represent these 2 bytes we would use:</p>
+<pre><code class="language-nasm">$00, $3C</code></pre>
+<p>In gbZ80 Assembly the <strong>$</strong> sign signifies a byte in <strong>hex</strong> format. If we calculate the hex representation of each of our rows we get:</p>
+<pre><code class="language-nasm">Man:nn    ; First rown    db %00000000 ; $00n    db %00111100 ; $3Cnn    ; Second rown    db %00111100 ; $3Cn    db %00000000 ; $00nn    ; Third rown    db %00111100 ; $3Cn    db %00010100 ; $14nn    ; Fourth rown    db %00111100 ; $3Cn    db %00000000 ; $00nn    ; Fifth rown    db %00000000 ; $00n    db %00111100 ; $3Cnn    ; Sixth rown    db %00100010 ; $22n    db %00011100 ; $1Cnn    ; Seventh rown    db %00000000 ; $00n    db %00111100 ; $3Cnn    ; Eighth rown    db %00010100 ; $14n    db %00010100 ; $14nnEndMan:</code></pre>
+<p>Now lets swap the binary format out and look at the full gbZ80 representation of our image in hex:</p>
+<pre><code class="language-nasm">Man:n    db $00, $3C, $3C, $00, $3C, $14, $3C, $00n    db $00, $3C, $22, $1C, $00, $3C, $14, $14nEndMan:</code></pre>
+<h2>Loading tile data into memory</h2>
+<p>We are now going to look at some sample code to see how we go about loading a tile into memory ready to be used by the screen. Before we go any further lets take a quick look at the Game Boy memory map:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Start</th>
+<th style="text-align: left;">End</th>
+<th style="text-align: left;">Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">0000</td>
+<td style="text-align: left;">3FFF</td>
+<td style="text-align: left;">16KB ROM Bank 0</td>
+</tr>
+<tr>
+<td style="text-align: left;">4000</td>
+<td style="text-align: left;">7FFF</td>
+<td style="text-align: left;">16KB Switchable ROM Bank</td>
+</tr>
+<tr>
+<td style="text-align: left;">8000</td>
+<td style="text-align: left;">9FFF</td>
+<td style="text-align: left;">8KB Video RAM (VRAM)</td>
+</tr>
+<tr>
+<td style="text-align: left;">A000</td>
+<td style="text-align: left;">BFFF</td>
+<td style="text-align: left;">8KB External RAM (Cartridge RAM)</td>
+</tr>
+<tr>
+<td style="text-align: left;">C000</td>
+<td style="text-align: left;">CFFF</td>
+<td style="text-align: left;">4KB Work RAM (Main RAM)</td>
+</tr>
+<tr>
+<td style="text-align: left;">D000</td>
+<td style="text-align: left;">DFFF</td>
+<td style="text-align: left;">4KB Work RAM (Switchable RAM in CGB mode)</td>
+</tr>
+<tr>
+<td style="text-align: left;">E000</td>
+<td style="text-align: left;">FDFF</td>
+<td style="text-align: left;">8KB Mirror RAM (unused)</td>
+</tr>
+<tr>
+<td style="text-align: left;">FE00</td>
+<td style="text-align: left;">FE9F</td>
+<td style="text-align: left;">Sprite Attribute Table (OAM)</td>
+</tr>
+<tr>
+<td style="text-align: left;">FEA0</td>
+<td style="text-align: left;">FEFF</td>
+<td style="text-align: left;">Hardware Reserved (not usable)</td>
+</tr>
+<tr>
+<td style="text-align: left;">FF00</td>
+<td style="text-align: left;">FF7F</td>
+<td style="text-align: left;">I/O Registers</td>
+</tr>
+<tr>
+<td style="text-align: left;">FF80</td>
+<td style="text-align: left;">FFFE</td>
+<td style="text-align: left;">High RAM (HRAM)</td>
+</tr>
+<tr>
+<td style="text-align: left;">FFFF</td>
+<td style="text-align: left;">FFFF</td>
+<td style="text-align: left;">Interrupts Enable Register (IE)</td>
+</tr>
+</tbody>
+</table>
+<p>As you can see the VRAM is held at memory address 8000-9FFF, however this is actually split up into several sections:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Start</th>
+<th style="text-align: left;">End</th>
+<th style="text-align: left;">Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">8000</td>
+<td style="text-align: left;">97FF</td>
+<td style="text-align: left;">Tile Data</td>
+</tr>
+<tr>
+<td style="text-align: left;">9800</td>
+<td style="text-align: left;">9BFF</td>
+<td style="text-align: left;">Background Tile Map</td>
+</tr>
+<tr>
+<td style="text-align: left;">9C00</td>
+<td style="text-align: left;">9FFF</td>
+<td style="text-align: left;">Window Tile Map</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>There is also the Sprite Attribute Table at address FE00-FE9F but you will learn more about this in the <a href="../hardware/advanced-hardware/dma-and-oam/index.html">advanced hardware section</a>.</p>
+</blockquote>
+<p>The tile data section of memory holds all of the binary or hex information that describes the colour of each pixel in our tiles. This section is again split into 3 blocks:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Start</th>
+<th style="text-align: left;">End</th>
+<th style="text-align: left;">Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">8000</td>
+<td style="text-align: left;">87FF</td>
+<td style="text-align: left;">Block 0</td>
+</tr>
+<tr>
+<td style="text-align: left;">8800</td>
+<td style="text-align: left;">8FFF</td>
+<td style="text-align: left;">Block 1</td>
+</tr>
+<tr>
+<td style="text-align: left;">9000</td>
+<td style="text-align: left;">97FF</td>
+<td style="text-align: left;">Block 2</td>
+</tr>
+</tbody>
+</table>
+<p>For the purposes of this section we are going to take a look at how to load our image of a man:</p>
+<pre><code class="language-nasm">Man:n    db $00, $3C, $3C, $00, $3C, $14, $3C, $00n    db $00, $3C, $22, $1C, $00, $3C, $14, $14nEndMan:</code></pre>
+<p>In order to load our tile data we will need to fetch the values from the specific memory location in our ROM that the data is stored. Fortunately it is easy to check where the data starts and ends since we have specified our start and end addresses using the labels <strong>Man</strong> and <strong>EndMan</strong>.</p>
+<blockquote>
+<p>If you haven't already, make sure you read about the <a href="../hardware/hardware-overview/cpu/index.html">CPU</a> to get a basic understanding of gbZ80 ASM as in this section we will be looking at a more practical example. Take particular care to read the section on registers so that you fully understand how we are loading data in and out of the CPU.</p>
+</blockquote>
+<p>Remember that each location in Game Boy memory can hold 8-bits (one byte) of data and is addressed with a 16-bit value. Take a look at the data table which shows us the data held at some addresses in the ROM and VRAM:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">ROM LOCATION</th>
+<th style="text-align: center;">DATA</th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;">VRAM LOCATION</th>
+<th style="text-align: center;">DATA</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">2000</td>
+<td style="text-align: center;">%00000000</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9000</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">2001</td>
+<td style="text-align: center;">%00111100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9001</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">2002</td>
+<td style="text-align: center;">%00111100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9002</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">2003</td>
+<td style="text-align: center;">%00000000</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9003</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">2004</td>
+<td style="text-align: center;">%00111100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9004</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">2005</td>
+<td style="text-align: center;">%00010100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9005</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">2006</td>
+<td style="text-align: center;">%00111100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9006</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">2007</td>
+<td style="text-align: center;">%00000000</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9007</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">2008</td>
+<td style="text-align: center;">%00000000</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9008</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">2009</td>
+<td style="text-align: center;">%00111100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9009</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">200A</td>
+<td style="text-align: center;">%00100010</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">900A</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">200B</td>
+<td style="text-align: center;">%00011100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">900B</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">200C</td>
+<td style="text-align: center;">%00000000</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">900C</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">200D</td>
+<td style="text-align: center;">%00111100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">900D</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">200E</td>
+<td style="text-align: center;">%00010100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">900E</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">200F</td>
+<td style="text-align: center;">%00010100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">900F</td>
+<td style="text-align: center;">--------</td>
+</tr>
+</tbody>
+</table>
+<p>You can see that our image data is stored in our ROM from address 2000 to 200F and at this moment in time there is no data in the VRAM. In order to populate the VRAM with our tile data we will need an assembly program that is able to repeatedly copy data from one place to another.</p>
+<p>Since we know each of our registers can only hold 8-bits in order to store a full address we are going to need to use the Game Boys ability to combine registers together to keep track of the addresses that we are loading into. We will store in our registers:</p>
+<ul>
+<li>HL - The location in the tile data block that we are loading the current byte of data into</li>
+<li>DE - The location of the next byte of image data to load into the data block</li>
+<li>BC - Keeps track of how many bytes we still have to load after this one</li>
+</ul>
+<p>Lets initialise our values:</p>
+<pre><code class="language-nasm">ld hl, $9000nld de, Mannld bc, EndMan - Man</code></pre>
+<p>You can see that we've loaded 9000 HEX ($) into HL which is the first location of tile data block 2. We have then loaded into DE the address of the first byte ($00) of our image. Lastly we have loaded BC with the number of bytes that we need to load. In our example above the tile data for our image sits at location $2000 of our ROM, therefore the label <strong>Man</strong> would resolve to $2000. Since there are 16 bytes in our image we know that the <strong>EndMan</strong> label must resolve to $2010. Therefore when we load BC with <em>EndMan - Man</em> we are actually loading BC with 16 ($2010 - $2000) but the assembler will take care of this for us. Remember that $2010 is in hex.</p>
+<p>In order to actually load our data we will write a loop that can load a byte from the ROM into VRAM repeatedly for as long as the value in BC (the total number of bytes left to move) is bigger than zero:</p>
+<pre><code class="language-nasm">.copyTilen    ld a, [de]n    ld [hl], an    inc hln    inc den    dec bcn    ld a, bn    or cn    jr nz, .copyImage</code></pre>
+<blockquote>
+<p>There is a lot going on in this code so if you've never worked with gbZ80 before don't panic, we will go over everything in this snippet one step at a time.</p>
+</blockquote>
+<p>Sometimes it can be extremely complicated to understand what is going on in a given piece of code, particularly with Assembly, therefore let's take a look at some pseudocode that breaks down the purpose of each line of code:</p>
+<ul>
+<li>Load the data at address <strong>DE</strong> into <strong>A</strong></li>
+<li>Load data in <strong>A</strong> into the memory location pointed to by <strong>HL</strong></li>
+<li>Increment <strong>HL</strong> (to point to the next location of VRAM)</li>
+<li>Increment <strong>DE</strong> (to point to the next byte of data)</li>
+<li>Decrement <strong>BC</strong></li>
+<li>Load a with value held in <strong>B</strong></li>
+<li>Or with <strong>C</strong></li>
+<li>If <strong>B</strong> is not zero OR <strong>C</strong> is not zero, repeat</li>
+</ul>
+<p>Before we go any further lets look at the full code snippet together:</p>
+<pre><code class="language-nasm">    ld hl, $9000n    ld de, Mann    ld bc, EndMan - Mann.copyTilen    ld a, [de]n    ld [hl], an    inc hln    inc den    dec bcn    ld a, bn    or cn    jr nz, .copyImage</code></pre>
+<p>Lets load our registers with some values:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">A</th>
+<th style="text-align: center;">HL</th>
+<th style="text-align: center;">DE</th>
+<th style="text-align: center;">BC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">--------</td>
+<td style="text-align: center;">$9000</td>
+<td style="text-align: center;">$2000</td>
+<td style="text-align: center;">$0010 (16)</td>
+</tr>
+</tbody>
+</table>
+<p>The first line of code we run after initialising our registers is:</p>
+<pre><code>ld a, [de]</code></pre>
+<p>You may think that this will load our value of <strong>DE</strong> into register <strong>A</strong> but notice that register <strong>DE</strong> is surrounded by square brackets. This is a signal to the CPU that instead of loading the value held in register <strong>DE</strong> into register <strong>A</strong> we load the value at the address pointed to by register <strong>DE</strong> instead. This is known as <strong>direct</strong> addressing.</p>
+<p>Remember our table of values from before:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">ROM LOCATION</th>
+<th style="text-align: center;">DATA</th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;">VRAM LOCATION</th>
+<th style="text-align: center;">DATA</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">2000</td>
+<td style="text-align: center;">%00000000</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9000</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">2001</td>
+<td style="text-align: center;">%00111100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9001</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">2002</td>
+<td style="text-align: center;">%00111100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9002</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">2003</td>
+<td style="text-align: center;">%00000000</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9003</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">2004</td>
+<td style="text-align: center;">%00111100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9004</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">2005</td>
+<td style="text-align: center;">%00010100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9005</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">2006</td>
+<td style="text-align: center;">%00111100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9006</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">2007</td>
+<td style="text-align: center;">%00000000</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9007</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">2008</td>
+<td style="text-align: center;">%00000000</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9008</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">2009</td>
+<td style="text-align: center;">%00111100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9009</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">200A</td>
+<td style="text-align: center;">%00100010</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">900A</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">200B</td>
+<td style="text-align: center;">%00011100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">900B</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">200C</td>
+<td style="text-align: center;">%00000000</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">900C</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">200D</td>
+<td style="text-align: center;">%00111100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">900D</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">200E</td>
+<td style="text-align: center;">%00010100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">900E</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">200F</td>
+<td style="text-align: center;">%00010100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">900F</td>
+<td style="text-align: center;">--------</td>
+</tr>
+</tbody>
+</table>
+<p>The value held in register <strong>DE</strong> is $2000, therefore by calling <strong>[DE]</strong> we are resolving the byte stored at location $2000 and loading it into register A:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">A</th>
+<th style="text-align: center;">HL</th>
+<th style="text-align: center;">DE</th>
+<th style="text-align: center;">BC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">%00000000</td>
+<td style="text-align: center;">$9000</td>
+<td style="text-align: center;">$2000</td>
+<td style="text-align: center;">$0010 (16)</td>
+</tr>
+</tbody>
+</table>
+<p>Next we execute:</p>
+<pre><code class="language-nasm">ld [hl], a</code></pre>
+<p>As you can see we have stored the value held in register <strong>A</strong> into <strong>[HL]</strong>. Remember that instead of actually putting the value into the <strong>HL</strong> register, the square brackets tell the CPU to use direct addressing meaning we will put the value into the memory address pointed to by <strong>HL</strong>. The current value stored in register <strong>HL</strong> is $9000 and the value in register <strong>A</strong> is <code>00000000</code> therefore after we execute this opcode the state of our VRAM will be:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">ROM LOCATION</th>
+<th style="text-align: center;">DATA</th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;">VRAM LOCATION</th>
+<th style="text-align: center;">DATA</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">2000</td>
+<td style="text-align: center;">%00000000</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9000</td>
+<td style="text-align: center;">%00000000</td>
+</tr>
+<tr>
+<td style="text-align: center;">2001</td>
+<td style="text-align: center;">%00111100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9001</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">2002</td>
+<td style="text-align: center;">%00111100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9002</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">2003</td>
+<td style="text-align: center;">%00000000</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9003</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">2004</td>
+<td style="text-align: center;">%00111100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9004</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">2005</td>
+<td style="text-align: center;">%00010100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9005</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">2006</td>
+<td style="text-align: center;">%00111100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9006</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">2007</td>
+<td style="text-align: center;">%00000000</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9007</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">2008</td>
+<td style="text-align: center;">%00000000</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9008</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">2009</td>
+<td style="text-align: center;">%00111100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9009</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">200A</td>
+<td style="text-align: center;">%00100010</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">900A</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">200B</td>
+<td style="text-align: center;">%00011100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">900B</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">200C</td>
+<td style="text-align: center;">%00000000</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">900C</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">200D</td>
+<td style="text-align: center;">%00111100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">900D</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">200E</td>
+<td style="text-align: center;">%00010100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">900E</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">200F</td>
+<td style="text-align: center;">%00010100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">900F</td>
+<td style="text-align: center;">--------</td>
+</tr>
+</tbody>
+</table>
+<p>Our next three lines of code increment <strong>HL</strong> and <strong>DE</strong> then decrement <strong>BC</strong>:</p>
+<pre><code class="language-nasm">inc hlninc dendec bc</code></pre>
+<p>Increment means <strong>inc</strong>rease by one and decrement means <strong>dec</strong>rease by one. Lets check the new state of our registers:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">A</th>
+<th style="text-align: center;">HL</th>
+<th style="text-align: center;">DE</th>
+<th style="text-align: center;">BC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">%00000000</td>
+<td style="text-align: center;">$9001</td>
+<td style="text-align: center;">$2001</td>
+<td style="text-align: center;">$000F (15)</td>
+</tr>
+</tbody>
+</table>
+<p>Our next line of code will load the value held in register <strong>B</strong> into <strong>A</strong> and then OR it with <strong>C</strong>:</p>
+<pre><code class="language-nasm">ld a, bnor c</code></pre>
+<p>This may seem a strange way to check whether the value held in <strong>BC</strong> is zero, but lets explore what this actually does. First lets look at the values held in <strong>A</strong>, <strong>B</strong> and <strong>C</strong> individually:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">A</th>
+<th style="text-align: center;">B</th>
+<th style="text-align: center;">C</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">--------</td>
+<td style="text-align: center;">$00 (%00000000)</td>
+<td style="text-align: center;">$0F (%00001111)</td>
+</tr>
+</tbody>
+</table>
+<p>Lets load <strong>A</strong> with the value held in <strong>B</strong>:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">A</th>
+<th style="text-align: center;">B</th>
+<th style="text-align: center;">C</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">%00000000</td>
+<td style="text-align: center;">$00 (%00000000)</td>
+<td style="text-align: center;">$0F (%00001111)</td>
+</tr>
+</tbody>
+</table>
+<p>Now lets OR this value with C:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">OR</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>0</strong></td>
+<td style="text-align: center;"><strong>0</strong></td>
+<td style="text-align: center;"><strong>0</strong></td>
+<td style="text-align: center;"><strong>0</strong></td>
+<td style="text-align: center;"><strong>1</strong></td>
+<td style="text-align: center;"><strong>1</strong></td>
+<td style="text-align: center;"><strong>1</strong></td>
+<td style="text-align: center;"><strong>1</strong></td>
+<td style="text-align: center;"></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">A</th>
+<th style="text-align: center;">B</th>
+<th style="text-align: center;">C</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">%00001111</td>
+<td style="text-align: center;">$00 (%00000000)</td>
+<td style="text-align: center;">$0F (%00001111)</td>
+</tr>
+</tbody>
+</table>
+<p>Remember that whenever we perform a logical or comparison operation we set our flags. In this case, after performing the OR operation our Z flag will be unset since the value in A is not zero. In fact, the only way to have our Z flag set after executing these two lines of code will be to have <strong>B</strong> and <strong>C</strong> both holding values of zero. So effectively our two lines of code check whether <strong>BC</strong> is holding a value of zero.</p>
+<p>The next line of code is:</p>
+<pre><code>jr nz, .copyImage</code></pre>
+<p>Remember that the <strong>JR</strong> instruction jumps relative to the current location to another instruction. In this case  we jump backwards by 7 instructions to the <strong>.copyImage</strong> label only if the Z flag is <strong>not</strong> set. Since we know <strong>BC</strong> holds a value of 15, it isn't zero so we will repeat our instructions with the values currently held in our registers:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">A</th>
+<th style="text-align: center;">HL</th>
+<th style="text-align: center;">DE</th>
+<th style="text-align: center;">BC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">%00111100</td>
+<td style="text-align: center;">$9001</td>
+<td style="text-align: center;">$2001</td>
+<td style="text-align: center;">$000F (15)</td>
+</tr>
+</tbody>
+</table>
+<p>After executing our instructions we will have moved the data held at address <strong>[DE]</strong> ($2001) to address <strong>[HL]</strong> ($9001) via the <strong>A</strong> register:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">ROM LOCATION</th>
+<th style="text-align: center;">DATA</th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;">VRAM LOCATION</th>
+<th style="text-align: center;">DATA</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">2000</td>
+<td style="text-align: center;">%00000000</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9000</td>
+<td style="text-align: center;">%00000000</td>
+</tr>
+<tr>
+<td style="text-align: center;">2001</td>
+<td style="text-align: center;">%00111100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9001</td>
+<td style="text-align: center;">%00111100</td>
+</tr>
+<tr>
+<td style="text-align: center;">2002</td>
+<td style="text-align: center;">%00111100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9002</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">2003</td>
+<td style="text-align: center;">%00000000</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9003</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">2004</td>
+<td style="text-align: center;">%00111100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9004</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">2005</td>
+<td style="text-align: center;">%00010100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9005</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">2006</td>
+<td style="text-align: center;">%00111100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9006</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">2007</td>
+<td style="text-align: center;">%00000000</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9007</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">2008</td>
+<td style="text-align: center;">%00000000</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9008</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">2009</td>
+<td style="text-align: center;">%00111100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9009</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">200A</td>
+<td style="text-align: center;">%00100010</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">900A</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">200B</td>
+<td style="text-align: center;">%00011100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">900B</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">200C</td>
+<td style="text-align: center;">%00000000</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">900C</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">200D</td>
+<td style="text-align: center;">%00111100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">900D</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">200E</td>
+<td style="text-align: center;">%00010100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">900E</td>
+<td style="text-align: center;">--------</td>
+</tr>
+<tr>
+<td style="text-align: center;">200F</td>
+<td style="text-align: center;">%00010100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">900F</td>
+<td style="text-align: center;">--------</td>
+</tr>
+</tbody>
+</table>
+<p>Once our code has executed the state of our registers will be:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">A</th>
+<th style="text-align: center;">HL</th>
+<th style="text-align: center;">DE</th>
+<th style="text-align: center;">BC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">%00000000</td>
+<td style="text-align: center;">$9002</td>
+<td style="text-align: center;">$2002</td>
+<td style="text-align: center;">$000E (14)</td>
+</tr>
+</tbody>
+</table>
+<p>The value held in <strong>BC</strong> is now 14, meaning we will repeat executing our instructions to copy data across 14 more times, once for each remaining address. When our value in <strong>BC</strong> hits zero  the state of our memory will be:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">ROM LOCATION</th>
+<th style="text-align: center;">DATA</th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;">VRAM LOCATION</th>
+<th style="text-align: center;">DATA</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">2000</td>
+<td style="text-align: center;">%00000000</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9000</td>
+<td style="text-align: center;">%00000000</td>
+</tr>
+<tr>
+<td style="text-align: center;">2001</td>
+<td style="text-align: center;">%00111100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9001</td>
+<td style="text-align: center;">%00111100</td>
+</tr>
+<tr>
+<td style="text-align: center;">2002</td>
+<td style="text-align: center;">%00111100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9002</td>
+<td style="text-align: center;">%00111100</td>
+</tr>
+<tr>
+<td style="text-align: center;">2003</td>
+<td style="text-align: center;">%00000000</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9003</td>
+<td style="text-align: center;">%00000000</td>
+</tr>
+<tr>
+<td style="text-align: center;">2004</td>
+<td style="text-align: center;">%00111100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9004</td>
+<td style="text-align: center;">%00111100</td>
+</tr>
+<tr>
+<td style="text-align: center;">2005</td>
+<td style="text-align: center;">%00010100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9005</td>
+<td style="text-align: center;">%00010100</td>
+</tr>
+<tr>
+<td style="text-align: center;">2006</td>
+<td style="text-align: center;">%00111100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9006</td>
+<td style="text-align: center;">%00111100</td>
+</tr>
+<tr>
+<td style="text-align: center;">2007</td>
+<td style="text-align: center;">%00000000</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9007</td>
+<td style="text-align: center;">%00000000</td>
+</tr>
+<tr>
+<td style="text-align: center;">2008</td>
+<td style="text-align: center;">%00000000</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9008</td>
+<td style="text-align: center;">%00000000</td>
+</tr>
+<tr>
+<td style="text-align: center;">2009</td>
+<td style="text-align: center;">%00111100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">9009</td>
+<td style="text-align: center;">%00111100</td>
+</tr>
+<tr>
+<td style="text-align: center;">200A</td>
+<td style="text-align: center;">%00100010</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">900A</td>
+<td style="text-align: center;">%00100010</td>
+</tr>
+<tr>
+<td style="text-align: center;">200B</td>
+<td style="text-align: center;">%00011100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">900B</td>
+<td style="text-align: center;">%00011100</td>
+</tr>
+<tr>
+<td style="text-align: center;">200C</td>
+<td style="text-align: center;">%00000000</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">900C</td>
+<td style="text-align: center;">%00000000</td>
+</tr>
+<tr>
+<td style="text-align: center;">200D</td>
+<td style="text-align: center;">%00111100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">900D</td>
+<td style="text-align: center;">%00111100</td>
+</tr>
+<tr>
+<td style="text-align: center;">200E</td>
+<td style="text-align: center;">%00010100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">900E</td>
+<td style="text-align: center;">%00010100</td>
+</tr>
+<tr>
+<td style="text-align: center;">200F</td>
+<td style="text-align: center;">%00010100</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">900F</td>
+<td style="text-align: center;">%00010100</td>
+</tr>
+</tbody>
+</table>
+<p>Before we have a look at the results of executing this program, lets have a quick look at the code in full:</p>
+<pre><code class="language-nasm">Start:n    ; SETUP THE GAME BOYnn    ld hl, $9000n    ld de, Mann    ld bc, EndMan - Mannn.copyTilen    ld a, [de]n    ld [hl], an    inc hln    inc den    dec bcn    ld a, bn    or cn    jr nz, .copyImagenn    ; DO SOME MORE SETUPnnMan:n    db $00, $3C, $3C, $00, $3C, $14, $3C, $00n    db $00, $3C, $22, $1C, $00, $3C, $14, $14nEndMan:</code></pre>
+<p>Be aware that if you try to assemble the given code using RGBDS then you will run into errors as there are a few more things you need to learn before we can actually get code running on the Game Boy, but lets have a look at what would happen if we were to create a Game Boy ROM with these as the only instructions:</p>
+<img src="../images/screen/man_sprite_loaded.png">
+<p>Not the output you were expecting? Those that are familiar with the Game Boy boot screen will see the familiar outline of the Nintendo logo, but why is our custom tile all over the Game Boy screen? Lets take a look at the VRAM viewer in BGB to get a better understanding of what is going on:</p>
+<img src="../images/screen/vram_viewer_man.png">
+<p>If you look on the right hand side of the window you can see that our custom tile (tile 00) is loaded into tile address <strong>0:9000</strong>. This makes sense as we know our code transferred the 16 bytes that make up our man into memory addresses $9000 to $900F. So what is happening on the left hand side of the screen?</p>
+<p>Well, remember that tile map memory is split up into three blocks:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Start</th>
+<th style="text-align: left;">End</th>
+<th style="text-align: left;">Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">8000</td>
+<td style="text-align: left;">87FF</td>
+<td style="text-align: left;">Block 0</td>
+</tr>
+<tr>
+<td style="text-align: left;">8800</td>
+<td style="text-align: left;">8FFF</td>
+<td style="text-align: left;">Block 1</td>
+</tr>
+<tr>
+<td style="text-align: left;">9000</td>
+<td style="text-align: left;">97FF</td>
+<td style="text-align: left;">Block 2</td>
+</tr>
+</tbody>
+</table>
+<p>We have loaded our tile data into block 2 (starting at address $9000), which means the bottom left grid of tiles corresponds to tile data bank 2. At the top left we can see the Nintendo Logo data is still held in bank 0 as we never cleared it. Lets check out one of these tiles to see where in memory it is stored:</p>
+<img src="../images/screen/vram_nintendo_logo_n.png">
+<p>As you can see the top left of the Nintendo logo is held in tile 01 of bank 0, which is address $8010-801F in memory. Lets now modify our code so that we can overwrite the top left of the Nintendo logo:</p>
+<pre><code class="language-nasm">Start:n    ; SETUP THE GAME BOYnn    ld hl, $8010n    ld de, Mann    ld bc, EndMan - Mannn.copyTilen    ld a, [de]n    ld [hl], an    inc hln    inc den    dec bcn    ld a, bn    or cn    jr nz, .copyImagenn    ; DO SOME MORE SETUPnnMan:n    db $00, $3C, $3C, $00, $3C, $14, $3C, $00n    db $00, $3C, $22, $1C, $00, $3C, $14, $14nEndMan:</code></pre>
+<p>Notice that all of this code is the same except for the initial value of <strong>HL</strong>. We have changed this to $8010 to reflect that we are overwriting tile 01 of bank 0:</p>
+<img src="../images/screen/overwrite_nintendo_logo.png">
+<p>As you can see we are easily able to overwrite specific tiles anywhere in our tile banks if we know their location in memory. Next we will look at how to tell the Game Boy which tile bank we want to use, but first let us discuss why the VRAM viewer is showing 6 banks of tiles instead of the 3 we originally looked at.</p>
+<p>We know that the Game Boy has three blocks of tile data:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Start</th>
+<th style="text-align: center;">End</th>
+<th style="text-align: center;">Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">8000</td>
+<td style="text-align: center;">87FF</td>
+<td style="text-align: center;">Block 0</td>
+</tr>
+<tr>
+<td style="text-align: center;">8800</td>
+<td style="text-align: center;">8FFF</td>
+<td style="text-align: center;">Block 1</td>
+</tr>
+<tr>
+<td style="text-align: center;">9000</td>
+<td style="text-align: center;">97FF</td>
+<td style="text-align: center;">Block 2</td>
+</tr>
+</tbody>
+</table>
+<p>However the Game Boy Color also has a second VRAM bank which we haven't yet discussed. Therefore because BGB is GB Color compatible it shows us the extra bank even though we aren't going to be using it.</p>
+<blockquote>
+<p>Since we are going to be programming games that are compatible on both the original GB and the Color we won't be looking at how to switch to this extra bank, but remember the option is there if you eventually want to write games that are compatible with the Color exclusively.</p>
+</blockquote>
+<h2>LCDC Register (LCD Control)</h2>
+<p>There is a special register known as the LCDC which tells the screen (Liquid Crystal Display) which mode it should currently be in. We won't go into too much detail about this register now as we will look at all the options as and when we need them, but let us take a quick look at all the modes we can enable and disable using the LCDC.</p>
+<p>Remember that a register is made up of a byte, or 8-bits. This means that with the LCDC register we can enable and disable 8 different modes on the Game Boy screen (the following is taken directly from the <a href="https://gbdev.gg8.se/wiki/articles/LCDC">gbdev wiki</a>):</p>
+<ul>
+<li>Bit 7 - LCD Display Enable</li>
+<li>Bit 6 - Window Tile Map Display Select</li>
+<li>Bit 5 - Window Display Enable</li>
+<li>Bit 4 - BG &amp; Window Tile Data Select</li>
+<li>Bit 3 - BG Tile Map Display Select</li>
+<li>Bit 2 - OBJ (Sprite) Size</li>
+<li>Bit 1 - OBJ (Sprite) Display Enable</li>
+<li>Bit 0 - BG/Window Display/Priority</li>
+</ul>
+<p>There is a lot going on here so we will just go over the bits we actually need to look at for the purposes of getting data on the screen.</p>
+<p>In our code example we inserted a placeholder comment to explain that we were doing some 'setting up' of the Game Boy. Part of this setting up is telling the screen which mode it needs to be in before we change the tile data. To disable the screen fully we will write a value of 0 into the LCDC register:</p>
+<pre><code class="language-nasm">ld a, %00000000nld [rLCDC], a</code></pre>
+<blockquote>
+<p>This isn't strictly necessary but it is good practice when working with any old technology to disable the screen before changing data that should display on the screen.</p>
+</blockquote>
+<p>After we have written our data into VRAM we then need to re-enable the screen. To do this we will write enable into <strong>bit 7</strong> (LCD enable) and <strong>bit 0</strong> (background enable):</p>
+<pre><code class="language-nasm">ld a, %10000001nld [rLCDC], a</code></pre>
+<p>However this is enabling the LCD and setting the tile data select to use tile data block 2. If we want to use block 0 we have to enable it on <strong>bit 4</strong>:</p>
+<pre><code class="language-nasm">ld a, %10010001nld [rLCDC], a</code></pre>
+<p>We have now set the screen to use block 0 and written our custom tile into location $8010 (to overwrite the top left of the Nintendo logo):</p>
+<img src="../images/screen/vram_bank_zero.png">
+<p>This is what VRAM looks like:</p>
+<img src="../images/screen/vram_viewer_bank_zero.png">
+<p>And our final code:</p>
+<pre><code class="language-nasm">Start:n    ; SETUP THE GAME BOYnn    ld a, %00000000n    ld [rLCDC], ann    ld hl, $8010n    ld de, Mann    ld bc, EndMan - Mannn.copyTilen    ld a, [de]n    ld [hl], an    inc hln    inc den    dec bcn    ld a, bn    or cn    jr nz, .copyImagenn    ld a, %10010001n    ld [rLCDC], ann    ; DO SOME MORE SETUPnnMan:n    db $00, $3C, $3C, $00, $3C, $14, $3C, $00n    db $00, $3C, $22, $1C, $00, $3C, $14, $14nEndMan:</code></pre>
+<p>At this stage we know nearly everything we need to interact with the background layer and control the screen. Our next step will be to control which tile should display at which location.</p>
+<h2>Tile Map</h2>
+<p>Remember we looked earlier at our breakdown of VRAM:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Start</th>
+<th style="text-align: left;">End</th>
+<th style="text-align: left;">Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">8000</td>
+<td style="text-align: left;">97FF</td>
+<td style="text-align: left;">Tile Data</td>
+</tr>
+<tr>
+<td style="text-align: left;">9800</td>
+<td style="text-align: left;">9BFF</td>
+<td style="text-align: left;">Background Tile Map</td>
+</tr>
+<tr>
+<td style="text-align: left;">9C00</td>
+<td style="text-align: left;">9FFF</td>
+<td style="text-align: left;">Window Tile Map</td>
+</tr>
+</tbody>
+</table>
+<p>We have already learned the purpose of the three tile data banks stored from $8000 to $97FF, but what about the rest of VRAM? Well, remember that when we discussed the screen we mentioned that we have 20 horizontal tiles by 18 vertical tiles:</p>
+<img src="../images/screen/screen_tiles.png">
+<p>This is actually a little bit of a lie. It is true that at any given time there are 360 tiles visible on the screen, but actually our memory is capable of holding a total of 32x32 tiles (giving us a total of 1024 tiles). If we calculate the total number of memory addresses between location $9800 and $9C00 (9C00 - 9800) we get exactly 1024 tiles (400) therefore we know that the Background Tile Map can keep track of the correct tile to show for a specific tile on screen.</p>
+<p>To help illustrate the point, look at this screenshot from the Super Mario Land game ROM:</p>
+<img src="../images/screen/super_mario_in_game.png">
+<p>Each tile on this screen must be loaded into memory:</p>
+<img src="../images/screen/super_mario_tile_data.png">
+<p>You can see that the question mark box has its corresponding tile data mapped into location $8810. Since we know there are 16 bytes of memory for each tile this makes it tile $81:</p>
+<pre><code>$8810 - $8000 = $810n$810 / $10 = $81</code></pre>
+<p>Or in decimal tile 129:</p>
+<pre><code>34,832 - 32,768 = 2,064n2,064 / 16 = 129</code></pre>
+<p>Each position on the screen must also map to a tile in memory:</p>
+<img src="../images/screen/super_mario_tile_map.png">
+<p>You will see that the map to the question mark box is stored at address $9976 of the tile map which makes it tile $177 (remember we include tile $9800 in our count). $177 in decimal is 374 and if you want to check then you will see the tile is on the 12th row at position 23:</p>
+<pre><code>(11 * 32) + 22 = 352 + 23 =  377</code></pre>
+<p>If we check the value held at position $9976 in our debugger you will see that it holds a value of $81 (look at the bottom left section of the debugger and you will see column 7 of row $9970 holds a value of $81):</p>
+<img src="../images/screen/super_mario_debugger.png">
+<p>This is all very well, but how does it actually correspond to us being able to put our man at a specific location?</p>
+<p>Remember before we had our image of a man stored at location 0 of tile data bank 2:</p>
+<img src="../images/screen/vram_viewer_man.png">
+<p>Remember when we loaded our image data into position $2000 (VRAM bank 2)? We are about to use the same code again, but instead of referring to our image as <strong>Man</strong> we will refer to it as <strong>TileData</strong> and add an empty tile to the start:</p>
+<pre><code class="language-nasm">Start:n    ; SETUP THE GAME BOYnn    ld a, %00000000n    ld [rLCDC], ann    ld hl, $9000n    ld de, TileDatan    ld bc, EndTileData - TileDatann.copyTilen    ld a, [de]n    ld [hl], an    inc hln    inc den    dec bcn    ld a, bn    or cn    jr nz, .copyImagenn    ld a, %10000001n    ld [rLCDC], ann    ; DO SOME MORE SETUPnnTileData:n    ; Blank tilen    db $00, $00, $00, $00, $00, $00, $00, $00n    db $00, $00, $00, $00, $00, $00, $00, $00nn    ; Mann    db $00, $3C, $3C, $00, $3C, $14, $3C, $00n    db $00, $3C, $22, $1C, $00, $3C, $14, $14nEndTileData:</code></pre>
+<p>When we run this code the VRAM viewer looks like this (notice that we are no longer enabling position 4 of the LCDC register):</p>
+<img src="../images/screen/tile_data_man_second.png">
+<p>You can see that the man currently appears on the screen at the top left of where the Nintendo logo would have been:</p>
+<img src="../images/screen/man_second_in_vram.png">
+<p>Although we now have the man shown on screen on his own which is a desirable outcome, this is unintentional and only because of our tile happening to be over where the Nintendo logo was originally showing. So next we will write a quick loop to clear the screen. We will do this by iterating over every tile map location in our background tile map (from $9800 to $9BFF):</p>
+<pre><code class="language-nasm">    ld hl, $9800n    ld de, $5FFn.clearLoopn    ld a, 0n    ld [hl], an    inc hln    dec den    ld a, en    or dn    jr nz, .clearLoop</code></pre>
+<p>This code simply loads a value of 0 into every memory location from $9800 to $9BFF. It does so by repeatedly loading <strong>A</strong> with a value of zero and putting this into <strong>HL</strong> before incrementing <strong>HL</strong> and checking whether we have done this for every location $5FF times. After we have run this code the screen is cleared (meaning every tile location is using the tile we stored at location $9000, which is blank):</p>
+<img src="../images/screen/cleared_screen.png">
+<p>Now the last step is to decide where we want our man to be. Why not go for the bottom left corner? We will put him on the 1st tile in from the right and 1st tile up from the bottom. Remember that this will be the 17th row, so we have to count the 32 tiles on the preceding 16 rows to calculate the position we want the man to go:</p>
+<pre><code>16 * 32 = 512n512 + 1 = 513nDENARY 513 = 201 HEX</code></pre>
+<p>Since we know the position of the top left tile is at memory address $9800, we must put a value of $01 into memory location $9A01 ($9800  + $201):</p>
+<pre><code>ld hl, $9A01nld a, $01nld [hl], a</code></pre>
+<p>Now for the code in full:</p>
+<pre><code class="language-nasm">Start:n    ; SETUP THE GAME BOYnn    ld a, %00000000n    ld [rLCDC], ann    ld hl, $9000n    ld de, TileDatan    ld bc, EndTileData - TileDatann.copyTilen    ld a, [de]n    ld [hl], an    inc hln    inc den    dec bcn    ld a, bn    or cn    jr nz, .copyImagenn    ld hl, $9800n    ld de, $5FFn.clearLoopn    ld a, 0n    ld [hl], an    inc hln    dec den    ld a, en    or dn    jr nz, .clearLoopnn    ld hl, $9A01n    ld a, $01n    ld [hl], ann    ld a, %10000001n    ld [rLCDC], ann    ; DO SOME MORE SETUPnnTileData:n    ; Blank tilen    db $00, $00, $00, $00, $00, $00, $00, $00n    db $00, $00, $00, $00, $00, $00, $00, $00nn    ; Mann    db $00, $3C, $3C, $00, $3C, $14, $3C, $00n    db $00, $3C, $22, $1C, $00, $3C, $14, $14nEndTileData:</code></pre>
+<p>And the final output:</p>
+<img src="../images/screen/man_bottom_left.png">
+    </section>
+    
+</article>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="inner">
+            <section class="footer-description">Everything you need to know to write Game Boy games in Assembly.</section>
+            <section class="copyright">&copy; Copyright Billy Rebecchi and Luke Wood</section>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="../assets/js/index.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-156819199-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('config', 'UA-156819199-1');
+    </script>
+</body>
+</html>
