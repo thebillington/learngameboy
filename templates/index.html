@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{ page.title }}</h1>
+{{ page.html|safe }}
+{% if page.children %}
+<h2>In this section</h2>
+<ul>
+    {% for child in page.children %}
+    <li><a href="/{{ child.slug }}/">{{ child.title }}</a></li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endblock %}

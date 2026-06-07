@@ -1,0 +1,1310 @@
+- html: <p>Welcome to <strong>Learn Game Boy</strong>, your one stop shop for learning
+    to write games in gbZ80 Assembly for the original Game Boy system.</p>n<p>Learning
+    to write Game Boy games is not an easy task, mainly due to the age of the system
+    and the fact that programming has moved on to such an extent since 1989. Whilst
+    learning to write software for the system we ran into many roadblocks which prevented
+    us from making progress, but having pushed through the initial barriers our knowledge
+    is now documented in this website to give any budding Game Boy programmers a good
+    starting point for learning how the system works.</p>n<p>We understand that these
+    tutorials may not suit everyones style of learning and there are a great many
+    other resources available which we used ourselves. If you would prefer to go at
+    it alone you can check out the <a href="https://gbdev.github.io/list.html">Awesome
+    Game Boy List</a> for a ton of information you can use to undertake your own Game
+    Boy programming journey.</p>n<p>Whether you are a seasoned programmer or newbie,
+    we hope you are able to gain useful insights from the tutorials! It is now time
+    to <a href="http://learngameboy.com/getting-started">get started</a> with your
+    Game Boy programming journey!</p>
+  id: 2
+  menu_order: 0
+  name: About
+  parent: 0
+  show_in_menu: true
+  slug: about
+  title: About
+- html: <p>When getting started writing code for the Game Boy, the first question
+    you will be asking is:</p>n<p><strong>Why should I write code in gbZ80 Assembly
+    instead of using the GBDK (Game Boy Development Kit)?</strong></p>n<p>Anyone that
+    writes home-brew for the Game Boy will undoubtedly have their own opinions on
+    this matter, but we have opted to write code in gbZ80 for a multitude of reasons
+    that I will outline below. Using GBDK does has its own benefits and drawbacks
+    that need to be taken into consideration as each project you undertake for the
+    Game Boy will have its own set of complexities, some of which may suit writing
+    code with the GBDK. However, it is my honest opinion that anyone serious about
+    writing code for the Game Boy should opt for gbZ80 Assembly.</p>n<h2>What is GBDK?</h2>n<p>The
+    GBDK (or Game Boy Development Kit) is a C compiler written for the Game Boy built
+    and maintained by Michael Hope. A compiler takes code written in a high-level
+    language (closer to human language) and translates it into machine code (code
+    that is directly executable on the CPU). The desire for a  gbZ80 C compiler becomes
+    apparent once you look at the complexity of writing assembly code, as it is a
+    low level language (closer to computer language). To write assembly requires a
+    solid understanding of how a CPU works on a basic level, as when Assembling programs
+    (translating from assembly into machine code) a one-to-one translation takes place.
+    This means that writing assembly code is akin to talking directly to the processor.</p>n<p>Higher
+    level languages such as Python, Java or in this case C, have a greater level of
+    abstraction than that of assembly which makes it (in relative terms) simpler to
+    write and understand. However, C is in itself a highly complex programming language
+    which requires a good understanding of how the computer performs basic functions,
+    particularly management of memory. Therefore the belief that a C compiler will
+    make Game Boy games 'easier' to write is a slight misnomer, as it depends on whether
+    or not the programmer has previous experience with high or low level languages.</p>n<p>Having
+    been born in the mid 90s, I started programming in the early 2000s using software
+    such as Game Maker Studio and the programming language Scratch. For formal learning
+    I then moved onto writing code in high-level languages such as Java and Python
+    and now as a Software Engineer I mainly work with Kotlin and Swift (for developing
+    Android and iOS apps respectively). At this point you may then be asking why I
+    believe that writing Game Boy games in assembly is the better route to take, especially
+    considering my background writing in high-level languages. The answer is simple;
+    GBDK is rife with issues.</p>n<h2>The problems with GBDK</h2>n<p>For Global Game
+    Jam 2019 we developed a game in the GBDK, the source code for which can be found
+    <a href="https://github.com/thebillington/skazka">here</a>. The project was moderately
+    successful as we had the input of some fantastic artists who created incredible
+    artwork with only a 2-bit colour palette and we had every intention of continuing
+    the project after the Game Jam. Unfortunately after a couple of weeks battling
+    with GBDK we decided that it was simply too much work to continue building with
+    GBDK as the compiler is not robust and far from feature complete.</p>n<p>Several
+    occasions we ran into issues that we simply couldn't comprehend, such as the creation
+    of a new variable or change in a loops parameters which would have large scale
+    unintended consequences, from hard looping of sections of the game code through
+    to complex graphics issues that caused stuttering or even for the entire tile
+    memory to be offset or swapped out for other sections of the ROM. We also ran
+    into trouble trying to get ROM switching (the ability to change from one ROM bank
+    to another) working correctly, and although I believe if we spent more time on
+    the problem we could have overcome it, we ultimately made the decision that GBDK
+    wasn't fit for our needs and started down the long route of learning to write
+    gbZ80 assembly.</p>n<p>At this stage making the switch seems to have been a solid
+    decision as although basic prototyping of almost any game features take considerably
+    longer than with GBDK, we are improving in our understanding all the time and
+    are confident that when making changes, we fully understand the ramifications.
+    Bug fixing has also become much easier as it is almost impossible to debug issues
+    with GBDK using the <a href="http://bgb.bircd.org/]">bgb</a> built in debugger
+    as the GBDK compiler is a black box that simply produces Game Boy executable ROMs.
+    However when writing games with gbZ80 it is much easier to identify problem code
+    as you can check the value in the program counter to see which line of code is
+    the likely offender. Since gbZ80 is assembled to Game Boy machine code one-to-one
+    it is much simpler to isolate and diagnose issues.</p>n<h2>Making your own mind
+    up</h2>n<p>If you are serious about learning to write code for the Game Boy then
+    I suggest you don't take our word for it on the issues associated with building
+    games with GBDK and actually find out for yourself. In fact, initially learning
+    GBDK has given us a much stronger understanding of the complexity involved in
+    writing Game Boy games, as well as offering us a familiar starting point by entering
+    Game Boy development using the high-level language intricacies we are used to.
+    Additionally, looking back there are many issues we ran into when using GBDK that
+    we may be able to solve now given our deeper understanding of the hardware.</p>n<p>Ultimately
+    the decision comes down to preference and prior knowledge. If you are already
+    comfortable with using high-level languages then it may be a good idea to jump
+    right in with GBDK then come back to these tutorials once you have a better grasp
+    of the Game Boy development basics. If you are a complete newbie with no development
+    experience then I would fully recommend jumping straight in with writing gbZ80
+    code as you won't find any familiarity in using GBDK. If you are somewhere in
+    between then you must make your own decision on which development environment
+    will be most suitable for you.</p>
+  id: 4
+  menu_order: 2
+  name: Why Assembly?
+  parent: 5
+  show_in_menu: false
+  slug: why-assembly
+  title: Why Assembly?
+- html: <p>When first learning to write code for any system the task can seem like
+    a daunting one, especially for those with little or no prior programming experience.
+    The fact that the Game Boy system is (at the time of writing) 30 years old makes
+    the prospect of learning to write games for it even more intimidating as it can
+    be very difficult to find good sources of information.</p>n<p>Many of the tutorials
+    we used when learning to write code for the Game Boy ourselves would have excellent
+    introductions, before stating that they would be completed at a later date. This
+    meant that when transitioning from writing sample <em>Hello World</em> type programs
+    to developing our own graphics, implementing sprites and detecting button presses
+    we had to do much of the learning ad-lib, taking inspiration from multiple sources
+    and doing our own investigations using the <em>bgb debugger</em> to implement
+    new functionality.</p>n<p>That isn't to say that there aren't excellent resources
+    already available. In fact, you can check out the <a href="https://gbdev.github.io/list.html">Awesome
+    Game Boy List</a> to see a full breakdown of everything home-brew for the Game
+    Boy. There are also many examples of Game Boy source code that can be found online
+    and on Github that include source code for how to achieve near enough anything
+    in gbZ80 ASM - however the issue with these demo source codes is that they often
+    aren't fully commented, or require hours of study to decipher.</p>n<blockquote>n<p>It
+    is important to bear in mind that what works for one won't necessarily work for
+    another, therefore if you struggle to engage with these tutorials or feel they
+    are too advanced you can always try out other resources. Our starting point for
+    Assembly programming on the Game Boy was the excellent <a href="https://eldred.fr/gb-asm-tutorial/">Eldred</a>
+    tutorial, however it ends just as it is about to get to the real meat of gbZ80
+    programming. If you want to check it out and follow through make sure to head
+    back here when you're finished to help make the transition to writing more complex
+    code.</p>n</blockquote>n<p>Will all that said and done this website aims to be
+    a one stop shop for Game Boy development in ASM with tutorials that go past the
+    <em>Hello World</em> phase and teach you how to develop fully fledged Game Boy
+    games. When you are ready to get started, take a look at the menu at the bottom
+    of this page for your next steps in learning. Each page has a menu after it of
+    <em>child</em> pages that relate in subject matter to the overall section you
+    are currently browsing.</p>n<p>In this section we will start to understand <strong>why</strong>
+    it is a good idea to start programming with gbZ80 Assembly, differences in Game
+    Boy programming to modern day languages and what tools you are going to need to
+    get started writing and more importantly running code for the Game Boy. There
+    is also some pre-requisite mathematical knowledge you will need to get your head
+    around as well as a brief history of the Game Boy, developments made over its
+    lifetime and some of the mods available for each model.</p>
+  id: 5
+  menu_order: 1
+  name: Getting Started
+  parent: 0
+  show_in_menu: true
+  slug: getting-started
+  title: Getting Started
+- html: <p>We are Billy Rebecchi and Luke Wood, two video game, programming and retro
+    tech enthusiasts with a wealth of experience and drive to learn more about computers
+    and how they work. At the end of 2018 we started getting interested in the idea
+    of developing games for the Game Boy, partly because we both love the system and
+    have memories of playing Game Boy games as a child, but mainly because of the
+    incredible challenges that learning to write code for the system would pose.</p>n<p>In
+    early 2019 we took part in the global game jam and alongside a team of extremely
+    talented artists, narrative designers and musicians created <a href="https://github.com/thebillington/Skazka/raw/master/main.gb">Skazka</a>
+    in 48 hours. The game has no music, limited functionality and is incredibly buggy,
+    but it is <strong>our</strong> Game Boy game and we couldn't be more proud.</p>n<p>Despite
+    the successes of our first dive into Game Boy programming we found ourselves extremely
+    discontented with the final product as it was very buggy and hard to keep working
+    on, mainly due to the hacky nature of the initial code base. After several weeks
+    of trying to push on working on the project we made the ultimate decision to scrap
+    the game entirely and turn our attention instead to learning gbZ80 Assembly, a
+    language that <a href="http://learngameboy.com/getting-started/why-assembly">we
+    feel is much more suitable</a> for writing game code.</p>n<p>In his day job Billy
+    is a Software Engineer working at Appoly, a mobile app and web development studio
+    based in Leamington Spa, UK. He also runs his own <a href="https://www.instagram.com/retrorevival94/">retro
+    refurb and repair service</a> as well as being heavily involved in <a href="https://www.theschoolrun.com/primary-school-computing-and-ict-glossary-for-parents">Computer
+    Science Education</a>.</p>n<p>Luke is currently finishing his final year project
+    of his Degree in Electrical Engineering, building a computer from basic components
+    at the Digital Logic Level.</p>
+  id: 7
+  menu_order: 4
+  name: Who are we?
+  parent: 2
+  show_in_menu: false
+  slug: who-are-we
+  title: Who are we?
+- html: <p>The key to learning to write code for the Game Boy is to develop a good
+    understanding of how the hardware works as well as the software. In fact, without
+    understanding the CPU and memory map in detail it would be next to impossible
+    to write or debug games in gbZ80 with any level of competency. In this section
+    you will learn everything you need to know about the Game Boy hardware in two
+    parts.</p>n<h3>Overview</h3>n<ul>n<li>How the CPU works</li>n<li>What the memory
+    map is</li>n<li>How to send data to the screen</li>n<li>How to make effective
+    use of RAM</li>n</ul>n<h3>Advanced</h3>n<ul>n<li>Using interrupts to halt and
+    continue execution</li>n<li>How to check the state of the buttons</li>n<li>Using
+    the OAM to draw sprites</li>n<li>How to make use of ROM banking</li>n</ul>n<p>The
+    hardware overview is perhaps the most important section of the site to read in
+    full before moving on as it is critical to understanding the physical principles
+    of the Game Boy and is therefore your link to understanding how gbZ80 Assembly
+    code is executed to achieve intended results. The advanced hardware section is
+    also incredibly important, but the bulk of information won't necessarily be applicable
+    or completely relatable until you know how to put the basic concepts into practice,
+    so this section will be referenced regularly throughout the tutorials as and when
+    applicable.</p>
+  id: 8
+  menu_order: 2
+  name: Hardware
+  parent: 0
+  show_in_menu: true
+  slug: hardware
+  title: Hardware
+- html: <p>Your starting point for all of our tutorials.</p>
+  id: 9
+  menu_order: 3
+  name: Tutorials
+  parent: 0
+  show_in_menu: true
+  slug: tutorials
+  title: Tutorials
+- html: <p>Check out updated on the progress of our game!</p>
+  id: 11
+  menu_order: 4
+  name: Blog
+  parent: 0
+  show_in_menu: true
+  slug: blog
+  title: Blog
+- html: '<p>The Game Boy is considered to be quite an underpowered device considering
+    its year of release. This is because Nintendo wanted to keep the device as cheap
+    as possible as well as ensure that the portable handheld had an excellent battery
+    life. This isn''t to say that the simple hardware made the device easy to write
+    code for - in fact the simplicity meant that game designers had to come up with
+    creative ways to create great games for the console.</p>n<blockquote>n<p>Below
+    is a brief overview of the CPU, Memory Map, Screen and RAM. Once you have read
+    through everything on this page, check out the menu at the bottom to go into more
+    depth on each individual section.</p>n</blockquote>n<h2>The CPU</h2>n<p>The Game
+    Boy CPU (Central Processing Unit) performs all of the mathematical and logical
+    functions required in your game, as well as being in charge of moving memory from
+    one location to another. It is not too dissimilar from any other CPU at a basic
+    level, however there are a number of unique features that weren''t used on many
+    other mainstream CPUs of the time, particularly the use of memory mapped I/O (Input
+    and Output).</p>n<p>The Game Boy CPU (Sharp LR35902) was developed by Sharp and
+    is the lovechild of 2 other popular CPUs of the time, namely the Zilog Z80 (used
+    most famously in the ZX Spectrum) and the Intel 8080, an incredibly popular CPU
+    used in many home computers throughout the late 70s to early 80s. The LR35902
+    included many features from both the Z80 and 8080 as well as including its own
+    instructions for interacting with memory and custom routines to help with sound
+    generation.</p>n<blockquote>n<p>You don''t have to be an expert mathematician
+    in order to write code, but there is a very important mathematical concept that
+    you will need to understand in order to access the next section of the tutorials.
+    If you don''t already know what the binary and hexadecimal number systems are,
+    or how to convert from hex to binary and vice versa then make sure you check out
+    the introductory maths tutorials for everything you need to know.</p>n</blockquote>n<h2>Memory
+    map</h2>n<p>The Game Boy has a relatively unique way of interacting with I/O devices
+    in so far as it does not send data through a single register as is common on many
+    other CPUs, but instead has all of its available devices mapped directly. If you
+    aren''t familiar with the way that other CPUs operate then at this stage I wouldn''t
+    worry too much about the difference - we will show you everything you need to
+    know to understand how the Game Boy memory map works. But bear in mind that if
+    you ever look at writing code for other CPUs you may find there are large differences
+    with the way you interact with I/O devices such as the screen or hardware buttons.</p>n<p>The
+    Game Boy has a memory map that runs from hexadecimal 0000-FFFF. The value FFFF
+    in hex is equivalent to 65,535 in decimal. This means that the Game boy memory
+    map has 65,536 memory locations capable of holding 8 bits each, meaning there
+    are 65,535 locations that can hold a number between 0 and 255.</p>n<p>The memory
+    map is split up into multiple sections each with its own unique job, from holding
+    the game code, to holding the game variables or managing I/O devices. The memory
+    map looks like this:</p>n<table>n<thead>n<tr>n<th style="text-align: left;">Start</th>n<th
+    style="text-align: left;">End</th>n<th style="text-align: left;">Use</th>n</tr>n</thead>n<tbody>n<tr>n<td
+    style="text-align: left;">0000</td>n<td style="text-align: left;">3FFF</td>n<td
+    style="text-align: left;">16KB ROM Bank 0</td>n</tr>n<tr>n<td style="text-align:
+    left;">4000</td>n<td style="text-align: left;">7FFF</td>n<td style="text-align:
+    left;">16KB Switchable ROM Bank</td>n</tr>n<tr>n<td style="text-align: left;">8000</td>n<td
+    style="text-align: left;">9FFF</td>n<td style="text-align: left;">8KB Video RAM
+    (VRAM)</td>n</tr>n<tr>n<td style="text-align: left;">A000</td>n<td style="text-align:
+    left;">BFFF</td>n<td style="text-align: left;">8KB External RAM (Cartridge RAM)</td>n</tr>n<tr>n<td
+    style="text-align: left;">C000</td>n<td style="text-align: left;">CFFF</td>n<td
+    style="text-align: left;">4KB Work RAM (Main RAM)</td>n</tr>n<tr>n<td style="text-align:
+    left;">D000</td>n<td style="text-align: left;">DFFF</td>n<td style="text-align:
+    left;">4KB Work RAM (Switchable RAM in CGB mode)</td>n</tr>n<tr>n<td style="text-align:
+    left;">E000</td>n<td style="text-align: left;">FDFF</td>n<td style="text-align:
+    left;">8KB Mirror RAM (unused)</td>n</tr>n<tr>n<td style="text-align: left;">FE00</td>n<td
+    style="text-align: left;">FE9F</td>n<td style="text-align: left;">Sprite Attribute
+    Table (OAM)</td>n</tr>n<tr>n<td style="text-align: left;">FEA0</td>n<td style="text-align:
+    left;">FEFF</td>n<td style="text-align: left;">Hardware Reserved (not usable)</td>n</tr>n<tr>n<td
+    style="text-align: left;">FF00</td>n<td style="text-align: left;">FF7F</td>n<td
+    style="text-align: left;">I/O Registers</td>n</tr>n<tr>n<td style="text-align:
+    left;">FF80</td>n<td style="text-align: left;">FFFE</td>n<td style="text-align:
+    left;">High RAM (HRAM)</td>n</tr>n<tr>n<td style="text-align: left;">FFFF</td>n<td
+    style="text-align: left;">FFFF</td>n<td style="text-align: left;">Interrupts Enable
+    Register (IE)</td>n</tr>n</tbody>n</table>n<p>Don''t worry too much about the
+    memory map now as we will learn more about it as we get started writing code.
+    The main thing to understand is that the CPU can read from or write to any of
+    the memory locations listed above which allows us to control different functions
+    of the Game Boy, from displaying data on the screen, keeping track of important
+    values such as player position or reading the state of the buttons to check if
+    the A button has been pressed.</p>n<h2>The screen</h2>n<p>The screen of the Game
+    Boy is known as a DMG (Dot Matrix Graphics) display. This means that all graphics
+    displayed on the device are made up of individual ''dots'' or pixels. For anyone
+    familiar with modern day displays you may be asking why this would be an issue
+    as all displays are made up of pixels. The difficulty lies in the resolution of
+    the screen - the display of the Game Boy is capable of displaying 160 pixels across
+    by 144 pixels down (160<em>144) which gives us a total resolution of 23,040 pixels.
+    This may seem like a lot, but when you take into consideration that a 1080p HD
+    screen has 1920 pixels across by 1080 pixels down (1920</em>1080) giving us a
+    total resolution of 2,073,600 pixels, 100 times more than that of the Game Boy
+    screen.</p>n<p>The screen also has a bit depth of 2 which means each pixel on
+    the screen can only be one of 4 colours:</p>n<ul>n<li>11 - White</li>n<li>01 -
+    Light Grey</li>n<li>10 - Dark Grey</li>n<li>00 - Black</li>n</ul>n<p>Taking all
+    of these limitations into consideration, it is a wonder that there are any visually
+    impressive games on the Game Boy at all. However, with some thought and consideration
+    for the limitations of the display it is possible to produce some impressive artwork:</p>n<p><img
+    src="http://learngameboy.com/images/skazka_intro.png" alt="Skazka Intro Screen"
+    /></p>n<h2>RAM</h2>n<p>RAM (Random Access Memory) is a section of memory made
+    available to store all of the game variables and values, similar to the information
+    that would be stored in traditional games (e.g. is the player jumping, player
+    position, current fall speed). There are three distinct sections of RAM:</p>n<h4>External
+    RAM</h4>n<p>The first is the external RAM held between addresses A000-BFFF. This
+    is an 8KB RAM that is held on the game cartridge itself - since the inclusion
+    of RAM on a cartridge increases the cost to distribute games, many cartridges
+    such as Tetris chose not to make use of this external RAM chip.</p>n<h4>Work RAM
+    (WRAM)</h4>n<p>Work RAM is held between addresses C000-DFFF making for a total
+    of 8KB. However on the CBG (Game Boy Color) there were a number of improvements
+    made to the Game Boy hardware, including the addition of a switchable RAM bank
+    from address D000-DFFF. Since we are going to be developing predominantly for
+    the DMG (Original Game Boy) we won''t be making use of these switchable ROM banks
+    in these tutorials and will consider the entire Work RAM as a standalone 8KB of
+    RAM.</p>n<h4>High RAM (HRAM)</h4>n<p>High RAM is a very small bank of RAM locations
+    held from address FF80-FFFE, making it just 127 bytes in size. HRAM has a number
+    of unique properties that set it aside from the Work RAM. Mainly when using HRAM
+    we use it to store the code for the DMA (Direct Memory Access) routine. The DMA
+    is used to copy the Sprite attributes from the specified RAM location into the
+    OAM (Object Attribute Map). Whilst this transfer occurs the WRAM isn''t accessible,
+    therefore the code has to be copied directly into HRAM.</p>n<p>Another use of
+    HRAM is for incredibly fast memory access, as there is a specific instruction,
+    <strong>LDH</strong> (Load from High RAM) which can be used to load data from
+    the HRAM in one less CPU cycle than the standard <strong>LD</strong> instruction.
+    This is useful for when we are manipulating the same piece of information many
+    times as it reduces the overall amount of time the CPU spends locked on a single
+    calculation.</p>'
+  id: 12
+  menu_order: 0
+  name: Hardware Overview
+  parent: 8
+  show_in_menu: false
+  slug: hardware-overview
+  title: Hardware Overview
+- html: <p>This is the advanced hardware section.</p>
+  id: 13
+  menu_order: 0
+  name: Advanced Hardware
+  parent: 8
+  show_in_menu: false
+  slug: advanced-hardware
+  title: Advanced Hardware
+- html: <p>Detailed information on the Memory Map and how to access it.</p>
+  id: 15
+  menu_order: 0
+  name: Memory Map
+  parent: 12
+  show_in_menu: false
+  slug: memory-map
+  title: Memory Map
+- html: '<p>Understanding how graphics work on the Game Boy is not easy, despite the
+    process of actually generating data being relatively simple through the use of
+    tools such as <a href="https://spkelly.net/tilegen/">Sean Kellys Tile Generator</a>
+    and <a href="https://github.com/chrisantonellis/gbtdg">Chris Antonellis Tile Data
+    Generator</a>. But before we use tools to help speed up the process of creating
+    graphics it is important to understand the mathematics behind how the colour of
+    each pixel on the screen is actually calculated.</p>n<blockquote>n<p>When working
+    on low-level programming we should never rely on tools to completely abstract
+    away the complexity of building something, only using them if we actually understand
+    what is going on under the surface. Once you are able to get results without,
+    only then should you start using the tool to increase productivity.</p>n</blockquote>n<h2>Tiles</h2>n<p>When
+    getting graphics to display on the Game Boy screen we have to break down a larger
+    image into a series of 8x8 pixel grids known as tiles. The Game Boy screen is
+    160 pixels across by 144 pixels down which gives us a grid of tiles 20 across
+    by 18 down:</p>n<img src="/images/screen/screen_tiles.png">n<p>If we zoom in on
+    a single tile we can see that it is made of of 8x8 pixels:</p>n<img src="/images/screen/pixel_breakdown.png">n<p>We
+    are also heavily limited on our use of colours:</p>n<ul>n<li>00 - White (very
+    light green)</li>n<li>10 - Light Grey (light green)</li>n<li>01 - Dark Grey (dark
+    green)</li>n<li>11 - Black (very dark green)</li>n</ul>n<p>Each pixel on the Game
+    Boy screen requires two bits  allowing us four colours in total. This means that
+    for a single row of pixel data within an 8x8 tile we require 16 bits (2 bytes)
+    of data (2 bits per pixel, 8 pixels per row = 2x8 = 16 bits). Therefore an entire
+    tile with 8 rows will require 128 bits (8 bytes) of data (16 bits per row, 8 rows
+    per tile = 16 x 8 = 128).</p>n<p>Now, let''s have a look at the sort of images
+    we can create with an 8x8 tile with only 4 colours:</p>n<img src="/images/screen/pixel_character.png">n<p>As
+    you can see from this picture of a man it can be very difficult to create detailed
+    images using only 4 colours and such a pixelated display. However we can easily
+    solve this issue by putting several tiles together. In fact, this is exactly what
+    Super Mario does to create the infamous Mario character sprite:</p>n<img src="/images/screen/pixel_mario.png">n<p>In
+    order to display these images on the Game Boy we need a way to encode the data
+    numerically. We do so by calculating the required colour value for each pixel
+    and then encoding this using either binary or hexadecimal.</p>n<p>Lets start by
+    numbering each of our pixels with the correct colour code:</p>n<img src="/images/screen/sprite_numbered.png">n<p>Next
+    we need to convert our image data into a format that can be read by the Game Boy
+    screen. As you can see each row of the image contains 16 bits (2 bytes) so to
+    create our data representation we take the first bit of each pixel and put them
+    together to create the first byte and the second byte of each pixel to create
+    the second byte:</p>n<pre><code>00000000n00111100</code></pre>n<p>When we put
+    these two bytes one above the other you can see that it corresponds to each of
+    the pixels in the top row of our image:</p>n<img src="/images/screen/sprite_numbered_row.png">n<p>First
+    pixel (00 = White):</p>n<table>n<thead>n<tr>n<th style="text-align: center;"></th>n<th
+    style="text-align: center;"></th>n<th style="text-align: center;"></th>n<th style="text-align:
+    center;"></th>n<th style="text-align: center;"></th>n<th style="text-align: center;"></th>n<th
+    style="text-align: center;"></th>n<th style="text-align: center;"></th>n</tr>n</thead>n<tbody>n<tr>n<td
+    style="text-align: center;"><strong><em>0</em></strong></td>n<td style="text-align:
+    center;">0</td>n<td style="text-align: center;">0</td>n<td style="text-align:
+    center;">0</td>n<td style="text-align: center;">0</td>n<td style="text-align:
+    center;">0</td>n<td style="text-align: center;">0</td>n<td style="text-align:
+    center;">0</td>n</tr>n<tr>n<td style="text-align: center;"><strong><em>0</em></strong></td>n<td
+    style="text-align: center;">0</td>n<td style="text-align: center;">1</td>n<td
+    style="text-align: center;">1</td>n<td style="text-align: center;">1</td>n<td
+    style="text-align: center;">1</td>n<td style="text-align: center;">0</td>n<td
+    style="text-align: center;">0</td>n</tr>n</tbody>n</table>n<p>Second pixel (00
+    = White):</p>n<table>n<thead>n<tr>n<th style="text-align: center;"></th>n<th style="text-align:
+    center;"></th>n<th style="text-align: center;"></th>n<th style="text-align: center;"></th>n<th
+    style="text-align: center;"></th>n<th style="text-align: center;"></th>n<th style="text-align:
+    center;"></th>n<th style="text-align: center;"></th>n</tr>n</thead>n<tbody>n<tr>n<td
+    style="text-align: center;">0</td>n<td style="text-align: center;"><strong><em>0</em></strong></td>n<td
+    style="text-align: center;">0</td>n<td style="text-align: center;">0</td>n<td
+    style="text-align: center;">0</td>n<td style="text-align: center;">0</td>n<td
+    style="text-align: center;">0</td>n<td style="text-align: center;">0</td>n</tr>n<tr>n<td
+    style="text-align: center;">0</td>n<td style="text-align: center;"><strong><em>0</em></strong></td>n<td
+    style="text-align: center;">1</td>n<td style="text-align: center;">1</td>n<td
+    style="text-align: center;">1</td>n<td style="text-align: center;">1</td>n<td
+    style="text-align: center;">0</td>n<td style="text-align: center;">0</td>n</tr>n</tbody>n</table>n<p>Third
+    pixel (01 = Dark Green/Grey):</p>n<table>n<thead>n<tr>n<th style="text-align:
+    center;"></th>n<th style="text-align: center;"></th>n<th style="text-align: center;"></th>n<th
+    style="text-align: center;"></th>n<th style="text-align: center;"></th>n<th style="text-align:
+    center;"></th>n<th style="text-align: center;"></th>n<th style="text-align: center;"></th>n</tr>n</thead>n<tbody>n<tr>n<td
+    style="text-align: center;">0</td>n<td style="text-align: center;">0</td>n<td
+    style="text-align: center;"><strong><em>0</em></strong></td>n<td style="text-align:
+    center;">0</td>n<td style="text-align: center;">0</td>n<td style="text-align:
+    center;">0</td>n<td style="text-align: center;">0</td>n<td style="text-align:
+    center;">0</td>n</tr>n<tr>n<td style="text-align: center;">0</td>n<td style="text-align:
+    center;">0</td>n<td style="text-align: center;"><strong><em>1</em></strong></td>n<td
+    style="text-align: center;">1</td>n<td style="text-align: center;">1</td>n<td
+    style="text-align: center;">1</td>n<td style="text-align: center;">0</td>n<td
+    style="text-align: center;">0</td>n</tr>n</tbody>n</table>n<p>As you can see when
+    we take the first value from the first byte and the first value from the second
+    byte and combine them it gives us the colour value for each pixel in the row.
+    If we repeat this for each individual row we have 16 bytes in total (2 bytes per
+    row):</p>n<pre><code class="language-nasm">Man:nn    ; First rown    db %00000000n    db
+    %00111100nn    ; Second rown    db %00111100n    db %00000000nn    ; Third rown    db
+    %00111100n    db %00010100nn    ; Fourth rown    db %00111100n    db %00000000nn    ;
+    Fifth rown    db %00000000n    db %00111100nn    ; Sixth rown    db %00100010n    db
+    %00011100nn    ; Seventh rown    db %00000000n    db %00111100nn    ; Eighth rown    db
+    %00010100n    db %00010100nnEndMan:</code></pre>n<blockquote>n<p>We specify a
+    byte in gbZ80 ASM using the <strong>%</strong> sign with the <strong>db</strong>
+    opcode.</p>n</blockquote>n<p>If you are still a little confused as to how the
+    data we have relates to the image of our man then the secret to understanding
+    is to start on the first row and read down then across. Doing so gives us:</p>n<pre><code
+    class="language-nasm">; First rowndb %00000000ndb %00111100</code></pre>n<pre><code>00
+    00 01 01 01 01 00 00</code></pre>n<img src="/images/screen/sprite_numbered_row.png">n<p>Repeating
+    this for each row will give us the correct colour code for each individual pixel.</p>n<h2>Representing
+    our image in Hex</h2>n<p>Although it is very easy to read image data stored as
+    individual bytes the majority of the time you will actually see the image data
+    represented in hex. You will remember from our lesson on <a href="http://learngameboy.com/getting-started/maths/hex-binary-conversion">binary
+    hex conversion</a> that a hex number represents four bits. Therefore if we divide
+    our number of bits for the full image (128 bits) by four then we get 32 hex digits
+    to represent all of our image data.</p>n<p>Lets start by converting the first
+    row of our image data into hex:</p>n<pre><code class="language-nasm">; First rowndb
+    %00000000ndb %00111100</code></pre>n<pre><code>BINARY 0000 = 0 HEXnBINARY 0000
+    = 0 HEXnBINARY 0011 = 3 HEXnBINARY 1100 = C HEX</code></pre>n<p>Therefore we know
+    that to represent these 2 bytes we would use:</p>n<pre><code class="language-nasm">$00,
+    $3C</code></pre>n<p>In gbZ80 Assembly the <strong>$</strong> sign signifies a
+    byte in <strong>hex</strong> format. If we calculate the hex representation of
+    each of our rows we get:</p>n<pre><code class="language-nasm">Man:nn    ; First
+    rown    db %00000000 ; $00n    db %00111100 ; $3Cnn    ; Second rown    db %00111100
+    ; $3Cn    db %00000000 ; $00nn    ; Third rown    db %00111100 ; $3Cn    db %00010100
+    ; $14nn    ; Fourth rown    db %00111100 ; $3Cn    db %00000000 ; $00nn    ; Fifth
+    rown    db %00000000 ; $00n    db %00111100 ; $3Cnn    ; Sixth rown    db %00100010
+    ; $22n    db %00011100 ; $1Cnn    ; Seventh rown    db %00000000 ; $00n    db
+    %00111100 ; $3Cnn    ; Eighth rown    db %00010100 ; $14n    db %00010100 ; $14nnEndMan:</code></pre>n<p>Now
+    lets swap the binary format out and look at the full gbZ80 representation of our
+    image in hex:</p>n<pre><code class="language-nasm">Man:n    db $00, $3C, $3C,
+    $00, $3C, $14, $3C, $00n    db $00, $3C, $22, $1C, $00, $3C, $14, $14nEndMan:</code></pre>n<h2>Loading
+    tile data into memory</h2>n<p>We are now going to look at some sample code to
+    see how we go about loading a tile into memory ready to be used by the screen.
+    Before we go any further lets take a quick look at the Game Boy memory map:</p>n<table>n<thead>n<tr>n<th
+    style="text-align: left;">Start</th>n<th style="text-align: left;">End</th>n<th
+    style="text-align: left;">Use</th>n</tr>n</thead>n<tbody>n<tr>n<td style="text-align:
+    left;">0000</td>n<td style="text-align: left;">3FFF</td>n<td style="text-align:
+    left;">16KB ROM Bank 0</td>n</tr>n<tr>n<td style="text-align: left;">4000</td>n<td
+    style="text-align: left;">7FFF</td>n<td style="text-align: left;">16KB Switchable
+    ROM Bank</td>n</tr>n<tr>n<td style="text-align: left;">8000</td>n<td style="text-align:
+    left;">9FFF</td>n<td style="text-align: left;">8KB Video RAM (VRAM)</td>n</tr>n<tr>n<td
+    style="text-align: left;">A000</td>n<td style="text-align: left;">BFFF</td>n<td
+    style="text-align: left;">8KB External RAM (Cartridge RAM)</td>n</tr>n<tr>n<td
+    style="text-align: left;">C000</td>n<td style="text-align: left;">CFFF</td>n<td
+    style="text-align: left;">4KB Work RAM (Main RAM)</td>n</tr>n<tr>n<td style="text-align:
+    left;">D000</td>n<td style="text-align: left;">DFFF</td>n<td style="text-align:
+    left;">4KB Work RAM (Switchable RAM in CGB mode)</td>n</tr>n<tr>n<td style="text-align:
+    left;">E000</td>n<td style="text-align: left;">FDFF</td>n<td style="text-align:
+    left;">8KB Mirror RAM (unused)</td>n</tr>n<tr>n<td style="text-align: left;">FE00</td>n<td
+    style="text-align: left;">FE9F</td>n<td style="text-align: left;">Sprite Attribute
+    Table (OAM)</td>n</tr>n<tr>n<td style="text-align: left;">FEA0</td>n<td style="text-align:
+    left;">FEFF</td>n<td style="text-align: left;">Hardware Reserved (not usable)</td>n</tr>n<tr>n<td
+    style="text-align: left;">FF00</td>n<td style="text-align: left;">FF7F</td>n<td
+    style="text-align: left;">I/O Registers</td>n</tr>n<tr>n<td style="text-align:
+    left;">FF80</td>n<td style="text-align: left;">FFFE</td>n<td style="text-align:
+    left;">High RAM (HRAM)</td>n</tr>n<tr>n<td style="text-align: left;">FFFF</td>n<td
+    style="text-align: left;">FFFF</td>n<td style="text-align: left;">Interrupts Enable
+    Register (IE)</td>n</tr>n</tbody>n</table>n<p>As you can see the VRAM is held
+    at memory address 8000-9FFF, however this is actually split up into several sections:</p>n<table>n<thead>n<tr>n<th
+    style="text-align: left;">Start</th>n<th style="text-align: left;">End</th>n<th
+    style="text-align: left;">Use</th>n</tr>n</thead>n<tbody>n<tr>n<td style="text-align:
+    left;">8000</td>n<td style="text-align: left;">97FF</td>n<td style="text-align:
+    left;">Tile Data</td>n</tr>n<tr>n<td style="text-align: left;">9800</td>n<td style="text-align:
+    left;">9BFF</td>n<td style="text-align: left;">Background Tile Map</td>n</tr>n<tr>n<td
+    style="text-align: left;">9C00</td>n<td style="text-align: left;">9FFF</td>n<td
+    style="text-align: left;">Window Tile Map</td>n</tr>n</tbody>n</table>n<blockquote>n<p>There
+    is also the Sprite Attribute Table at address FE00-FE9F but you will learn more
+    about this in the <a href="http://learngameboy.com/hardware/advanced-hardware/dma-and-oam">advanced
+    hardware section</a>.</p>n</blockquote>n<p>The tile data section of memory holds
+    all of the binary or hex information that describes the colour of each pixel in
+    our tiles. This section is again split into 3 blocks:</p>n<table>n<thead>n<tr>n<th
+    style="text-align: left;">Start</th>n<th style="text-align: left;">End</th>n<th
+    style="text-align: left;">Use</th>n</tr>n</thead>n<tbody>n<tr>n<td style="text-align:
+    left;">8000</td>n<td style="text-align: left;">87FF</td>n<td style="text-align:
+    left;">Block 0</td>n</tr>n<tr>n<td style="text-align: left;">8800</td>n<td style="text-align:
+    left;">8FFF</td>n<td style="text-align: left;">Block 1</td>n</tr>n<tr>n<td style="text-align:
+    left;">9000</td>n<td style="text-align: left;">97FF</td>n<td style="text-align:
+    left;">Block 2</td>n</tr>n</tbody>n</table>n<p>For the purposes of this section
+    we are going to take a look at how to load our image of a man:</p>n<pre><code
+    class="language-nasm">Man:n    db $00, $3C, $3C, $00, $3C, $14, $3C, $00n    db
+    $00, $3C, $22, $1C, $00, $3C, $14, $14nEndMan:</code></pre>n<p>In order to load
+    our tile data we will need to fetch the values from the specific memory location
+    in our ROM that the data is stored. Fortunately it is easy to check where the
+    data starts and ends since we have specified our start and end addresses using
+    the labels <strong>Man</strong> and <strong>EndMan</strong>.</p>n<blockquote>n<p>If
+    you haven''t already, make sure you read about the <a href="http://learngameboy.com/hardware/hardware-overview/cpu">CPU</a>
+    to get a basic understanding of gbZ80 ASM as in this section we will be looking
+    at a more practical example. Take particular care to read the section on registers
+    so that you fully understand how we are loading data in and out of the CPU.</p>n</blockquote>n<p>Remember
+    that each location in Game Boy memory can hold 8-bits (one byte) of data and is
+    addressed with a 16-bit value. Take a look at the data table which shows us the
+    data held at some addresses in the ROM and VRAM:</p>n<table>n<thead>n<tr>n<th
+    style="text-align: center;">ROM LOCATION</th>n<th style="text-align: center;">DATA</th>n<th
+    style="text-align: center;"></th>n<th style="text-align: center;">VRAM LOCATION</th>n<th
+    style="text-align: center;">DATA</th>n</tr>n</thead>n<tbody>n<tr>n<td style="text-align:
+    center;">2000</td>n<td style="text-align: center;">%00000000</td>n<td style="text-align:
+    center;"></td>n<td style="text-align: center;">9000</td>n<td style="text-align:
+    center;">--------</td>n</tr>n<tr>n<td style="text-align: center;">2001</td>n<td
+    style="text-align: center;">%00111100</td>n<td style="text-align: center;"></td>n<td
+    style="text-align: center;">9001</td>n<td style="text-align: center;">--------</td>n</tr>n<tr>n<td
+    style="text-align: center;">2002</td>n<td style="text-align: center;">%00111100</td>n<td
+    style="text-align: center;"></td>n<td style="text-align: center;">9002</td>n<td
+    style="text-align: center;">--------</td>n</tr>n<tr>n<td style="text-align: center;">2003</td>n<td
+    style="text-align: center;">%00000000</td>n<td style="text-align: center;"></td>n<td
+    style="text-align: center;">9003</td>n<td style="text-align: center;">--------</td>n</tr>n<tr>n<td
+    style="text-align: center;">2004</td>n<td style="text-align: center;">%00111100</td>n<td
+    style="text-align: center;"></td>n<td style="text-align: center;">9004</td>n<td
+    style="text-align: center;">--------</td>n</tr>n<tr>n<td style="text-align: center;">2005</td>n<td
+    style="text-align: center;">%00010100</td>n<td style="text-align: center;"></td>n<td
+    style="text-align: center;">9005</td>n<td style="text-align: center;">--------</td>n</tr>n<tr>n<td
+    style="text-align: center;">2006</td>n<td style="text-align: center;">%00111100</td>n<td
+    style="text-align: center;"></td>n<td style="text-align: center;">9006</td>n<td
+    style="text-align: center;">--------</td>n</tr>n<tr>n<td style="text-align: center;">2007</td>n<td
+    style="text-align: center;">%00000000</td>n<td style="text-align: center;"></td>n<td
+    style="text-align: center;">9007</td>n<td style="text-align: center;">--------</td>n</tr>n<tr>n<td
+    style="text-align: center;">2008</td>n<td style="text-align: center;">%00000000</td>n<td
+    style="text-align: center;"></td>n<td style="text-align: center;">9008</td>n<td
+    style="text-align: center;">--------</td>n</tr>n<tr>n<td style="text-align: center;">2009</td>n<td
+    style="text-align: center;">%00111100</td>n<td style="text-align: center;"></td>n<td
+    style="text-align: center;">9009</td>n<td style="text-align: center;">--------</td>n</tr>n<tr>n<td
+    style="text-align: center;">200A</td>n<td style="text-align: center;">%00100010</td>n<td
+    style="text-align: center;"></td>n<td style="text-align: center;">900A</td>n<td
+    style="text-align: center;">--------</td>n</tr>n<tr>n<td style="text-align: center;">200B</td>n<td
+    style="text-align: center;">%00011100</td>n<td style="text-align: center;"></td>n<td
+    style="text-align: center;">900B</td>n<td style="text-align: center;">--------</td>n</tr>n<tr>n<td
+    style="text-align: center;">200C</td>n<td style="text-align: center;">%00000000</td>n<td
+    style="text-align: center;"></td>n<td style="text-align: center;">900C</td>n<td
+    style="text-align: center;">--------</td>n</tr>n<tr>n<td style="text-align: center;">200D</td>n<td
+    style="text-align: center;">%00111100</td>n<td style="text-align: center;"></td>n<td
+    style="text-align: center;">900D</td>n<td style="text-align: center;">--------</td>n</tr>n<tr>n<td
+    style="text-align: center;">200E</td>n<td style="text-align: center;">%00010100</td>n<td
+    style="text-align: center;"></td>n<td style="text-align: center;">900E</td>n<td
+    style="text-align: center;">--------</td>n</tr>n<tr>n<td style="text-align: center;">200F</td>n<td
+    style="text-align: center;">%00010100</td>n<td style="text-align: center;"></td>n<td
+    style="text-align: center;">900F</td>n<td style="text-align: center;">--------</td>n</tr>n</tbody>n</table>n<p>You
+    can see that our image data is stored in our ROM from address 2000 to 200F and
+    at this moment in time there is no data in the VRAM. In order to populate the
+    VRAM with our tile data we will need an assembly program that is able to repeatedly
+    copy data from one place to another.</p>n<p>Since we know each of our registers
+    can only hold 8-bits in order to store a full address we are going to need to
+    use the Game Boys ability to combine registers together to keep track of the addresses
+    that we are loading into. We will store in our registers:</p>n<ul>n<li>HL - The
+    location in the tile data block that we are loading the current byte of data into</li>n<li>DE
+    - The location of the next byte of image data to load into the data block</li>n<li>BC
+    - Keeps track of how many bytes we still have to load after this one</li>n</ul>n<p>Lets
+    initialise our values:</p>n<pre><code class="language-nasm">ld hl, $9000nld de,
+    Mannld bc, EndMan - Man</code></pre>n<p>You can see that we''ve loaded 9000 HEX
+    ($) into HL which is the first location of tile data block 2. We have then loaded
+    into DE the address of the first byte ($00) of our image. Lastly we have loaded
+    BC with the number of bytes that we need to load. In our example above the tile
+    data for our image sits at location $2000 of our ROM, therefore the label <strong>Man</strong>
+    would resolve to $2000. Since there are 16 bytes in our image we know that the
+    <strong>EndMan</strong> label must resolve to $2010. Therefore when we load BC
+    with <em>EndMan - Man</em> we are actually loading BC with 16 ($2010 - $2000)
+    but the assembler will take care of this for us. Remember that $2010 is in hex.</p>n<p>In
+    order to actually load our data we will write a loop that can load a byte from
+    the ROM into VRAM repeatedly for as long as the value in BC (the total number
+    of bytes left to move) is bigger than zero:</p>n<pre><code class="language-nasm">.copyTilen    ld
+    a, [de]n    ld [hl], an    inc hln    inc den    dec bcn    ld a, bn    or cn    jr
+    nz, .copyImage</code></pre>n<blockquote>n<p>There is a lot going on in this code
+    so if you''ve never worked with gbZ80 before don''t panic, we will go over everything
+    in this snippet one step at a time.</p>n</blockquote>n<p>Sometimes it can be extremely
+    complicated to understand what is going on in a given piece of code, particularly
+    with Assembly, therefore let''s take a look at some pseudocode that breaks down
+    the purpose of each line of code:</p>n<ul>n<li>Load the data at address <strong>DE</strong>
+    into <strong>A</strong></li>n<li>Load data in <strong>A</strong> into the memory
+    location pointed to by <strong>HL</strong></li>n<li>Increment <strong>HL</strong>
+    (to point to the next location of VRAM)</li>n<li>Increment <strong>DE</strong>
+    (to point to the next byte of data)</li>n<li>Decrement <strong>BC</strong></li>n<li>Load
+    a with value held in <strong>B</strong></li>n<li>Or with <strong>C</strong></li>n<li>If
+    <strong>B</strong> is not zero OR <strong>C</strong> is not zero, repeat</li>n</ul>n<p>Before
+    we go any further lets look at the full code snippet together:</p>n<pre><code
+    class="language-nasm">    ld hl, $9000n    ld de, Mann    ld bc, EndMan - Mann.copyTilen    ld
+    a, [de]n    ld [hl], an    inc hln    inc den    dec bcn    ld a, bn    or cn    jr
+    nz, .copyImage</code></pre>n<p>Lets load our registers with some values:</p>n<table>n<thead>n<tr>n<th
+    style="text-align: center;">A</th>n<th style="text-align: center;">HL</th>n<th
+    style="text-align: center;">DE</th>n<th style="text-align: center;">BC</th>n</tr>n</thead>n<tbody>n<tr>n<td
+    style="text-align: center;">--------</td>n<td style="text-align: center;">$9000</td>n<td
+    style="text-align: center;">$2000</td>n<td style="text-align: center;">$0010 (16)</td>n</tr>n</tbody>n</table>n<p>The
+    first line of code we run after initialising our registers is:</p>n<pre><code>ld
+    a, [de]</code></pre>n<p>You may think that this will load our value of <strong>DE</strong>
+    into register <strong>A</strong> but notice that register <strong>DE</strong>
+    is surrounded by square brackets. This is a signal to the CPU that instead of
+    loading the value held in register <strong>DE</strong> into register <strong>A</strong>
+    we load the value at the address pointed to by register <strong>DE</strong> instead.
+    This is known as <strong>direct</strong> addressing.</p>n<p>Remember our table
+    of values from before:</p>n<table>n<thead>n<tr>n<th style="text-align: center;">ROM
+    LOCATION</th>n<th style="text-align: center;">DATA</th>n<th style="text-align:
+    center;"></th>n<th style="text-align: center;">VRAM LOCATION</th>n<th style="text-align:
+    center;">DATA</th>n</tr>n</thead>n<tbody>n<tr>n<td style="text-align: center;">2000</td>n<td
+    style="text-align: center;">%00000000</td>n<td style="text-align: center;"></td>n<td
+    style="text-align: center;">9000</td>n<td style="text-align: center;">--------</td>n</tr>n<tr>n<td
+    style="text-align: center;">2001</td>n<td style="text-align: center;">%00111100</td>n<td
+    style="text-align: center;"></td>n<td style="text-align: center;">9001</td>n<td
+    style="text-align: center;">--------</td>n</tr>n<tr>n<td style="text-align: center;">2002</td>n<td
+    style="text-align: center;">%00111100</td>n<td style="text-align: center;"></td>n<td
+    style="text-align: center;">9002</td>n<td style="text-align: center;">--------</td>n</tr>n<tr>n<td
+    style="text-align: center;">2003</td>n<td style="text-align: center;">%00000000</td>n<td
+    style="text-align: center;"></td>n<td style="text-align: center;">9003</td>n<td
+    style="text-align: center;">--------</td>n</tr>n<tr>n<td style="text-align: center;">2004</td>n<td
+    style="text-align: center;">%00111100</td>n<td style="text-align: center;"></td>n<td
+    style="text-align: center;">9004</td>n<td style="text-align: center;">--------</td>n</tr>n<tr>n<td
+    style="text-align: center;">2005</td>n<td style="text-align: center;">%00010100</td>n<td
+    style="text-align: center;"></td>n<td style="text-align: center;">9005</td>n<td
+    style="text-align: center;">--------</td>n</tr>n<tr>n<td style="text-align: center;">2006</td>n<td
+    style="text-align: center;">%00111100</td>n<td style="text-align: center;"></td>n<td
+    style="text-align: center;">9006</td>n<td style="text-align: center;">--------</td>n</tr>n<tr>n<td
+    style="text-align: center;">2007</td>n<td style="text-align: center;">%00000000</td>n<td
+    style="text-align: center;"></td>n<td style="text-align: center;">9007</td>n<td
+    style="text-align: center;">--------</td>n</tr>n<tr>n<td style="text-align: center;">2008</td>n<td
+    style="text-align: center;">%00000000</td>n<td style="text-align: center;"></td>n<td
+    style="text-align: center;">9008</td>n<td style="text-align: center;">--------</td>n</tr>n<tr>n<td
+    style="text-align: center;">2009</td>n<td style="text-align: center;">%00111100</td>n<td
+    style="text-align: center;"></td>n<td style="text-align: center;">9009</td>n<td
+    style="text-align: center;">--------</td>n</tr>n<tr>n<td style="text-align: center;">200A</td>n<td
+    style="text-align: center;">%00100010</td>n<td style="text-align: center;"></td>n<td
+    style="text-align: center;">900A</td>n<td style="text-align: center;">--------</td>n</tr>n<tr>n<td
+    style="text-align: center;">200B</td>n<td style="text-align: center;">%00011100</td>n<td
+    style="text-align: center;"></td>n<td style="text-align: center;">900B</td>n<td
+    style="text-align: center;">--------</td>n</tr>n<tr>n<td style="text-align: center;">200C</td>n<td
+    style="text-align: center;">%00000000</td>n<td style="text-align: center;"></td>n<td
+    style="text-align: center;">900C</td>n<td style="text-align: center;">--------</td>n</tr>n<tr>n<td
+    style="text-align: center;">200D</td>n<td style="text-align: center;">%00111100</td>n<td
+    style="text-align: center;"></td>n<td style="text-align: center;">900D</td>n<td
+    style="text-align: center;">--------</td>n</tr>n<tr>n<td style="text-align: center;">200E</td>n<td
+    style="text-align: center;">%00010100</td>n<td style="text-align: center;"></td>n<td
+    style="text-align: center;">900E</td>n<td style="text-align: center;">--------</td>n</tr>n<tr>n<td
+    style="text-align: center;">200F</td>n<td style="text-align: center;">%00010100</td>n<td
+    style="text-align: center;"></td>n<td style="text-align: center;">900F</td>n<td
+    style="text-align: center;">--------</td>n</tr>n</tbody>n</table>n<p>The value
+    held in register <strong>DE</strong> is $2000, therefore by calling <strong>[DE]</strong>
+    we are resolving the byte stored at location $2000 and loading it into register
+    A:</p>n<table>n<thead>n<tr>n<th style="text-align: center;">A</th>n<th style="text-align:
+    center;">HL</th>n<th style="text-align: center;">DE</th>n<th style="text-align:
+    center;">BC</th>n</tr>n</thead>n<tbody>n<tr>n<td style="text-align: center;">%00000000</td>n<td
+    style="text-align: center;">$9000</td>n<td style="text-align: center;">$2000</td>n<td
+    style="text-align: center;">$0010 (16)</td>n</tr>n</tbody>n</table>n<p>Next we
+    execute:</p>n<pre><code class="language-nasm">ld [hl], a</code></pre>n<p>As you
+    can see we have stored the value held in register <strong>A</strong> into <strong>[HL]</strong>.
+    Remember that instead of actually putting the value into the <strong>HL</strong>
+    register, the square brackets tell the CPU to use direct addressing meaning we
+    will put the value into the memory address pointed to by <strong>HL</strong>.
+    The current value stored in register <strong>HL</strong> is $9000 and the value
+    in register <strong>A</strong> is <code>00000000</code> therefore after we execute
+    this opcode the state of our VRAM will be:</p>n<table>n<thead>n<tr>n<th style="text-align:
+    center;">ROM LOCATION</th>n<th style="text-align: center;">DATA</th>n<th style="text-align:
+    center;"></th>n<th style="text-align: center;">VRAM LOCATION</th>n<th style="text-align:
+    center;">DATA</th>n</tr>n</thead>n<tbody>n<tr>n<td style="text-align: center;">2000</td>n<td
+    style="text-align: center;">%00000000</td>n<td style="text-align: center;"></td>n<td
+    style="text-align: center;">9000</td>n<td style="text-align: center;">%00000000</td>n</tr>n<tr>n<td
+    style="text-align: center;">2001</td>n<td style="text-align: center;">%00111100</td>n<td
+    style="text-align: center;"></td>n<td style="text-align: center;">9001</td>n<td
+    style="text-align: center;">--------</td>n</tr>n<tr>n<td style="text-align: center;">2002</td>n<td
+    style="text-align: center;">%00111100</td>n<td style="text-align: center;"></td>n<td
+    style="text-align: center;">9002</td>n<td style="text-align: center;">--------</td>n</tr>n<tr>n<td
+    style="text-align: center;">2003</td>n<td style="text-align: center;">%00000000</td>n<td
+    style="text-align: center;"></td>n<td style="text-align: center;">9003</td>n<td
+    style="text-align: center;">--------</td>n</tr>n<tr>n<td style="text-align: center;">2004</td>n<td
+    style="text-align: center;">%00111100</td>n<td style="text-align: center;"></td>n<td
+    style="text-align: center;">9004</td>n<td style="text-align: center;">--------</td>n</tr>n<tr>n<td
+    style="text-align: center;">2005</td>n<td style="text-align: center;">%00010100</td>n<td
+    style="text-align: center;"></td>n<td style="text-align: center;">9005</td>n<td
+    style="text-align: center;">--------</td>n</tr>n<tr>n<td style="text-align: center;">2006</td>n<td
+    style="text-align: center;">%00111100</td>n<td style="text-align: center;"></td>n<td
+    style="text-align: center;">9006</td>n<td style="text-align: center;">--------</td>n</tr>n<tr>n<td
+    style="text-align: center;">2007</td>n<td style="text-align: center;">%00000000</td>n<td
+    style="text-align: center;"></td>n<td style="text-align: center;">9007</td>n<td
+    style="text-align: center;">--------</td>n</tr>n<tr>n<td style="text-align: center;">2008</td>n<td
+    style="text-align: center;">%00000000</td>n<td style="text-align: center;"></td>n<td
+    style="text-align: center;">9008</td>n<td style="text-align: center;">--------</td>n</tr>n<tr>n<td
+    style="text-align: center;">2009</td>n<td style="text-align: center;">%00111100</td>n<td
+    style="text-align: center;"></td>n<td style="text-align: center;">9009</td>n<td
+    style="text-align: center;">--------</td>n</tr>n<tr>n<td style="text-align: center;">200A</td>n<td
+    style="text-align: center;">%00100010</td>n<td style="text-align: center;"></td>n<td
+    style="text-align: center;">900A</td>n<td style="text-align: center;">--------</td>n</tr>n<tr>n<td
+    style="text-align: center;">200B</td>n<td style="text-align: center;">%00011100</td>n<td
+    style="text-align: center;"></td>n<td style="text-align: center;">900B</td>n<td
+    style="text-align: center;">--------</td>n</tr>n<tr>n<td style="text-align: center;">200C</td>n<td
+    style="text-align: center;">%00000000</td>n<td style="text-align: center;"></td>n<td
+    style="text-align: center;">900C</td>n<td style="text-align: center;">--------</td>n</tr>n<tr>n<td
+    style="text-align: center;">200D</td>n<td style="text-align: center;">%00111100</td>n<td
+    style="text-align: center;"></td>n<td style="text-align: center;">900D</td>n<td
+    style="text-align: center;">--------</td>n</tr>n<tr>n<td style="text-align: center;">200E</td>n<td
+    style="text-align: center;">%00010100</td>n<td style="text-align: center;"></td>n<td
+    style="text-align: center;">900E</td>n<td style="text-align: center;">--------</td>n</tr>n<tr>n<td
+    style="text-align: center;">200F</td>n<td style="text-align: center;">%00010100</td>n<td
+    style="text-align: center;"></td>n<td style="text-align: center;">900F</td>n<td
+    style="text-align: center;">--------</td>n</tr>n</tbody>n</table>n<p>Our next
+    three lines of code increment <strong>HL</strong> and <strong>DE</strong> then
+    decrement <strong>BC</strong>:</p>n<pre><code class="language-nasm">inc hlninc
+    dendec bc</code></pre>n<p>Increment means <strong>inc</strong>rease by one and
+    decrement means <strong>dec</strong>rease by one. Lets check the new state of
+    our registers:</p>n<table>n<thead>n<tr>n<th style="text-align: center;">A</th>n<th
+    style="text-align: center;">HL</th>n<th style="text-align: center;">DE</th>n<th
+    style="text-align: center;">BC</th>n</tr>n</thead>n<tbody>n<tr>n<td style="text-align:
+    center;">%00000000</td>n<td style="text-align: center;">$9001</td>n<td style="text-align:
+    center;">$2001</td>n<td style="text-align: center;">$000F (15)</td>n</tr>n</tbody>n</table>n<p>Our
+    next line of code will load the value held in register <strong>B</strong> into
+    <strong>A</strong> and then OR it with <strong>C</strong>:</p>n<pre><code class="language-nasm">ld
+    a, bnor c</code></pre>n<p>This may seem a strange way to check whether the value
+    held in <strong>BC</strong> is zero, but lets explore what this actually does.
+    First lets look at the values held in <strong>A</strong>, <strong>B</strong> and
+    <strong>C</strong> individually:</p>n<table>n<thead>n<tr>n<th style="text-align:
+    center;">A</th>n<th style="text-align: center;">B</th>n<th style="text-align:
+    center;">C</th>n</tr>n</thead>n<tbody>n<tr>n<td style="text-align: center;">--------</td>n<td
+    style="text-align: center;">$00 (%00000000)</td>n<td style="text-align: center;">$0F
+    (%00001111)</td>n</tr>n</tbody>n</table>n<p>Lets load <strong>A</strong> with
+    the value held in <strong>B</strong>:</p>n<table>n<thead>n<tr>n<th style="text-align:
+    center;">A</th>n<th style="text-align: center;">B</th>n<th style="text-align:
+    center;">C</th>n</tr>n</thead>n<tbody>n<tr>n<td style="text-align: center;">%00000000</td>n<td
+    style="text-align: center;">$00 (%00000000)</td>n<td style="text-align: center;">$0F
+    (%00001111)</td>n</tr>n</tbody>n</table>n<p>Now lets OR this value with C:</p>n<table>n<thead>n<tr>n<th
+    style="text-align: center;"></th>n<th style="text-align: center;"></th>n<th style="text-align:
+    center;"></th>n<th style="text-align: center;"></th>n<th style="text-align: center;"></th>n<th
+    style="text-align: center;"></th>n<th style="text-align: center;"></th>n<th style="text-align:
+    center;"></th>n</tr>n</thead>n<tbody>n<tr>n<td style="text-align: center;">0</td>n<td
+    style="text-align: center;">0</td>n<td style="text-align: center;">0</td>n<td
+    style="text-align: center;">0</td>n<td style="text-align: center;">0</td>n<td
+    style="text-align: center;">0</td>n<td style="text-align: center;">0</td>n<td
+    style="text-align: center;">0</td>n<td style="text-align: center;"></td>n</tr>n<tr>n<td
+    style="text-align: center;">0</td>n<td style="text-align: center;">0</td>n<td
+    style="text-align: center;">0</td>n<td style="text-align: center;">0</td>n<td
+    style="text-align: center;">1</td>n<td style="text-align: center;">1</td>n<td
+    style="text-align: center;">1</td>n<td style="text-align: center;">1</td>n<td
+    style="text-align: center;">OR</td>n</tr>n<tr>n<td style="text-align: center;"><strong>0</strong></td>n<td
+    style="text-align: center;"><strong>0</strong></td>n<td style="text-align: center;"><strong>0</strong></td>n<td
+    style="text-align: center;"><strong>0</strong></td>n<td style="text-align: center;"><strong>1</strong></td>n<td
+    style="text-align: center;"><strong>1</strong></td>n<td style="text-align: center;"><strong>1</strong></td>n<td
+    style="text-align: center;"><strong>1</strong></td>n<td style="text-align: center;"></td>n</tr>n</tbody>n</table>n<table>n<thead>n<tr>n<th
+    style="text-align: center;">A</th>n<th style="text-align: center;">B</th>n<th
+    style="text-align: center;">C</th>n</tr>n</thead>n<tbody>n<tr>n<td style="text-align:
+    center;">%00001111</td>n<td style="text-align: center;">$00 (%00000000)</td>n<td
+    style="text-align: center;">$0F (%00001111)</td>n</tr>n</tbody>n</table>n<p>Remember
+    that whenever we perform a logical or comparison operation we set our flags. In
+    this case, after performing the OR operation our Z flag will be unset since the
+    value in A is not zero. In fact, the only way to have our Z flag set after executing
+    these two lines of code will be to have <strong>B</strong> and <strong>C</strong>
+    both holding values of zero. So effectively our two lines of code check whether
+    <strong>BC</strong> is holding a value of zero.</p>n<p>The next line of code is:</p>n<pre><code>jr
+    nz, .copyImage</code></pre>n<p>Remember that the <strong>JR</strong> instruction
+    jumps relative to the current location to another instruction. In this case  we
+    jump backwards by 7 instructions to the <strong>.copyImage</strong> label only
+    if the Z flag is <strong>not</strong> set. Since we know <strong>BC</strong> holds
+    a value of 15, it isn''t zero so we will repeat our instructions with the values
+    currently held in our registers:</p>n<table>n<thead>n<tr>n<th style="text-align:
+    center;">A</th>n<th style="text-align: center;">HL</th>n<th style="text-align:
+    center;">DE</th>n<th style="text-align: center;">BC</th>n</tr>n</thead>n<tbody>n<tr>n<td
+    style="text-align: center;">%00111100</td>n<td style="text-align: center;">$9001</td>n<td
+    style="text-align: center;">$2001</td>n<td style="text-align: center;">$000F (15)</td>n</tr>n</tbody>n</table>n<p>After
+    executing our instructions we will have moved the data held at address <strong>[DE]</strong>
+    ($2001) to address <strong>[HL]</strong> ($9001) via the <strong>A</strong> register:</p>n<table>n<thead>n<tr>n<th
+    style="text-align: center;">ROM LOCATION</th>n<th style="text-align: center;">DATA</th>n<th
+    style="text-align: center;"></th>n<th style="text-align: center;">VRAM LOCATION</th>n<th
+    style="text-align: center;">DATA</th>n</tr>n</thead>n<tbody>n<tr>n<td style="text-align:
+    center;">2000</td>n<td style="text-align: center;">%00000000</td>n<td style="text-align:
+    center;"></td>n<td style="text-align: center;">9000</td>n<td style="text-align:
+    center;">%00000000</td>n</tr>n<tr>n<td style="text-align: center;">2001</td>n<td
+    style="text-align: center;">%00111100</td>n<td style="text-align: center;"></td>n<td
+    style="text-align: center;">9001</td>n<td style="text-align: center;">%00111100</td>n</tr>n<tr>n<td
+    style="text-align: center;">2002</td>n<td style="text-align: center;">%00111100</td>n<td
+    style="text-align: center;"></td>n<td style="text-align: center;">9002</td>n<td
+    style="text-align: center;">--------</td>n</tr>n<tr>n<td style="text-align: center;">2003</td>n<td
+    style="text-align: center;">%00000000</td>n<td style="text-align: center;"></td>n<td
+    style="text-align: center;">9003</td>n<td style="text-align: center;">--------</td>n</tr>n<tr>n<td
+    style="text-align: center;">2004</td>n<td style="text-align: center;">%00111100</td>n<td
+    style="text-align: center;"></td>n<td style="text-align: center;">9004</td>n<td
+    style="text-align: center;">--------</td>n</tr>n<tr>n<td style="text-align: center;">2005</td>n<td
+    style="text-align: center;">%00010100</td>n<td style="text-align: center;"></td>n<td
+    style="text-align: center;">9005</td>n<td style="text-align: center;">--------</td>n</tr>n<tr>n<td
+    style="text-align: center;">2006</td>n<td style="text-align: center;">%00111100</td>n<td
+    style="text-align: center;"></td>n<td style="text-align: center;">9006</td>n<td
+    style="text-align: center;">--------</td>n</tr>n<tr>n<td style="text-align: center;">2007</td>n<td
+    style="text-align: center;">%00000000</td>n<td style="text-align: center;"></td>n<td
+    style="text-align: center;">9007</td>n<td style="text-align: center;">--------</td>n</tr>n<tr>n<td
+    style="text-align: center;">2008</td>n<td style="text-align: center;">%00000000</td>n<td
+    style="text-align: center;"></td>n<td style="text-align: center;">9008</td>n<td
+    style="text-align: center;">--------</td>n</tr>n<tr>n<td style="text-align: center;">2009</td>n<td
+    style="text-align: center;">%00111100</td>n<td style="text-align: center;"></td>n<td
+    style="text-align: center;">9009</td>n<td style="text-align: center;">--------</td>n</tr>n<tr>n<td
+    style="text-align: center;">200A</td>n<td style="text-align: center;">%00100010</td>n<td
+    style="text-align: center;"></td>n<td style="text-align: center;">900A</td>n<td
+    style="text-align: center;">--------</td>n</tr>n<tr>n<td style="text-align: center;">200B</td>n<td
+    style="text-align: center;">%00011100</td>n<td style="text-align: center;"></td>n<td
+    style="text-align: center;">900B</td>n<td style="text-align: center;">--------</td>n</tr>n<tr>n<td
+    style="text-align: center;">200C</td>n<td style="text-align: center;">%00000000</td>n<td
+    style="text-align: center;"></td>n<td style="text-align: center;">900C</td>n<td
+    style="text-align: center;">--------</td>n</tr>n<tr>n<td style="text-align: center;">200D</td>n<td
+    style="text-align: center;">%00111100</td>n<td style="text-align: center;"></td>n<td
+    style="text-align: center;">900D</td>n<td style="text-align: center;">--------</td>n</tr>n<tr>n<td
+    style="text-align: center;">200E</td>n<td style="text-align: center;">%00010100</td>n<td
+    style="text-align: center;"></td>n<td style="text-align: center;">900E</td>n<td
+    style="text-align: center;">--------</td>n</tr>n<tr>n<td style="text-align: center;">200F</td>n<td
+    style="text-align: center;">%00010100</td>n<td style="text-align: center;"></td>n<td
+    style="text-align: center;">900F</td>n<td style="text-align: center;">--------</td>n</tr>n</tbody>n</table>n<p>Once
+    our code has executed the state of our registers will be:</p>n<table>n<thead>n<tr>n<th
+    style="text-align: center;">A</th>n<th style="text-align: center;">HL</th>n<th
+    style="text-align: center;">DE</th>n<th style="text-align: center;">BC</th>n</tr>n</thead>n<tbody>n<tr>n<td
+    style="text-align: center;">%00000000</td>n<td style="text-align: center;">$9002</td>n<td
+    style="text-align: center;">$2002</td>n<td style="text-align: center;">$000E (14)</td>n</tr>n</tbody>n</table>n<p>The
+    value held in <strong>BC</strong> is now 14, meaning we will repeat executing
+    our instructions to copy data across 14 more times, once for each remaining address.
+    When our value in <strong>BC</strong> hits zero  the state of our memory will
+    be:</p>n<table>n<thead>n<tr>n<th style="text-align: center;">ROM LOCATION</th>n<th
+    style="text-align: center;">DATA</th>n<th style="text-align: center;"></th>n<th
+    style="text-align: center;">VRAM LOCATION</th>n<th style="text-align: center;">DATA</th>n</tr>n</thead>n<tbody>n<tr>n<td
+    style="text-align: center;">2000</td>n<td style="text-align: center;">%00000000</td>n<td
+    style="text-align: center;"></td>n<td style="text-align: center;">9000</td>n<td
+    style="text-align: center;">%00000000</td>n</tr>n<tr>n<td style="text-align: center;">2001</td>n<td
+    style="text-align: center;">%00111100</td>n<td style="text-align: center;"></td>n<td
+    style="text-align: center;">9001</td>n<td style="text-align: center;">%00111100</td>n</tr>n<tr>n<td
+    style="text-align: center;">2002</td>n<td style="text-align: center;">%00111100</td>n<td
+    style="text-align: center;"></td>n<td style="text-align: center;">9002</td>n<td
+    style="text-align: center;">%00111100</td>n</tr>n<tr>n<td style="text-align: center;">2003</td>n<td
+    style="text-align: center;">%00000000</td>n<td style="text-align: center;"></td>n<td
+    style="text-align: center;">9003</td>n<td style="text-align: center;">%00000000</td>n</tr>n<tr>n<td
+    style="text-align: center;">2004</td>n<td style="text-align: center;">%00111100</td>n<td
+    style="text-align: center;"></td>n<td style="text-align: center;">9004</td>n<td
+    style="text-align: center;">%00111100</td>n</tr>n<tr>n<td style="text-align: center;">2005</td>n<td
+    style="text-align: center;">%00010100</td>n<td style="text-align: center;"></td>n<td
+    style="text-align: center;">9005</td>n<td style="text-align: center;">%00010100</td>n</tr>n<tr>n<td
+    style="text-align: center;">2006</td>n<td style="text-align: center;">%00111100</td>n<td
+    style="text-align: center;"></td>n<td style="text-align: center;">9006</td>n<td
+    style="text-align: center;">%00111100</td>n</tr>n<tr>n<td style="text-align: center;">2007</td>n<td
+    style="text-align: center;">%00000000</td>n<td style="text-align: center;"></td>n<td
+    style="text-align: center;">9007</td>n<td style="text-align: center;">%00000000</td>n</tr>n<tr>n<td
+    style="text-align: center;">2008</td>n<td style="text-align: center;">%00000000</td>n<td
+    style="text-align: center;"></td>n<td style="text-align: center;">9008</td>n<td
+    style="text-align: center;">%00000000</td>n</tr>n<tr>n<td style="text-align: center;">2009</td>n<td
+    style="text-align: center;">%00111100</td>n<td style="text-align: center;"></td>n<td
+    style="text-align: center;">9009</td>n<td style="text-align: center;">%00111100</td>n</tr>n<tr>n<td
+    style="text-align: center;">200A</td>n<td style="text-align: center;">%00100010</td>n<td
+    style="text-align: center;"></td>n<td style="text-align: center;">900A</td>n<td
+    style="text-align: center;">%00100010</td>n</tr>n<tr>n<td style="text-align: center;">200B</td>n<td
+    style="text-align: center;">%00011100</td>n<td style="text-align: center;"></td>n<td
+    style="text-align: center;">900B</td>n<td style="text-align: center;">%00011100</td>n</tr>n<tr>n<td
+    style="text-align: center;">200C</td>n<td style="text-align: center;">%00000000</td>n<td
+    style="text-align: center;"></td>n<td style="text-align: center;">900C</td>n<td
+    style="text-align: center;">%00000000</td>n</tr>n<tr>n<td style="text-align: center;">200D</td>n<td
+    style="text-align: center;">%00111100</td>n<td style="text-align: center;"></td>n<td
+    style="text-align: center;">900D</td>n<td style="text-align: center;">%00111100</td>n</tr>n<tr>n<td
+    style="text-align: center;">200E</td>n<td style="text-align: center;">%00010100</td>n<td
+    style="text-align: center;"></td>n<td style="text-align: center;">900E</td>n<td
+    style="text-align: center;">%00010100</td>n</tr>n<tr>n<td style="text-align: center;">200F</td>n<td
+    style="text-align: center;">%00010100</td>n<td style="text-align: center;"></td>n<td
+    style="text-align: center;">900F</td>n<td style="text-align: center;">%00010100</td>n</tr>n</tbody>n</table>n<p>Before
+    we have a look at the results of executing this program, lets have a quick look
+    at the code in full:</p>n<pre><code class="language-nasm">Start:n    ; SETUP THE
+    GAME BOYnn    ld hl, $9000n    ld de, Mann    ld bc, EndMan - Mannn.copyTilen    ld
+    a, [de]n    ld [hl], an    inc hln    inc den    dec bcn    ld a, bn    or cn    jr
+    nz, .copyImagenn    ; DO SOME MORE SETUPnnMan:n    db $00, $3C, $3C, $00, $3C,
+    $14, $3C, $00n    db $00, $3C, $22, $1C, $00, $3C, $14, $14nEndMan:</code></pre>n<p>Be
+    aware that if you try to assemble the given code using RGBDS then you will run
+    into errors as there are a few more things you need to learn before we can actually
+    get code running on the Game Boy, but lets have a look at what would happen if
+    we were to create a Game Boy ROM with these as the only instructions:</p>n<img
+    src="/images/screen/man_sprite_loaded.png">n<p>Not the output you were expecting?
+    Those that are familiar with the Game Boy boot screen will see the familiar outline
+    of the Nintendo logo, but why is our custom tile all over the Game Boy screen?
+    Lets take a look at the VRAM viewer in BGB to get a better understanding of what
+    is going on:</p>n<img src="/images/screen/vram_viewer_man.png">n<p>If you look
+    on the right hand side of the window you can see that our custom tile (tile 00)
+    is loaded into tile address <strong>0:9000</strong>. This makes sense as we know
+    our code transferred the 16 bytes that make up our man into memory addresses $9000
+    to $900F. So what is happening on the left hand side of the screen?</p>n<p>Well,
+    remember that tile map memory is split up into three blocks:</p>n<table>n<thead>n<tr>n<th
+    style="text-align: left;">Start</th>n<th style="text-align: left;">End</th>n<th
+    style="text-align: left;">Use</th>n</tr>n</thead>n<tbody>n<tr>n<td style="text-align:
+    left;">8000</td>n<td style="text-align: left;">87FF</td>n<td style="text-align:
+    left;">Block 0</td>n</tr>n<tr>n<td style="text-align: left;">8800</td>n<td style="text-align:
+    left;">8FFF</td>n<td style="text-align: left;">Block 1</td>n</tr>n<tr>n<td style="text-align:
+    left;">9000</td>n<td style="text-align: left;">97FF</td>n<td style="text-align:
+    left;">Block 2</td>n</tr>n</tbody>n</table>n<p>We have loaded our tile data into
+    block 2 (starting at address $9000), which means the bottom left grid of tiles
+    corresponds to tile data bank 2. At the top left we can see the Nintendo Logo
+    data is still held in bank 0 as we never cleared it. Lets check out one of these
+    tiles to see where in memory it is stored:</p>n<img src="/images/screen/vram_nintendo_logo_n.png">n<p>As
+    you can see the top left of the Nintendo logo is held in tile 01 of bank 0, which
+    is address $8010-801F in memory. Lets now modify our code so that we can overwrite
+    the top left of the Nintendo logo:</p>n<pre><code class="language-nasm">Start:n    ;
+    SETUP THE GAME BOYnn    ld hl, $8010n    ld de, Mann    ld bc, EndMan - Mannn.copyTilen    ld
+    a, [de]n    ld [hl], an    inc hln    inc den    dec bcn    ld a, bn    or cn    jr
+    nz, .copyImagenn    ; DO SOME MORE SETUPnnMan:n    db $00, $3C, $3C, $00, $3C,
+    $14, $3C, $00n    db $00, $3C, $22, $1C, $00, $3C, $14, $14nEndMan:</code></pre>n<p>Notice
+    that all of this code is the same except for the initial value of <strong>HL</strong>.
+    We have changed this to $8010 to reflect that we are overwriting tile 01 of bank
+    0:</p>n<img src="/images/screen/overwrite_nintendo_logo.png">n<p>As you can see
+    we are easily able to overwrite specific tiles anywhere in our tile banks if we
+    know their location in memory. Next we will look at how to tell the Game Boy which
+    tile bank we want to use, but first let us discuss why the VRAM viewer is showing
+    6 banks of tiles instead of the 3 we originally looked at.</p>n<p>We know that
+    the Game Boy has three blocks of tile data:</p>n<table>n<thead>n<tr>n<th style="text-align:
+    center;">Start</th>n<th style="text-align: center;">End</th>n<th style="text-align:
+    center;">Use</th>n</tr>n</thead>n<tbody>n<tr>n<td style="text-align: center;">8000</td>n<td
+    style="text-align: center;">87FF</td>n<td style="text-align: center;">Block 0</td>n</tr>n<tr>n<td
+    style="text-align: center;">8800</td>n<td style="text-align: center;">8FFF</td>n<td
+    style="text-align: center;">Block 1</td>n</tr>n<tr>n<td style="text-align: center;">9000</td>n<td
+    style="text-align: center;">97FF</td>n<td style="text-align: center;">Block 2</td>n</tr>n</tbody>n</table>n<p>However
+    the Game Boy Color also has a second VRAM bank which we haven''t yet discussed.
+    Therefore because BGB is GB Color compatible it shows us the extra bank even though
+    we aren''t going to be using it.</p>n<blockquote>n<p>Since we are going to be
+    programming games that are compatible on both the original GB and the Color we
+    won''t be looking at how to switch to this extra bank, but remember the option
+    is there if you eventually want to write games that are compatible with the Color
+    exclusively.</p>n</blockquote>n<h2>LCDC Register (LCD Control)</h2>n<p>There is
+    a special register known as the LCDC which tells the screen (Liquid Crystal Display)
+    which mode it should currently be in. We won''t go into too much detail about
+    this register now as we will look at all the options as and when we need them,
+    but let us take a quick look at all the modes we can enable and disable using
+    the LCDC.</p>n<p>Remember that a register is made up of a byte, or 8-bits. This
+    means that with the LCDC register we can enable and disable 8 different modes
+    on the Game Boy screen (the following is taken directly from the <a href="https://gbdev.gg8.se/wiki/articles/LCDC">gbdev
+    wiki</a>):</p>n<ul>n<li>Bit 7 - LCD Display Enable</li>n<li>Bit 6 - Window Tile
+    Map Display Select</li>n<li>Bit 5 - Window Display Enable</li>n<li>Bit 4 - BG
+    &amp; Window Tile Data Select</li>n<li>Bit 3 - BG Tile Map Display Select</li>n<li>Bit
+    2 - OBJ (Sprite) Size</li>n<li>Bit 1 - OBJ (Sprite) Display Enable</li>n<li>Bit
+    0 - BG/Window Display/Priority</li>n</ul>n<p>There is a lot going on here so we
+    will just go over the bits we actually need to look at for the purposes of getting
+    data on the screen.</p>n<p>In our code example we inserted a placeholder comment
+    to explain that we were doing some ''setting up'' of the Game Boy. Part of this
+    setting up is telling the screen which mode it needs to be in before we change
+    the tile data. To disable the screen fully we will write a value of 0 into the
+    LCDC register:</p>n<pre><code class="language-nasm">ld a, %00000000nld [rLCDC],
+    a</code></pre>n<blockquote>n<p>This isn''t strictly necessary but it is good practice
+    when working with any old technology to disable the screen before changing data
+    that should display on the screen.</p>n</blockquote>n<p>After we have written
+    our data into VRAM we then need to re-enable the screen. To do this we will write
+    enable into <strong>bit 7</strong> (LCD enable) and <strong>bit 0</strong> (background
+    enable):</p>n<pre><code class="language-nasm">ld a, %10000001nld [rLCDC], a</code></pre>n<p>However
+    this is enabling the LCD and setting the tile data select to use tile data block
+    2. If we want to use block 0 we have to enable it on <strong>bit 4</strong>:</p>n<pre><code
+    class="language-nasm">ld a, %10010001nld [rLCDC], a</code></pre>n<p>We have now
+    set the screen to use block 0 and written our custom tile into location $8010
+    (to overwrite the top left of the Nintendo logo):</p>n<img src="/images/screen/vram_bank_zero.png">n<p>This
+    is what VRAM looks like:</p>n<img src="/images/screen/vram_viewer_bank_zero.png">n<p>And
+    our final code:</p>n<pre><code class="language-nasm">Start:n    ; SETUP THE GAME
+    BOYnn    ld a, %00000000n    ld [rLCDC], ann    ld hl, $8010n    ld de, Mann    ld
+    bc, EndMan - Mannn.copyTilen    ld a, [de]n    ld [hl], an    inc hln    inc den    dec
+    bcn    ld a, bn    or cn    jr nz, .copyImagenn    ld a, %10010001n    ld [rLCDC],
+    ann    ; DO SOME MORE SETUPnnMan:n    db $00, $3C, $3C, $00, $3C, $14, $3C, $00n    db
+    $00, $3C, $22, $1C, $00, $3C, $14, $14nEndMan:</code></pre>n<p>At this stage we
+    know nearly everything we need to interact with the background layer and control
+    the screen. Our next step will be to control which tile should display at which
+    location.</p>n<h2>Tile Map</h2>n<p>Remember we looked earlier at our breakdown
+    of VRAM:</p>n<table>n<thead>n<tr>n<th style="text-align: left;">Start</th>n<th
+    style="text-align: left;">End</th>n<th style="text-align: left;">Use</th>n</tr>n</thead>n<tbody>n<tr>n<td
+    style="text-align: left;">8000</td>n<td style="text-align: left;">97FF</td>n<td
+    style="text-align: left;">Tile Data</td>n</tr>n<tr>n<td style="text-align: left;">9800</td>n<td
+    style="text-align: left;">9BFF</td>n<td style="text-align: left;">Background Tile
+    Map</td>n</tr>n<tr>n<td style="text-align: left;">9C00</td>n<td style="text-align:
+    left;">9FFF</td>n<td style="text-align: left;">Window Tile Map</td>n</tr>n</tbody>n</table>n<p>We
+    have already learned the purpose of the three tile data banks stored from $8000
+    to $97FF, but what about the rest of VRAM? Well, remember that when we discussed
+    the screen we mentioned that we have 20 horizontal tiles by 18 vertical tiles:</p>n<img
+    src="/images/screen/screen_tiles.png">n<p>This is actually a little bit of a lie.
+    It is true that at any given time there are 360 tiles visible on the screen, but
+    actually our memory is capable of holding a total of 32x32 tiles (giving us a
+    total of 1024 tiles). If we calculate the total number of memory addresses between
+    location $9800 and $9C00 (9C00 - 9800) we get exactly 1024 tiles (400) therefore
+    we know that the Background Tile Map can keep track of the correct tile to show
+    for a specific tile on screen.</p>n<p>To help illustrate the point, look at this
+    screenshot from the Super Mario Land game ROM:</p>n<img src="/images/screen/super_mario_in_game.png">n<p>Each
+    tile on this screen must be loaded into memory:</p>n<img src="/images/screen/super_mario_tile_data.png">n<p>You
+    can see that the question mark box has its corresponding tile data mapped into
+    location $8810. Since we know there are 16 bytes of memory for each tile this
+    makes it tile $81:</p>n<pre><code>$8810 - $8000 = $810n$810 / $10 = $81</code></pre>n<p>Or
+    in decimal tile 129:</p>n<pre><code>34,832 - 32,768 = 2,064n2,064 / 16 = 129</code></pre>n<p>Each
+    position on the screen must also map to a tile in memory:</p>n<img src="/images/screen/super_mario_tile_map.png">n<p>You
+    will see that the map to the question mark box is stored at address $9976 of the
+    tile map which makes it tile $177 (remember we include tile $9800 in our count).
+    $177 in decimal is 374 and if you want to check then you will see the tile is
+    on the 12th row at position 23:</p>n<pre><code>(11 * 32) + 22 = 352 + 23 =  377</code></pre>n<p>If
+    we check the value held at position $9976 in our debugger you will see that it
+    holds a value of $81 (look at the bottom left section of the debugger and you
+    will see column 7 of row $9970 holds a value of $81):</p>n<img src="/images/screen/super_mario_debugger.png">n<p>This
+    is all very well, but how does it actually correspond to us being able to put
+    our man at a specific location?</p>n<p>Remember before we had our image of a man
+    stored at location 0 of tile data bank 2:</p>n<img src="/images/screen/vram_viewer_man.png">n<p>Remember
+    when we loaded our image data into position $2000 (VRAM bank 2)? We are about
+    to use the same code again, but instead of referring to our image as <strong>Man</strong>
+    we will refer to it as <strong>TileData</strong> and add an empty tile to the
+    start:</p>n<pre><code class="language-nasm">Start:n    ; SETUP THE GAME BOYnn    ld
+    a, %00000000n    ld [rLCDC], ann    ld hl, $9000n    ld de, TileDatan    ld bc,
+    EndTileData - TileDatann.copyTilen    ld a, [de]n    ld [hl], an    inc hln    inc
+    den    dec bcn    ld a, bn    or cn    jr nz, .copyImagenn    ld a, %10000001n    ld
+    [rLCDC], ann    ; DO SOME MORE SETUPnnTileData:n    ; Blank tilen    db $00, $00,
+    $00, $00, $00, $00, $00, $00n    db $00, $00, $00, $00, $00, $00, $00, $00nn    ;
+    Mann    db $00, $3C, $3C, $00, $3C, $14, $3C, $00n    db $00, $3C, $22, $1C, $00,
+    $3C, $14, $14nEndTileData:</code></pre>n<p>When we run this code the VRAM viewer
+    looks like this (notice that we are no longer enabling position 4 of the LCDC
+    register):</p>n<img src="/images/screen/tile_data_man_second.png">n<p>You can
+    see that the man currently appears on the screen at the top left of where the
+    Nintendo logo would have been:</p>n<img src="/images/screen/man_second_in_vram.png">n<p>Although
+    we now have the man shown on screen on his own which is a desirable outcome, this
+    is unintentional and only because of our tile happening to be over where the Nintendo
+    logo was originally showing. So next we will write a quick loop to clear the screen.
+    We will do this by iterating over every tile map location in our background tile
+    map (from $9800 to $9BFF):</p>n<pre><code class="language-nasm">    ld hl, $9800n    ld
+    de, $5FFn.clearLoopn    ld a, 0n    ld [hl], an    inc hln    dec den    ld a,
+    en    or dn    jr nz, .clearLoop</code></pre>n<p>This code simply loads a value
+    of 0 into every memory location from $9800 to $9BFF. It does so by repeatedly
+    loading <strong>A</strong> with a value of zero and putting this into <strong>HL</strong>
+    before incrementing <strong>HL</strong> and checking whether we have done this
+    for every location $5FF times. After we have run this code the screen is cleared
+    (meaning every tile location is using the tile we stored at location $9000, which
+    is blank):</p>n<img src="/images/screen/cleared_screen.png">n<p>Now the last step
+    is to decide where we want our man to be. Why not go for the bottom left corner?
+    We will put him on the 1st tile in from the right and 1st tile up from the bottom.
+    Remember that this will be the 17th row, so we have to count the 32 tiles on the
+    preceding 16 rows to calculate the position we want the man to go:</p>n<pre><code>16
+    * 32 = 512n512 + 1 = 513nDENARY 513 = 201 HEX</code></pre>n<p>Since we know the
+    position of the top left tile is at memory address $9800, we must put a value
+    of $01 into memory location $9A01 ($9800  + $201):</p>n<pre><code>ld hl, $9A01nld
+    a, $01nld [hl], a</code></pre>n<p>Now for the code in full:</p>n<pre><code class="language-nasm">Start:n    ;
+    SETUP THE GAME BOYnn    ld a, %00000000n    ld [rLCDC], ann    ld hl, $9000n    ld
+    de, TileDatan    ld bc, EndTileData - TileDatann.copyTilen    ld a, [de]n    ld
+    [hl], an    inc hln    inc den    dec bcn    ld a, bn    or cn    jr nz, .copyImagenn    ld
+    hl, $9800n    ld de, $5FFn.clearLoopn    ld a, 0n    ld [hl], an    inc hln    dec
+    den    ld a, en    or dn    jr nz, .clearLoopnn    ld hl, $9A01n    ld a, $01n    ld
+    [hl], ann    ld a, %10000001n    ld [rLCDC], ann    ; DO SOME MORE SETUPnnTileData:n    ;
+    Blank tilen    db $00, $00, $00, $00, $00, $00, $00, $00n    db $00, $00, $00,
+    $00, $00, $00, $00, $00nn    ; Mann    db $00, $3C, $3C, $00, $3C, $14, $3C, $00n    db
+    $00, $3C, $22, $1C, $00, $3C, $14, $14nEndTileData:</code></pre>n<p>And the final
+    output:</p>n<img src="/images/screen/man_bottom_left.png">'
+  id: 16
+  menu_order: 0
+  name: Screen
+  parent: 12
+  show_in_menu: false
+  slug: screen
+  title: Screen
+- html: <p>Common uses for RAM. Code snippets for using RAM.</p>
+  id: 17
+  menu_order: 0
+  name: RAM
+  parent: 12
+  show_in_menu: false
+  slug: ram
+  title: RAM
+- html: <p>Explanation and code snippets to explain how to get the state of the buttons.</p>
+  id: 18
+  menu_order: 0
+  name: Button Presses
+  parent: 13
+  show_in_menu: false
+  slug: button-presses
+  title: Button Presses
+- html: <p>Explanation of how interrupts work, how to set interrupt flags and how
+    interrupts interact with the <strong>halt</strong> instruction.</p>
+  id: 19
+  menu_order: 0
+  name: Interrupts
+  parent: 13
+  show_in_menu: false
+  slug: interrupts
+  title: Interrupts
+- html: <p>How to setup the DMA routines and OAM for sprites including code snippets.</p>
+  id: 20
+  menu_order: 0
+  name: DMA and OAM
+  parent: 13
+  show_in_menu: false
+  slug: dma-and-oam
+  title: DMA and OAM
+- html: <p>The basic concept of ROM banking and code snippets to switch ROMs.</p>
+  id: 21
+  menu_order: 0
+  name: ROM Banking
+  parent: 13
+  show_in_menu: false
+  slug: rom-banking
+  title: ROM Banking
+- html: <p>One of the biggest barriers to entry for any prospective programmer isn't
+    writing their first program in a new language, but understanding what tools they
+    are going to need and how to install them. We have dedicated this section entirely
+    to explaining the tools you are going to need to familiarise yourself with in
+    order to get your first sample program up and running, as well as where to find
+    and how install them.</p>n<p>There are a number of important tools and utilities
+    you will need to familiarise yourself with which are underlined briefly below.
+    If you are already familiar with the ideas in this section and wish only for recommendations
+    for tools and software to use then in each section we have made recommendations
+    for the best Editors, Assemblers and Emulators for you to use when following these
+    tutorials.  More detailed information and installation instructions can be found
+    in the menu at the bottom of the page.</p>n<blockquote>n<p>All of this software
+    is recommended as we use it ourselves, but this doesn't make it objectively the
+    best software available and we aren't recommending it to the exclusion of all
+    others. Each programmer has their own preferences and if you don't like a recommended
+    piece of software then do some research and try out your own. There is plenty
+    of software out there, you will find some that you like.</p>n</blockquote>n<h2>Code
+    Editor - <a href="https://code.visualstudio.com/">Visual Studio Code</a></h2>n<p>A
+    <strong>code editor</strong> does exactly what it says on the tin; it allows you
+    to edit code. For this purpose we couldn't recommend anything other than Visual
+    Studio Code, the Open-Source solution developed by Microsoft for Mac, Windows
+    and Linux. One of the key tools of any modern day editor is <em>syntax highlighting</em>
+    which helps with identifying keywords in your code and spotting simple spelling
+    mistakes. Visual Studio Code has an excellent <a href="https://marketplace.visualstudio.com/items?itemName=donaldhays.rgbds-z80">plugin</a>
+    for gbZ80 developed by Donald Hays, with a wealth of tools to support writing
+    and debugging code.</p>n<h2>Assembler - <a href="https://github.com/rednex/rgbds">RGBDS</a></h2>n<p>Once
+    your code is written you need to translate it into a format that can be understood
+    by the Game Boy. Enter the big daddy of Game Boy programming, Rednex Game Boy
+    Development System. RGBDS is an <strong>assembler</strong>, used to convert your
+    gbZ80 into a format that can be understood by Game Boy hardware. Written and maintained
+    by <a href="https://eldred.fr/">Eldred Habert</a> there is no better option for
+    Anassembling your gbZ80 into a Game Boy ROM.</p>n<blockquote>n<p>ROM stands for
+    Read Only Memory, so called because Game Boy cartridges contain a very small block
+    of memory that can only be read from. This ROM holds data in a special format
+    called machine code that is readable by the Game Boy CPU.</p>n</blockquote>n<h2>Emulator
+    - <a href="http://bgb.bircd.org/">BGB</a></h2>n<p>Anyone who knows anything about
+    video games will have heard the term <strong>emulator</strong> countless times
+    before. This is because emulators are an incredibly powerful way of playing old
+    games without needing to purchase the hardware. This is because anything that
+    can be done with complex circuitry can also be done with software, although usually
+    in a much more complex and roundabout way.</p>n<p>There is a huge community around
+    game console emulation and the Game Boy is no exception. But just as with game
+    remakes you get some <a href="https://en.wikipedia.org/wiki/Cel_Damage">incredible
+    work</a> and some <a href="https://en.wikipedia.org/wiki/Yoshi%27s_New_Island">less
+    than perfect</a>. We haven't tried a large range of emulators, but bgb is the
+    go-to since it has accurate emulation of the original hardware and excellent debugging
+    tools.</p>n<h2>Running on real hardware</h2>n<p>For me, running my own games on
+    real hardware was the ultimate goal and the whole reason I started learning to
+    write code for the Game Boy in the first place. However, there are so many options
+    to choose from when it comes to selecting a <a href="https://gbdev.github.io/list.html#cartridges">flash
+    cart</a> that it can be difficult to actually settle on one. Eventually I went
+    for an <a href="https://krikzz.com/store/home/48-everdrive-gb.html">Everdrive
+    X3</a> by Krikzz, but each type of cart has their own price and associated costs
+    and benefits.</p>n<p>In this section we will look at some of the available options,
+    the best options may be for different needs and the process we go through to get
+    assembled ROMs <a href="https://www.instagram.com/p/B5lHi0mFai2/">running on real
+    hardware</a>.</p>
+  id: 22
+  menu_order: 0
+  name: Running Code
+  parent: 5
+  show_in_menu: false
+  slug: running-code
+  title: Running Code
+- html: <p>A full introduction to writing gbZ80 Assembly code.</p>
+  id: 23
+  menu_order: 0
+  name: Intro to gbZ80
+  parent: 9
+  show_in_menu: false
+  slug: intro-to-gbz80
+  title: Intro to gbZ80
+- html: '<!-- Begin Sendinblue Form -->n<!-- START - We recommend to place the below
+    code in head tag of your website html  -->n<style>n  @font-face {n    font-display:
+    block;n    font-family: Roboto;n    src: url(https://assets.sendinblue.com/font/Roboto/Latin/normal/normal/7529907e9eaf8ebb5220c5f9850e3811.woff2)
+    format("woff2"), url(https://assets.sendinblue.com/font/Roboto/Latin/normal/normal/25c678feafdc175a70922a116c9be3e7.woff)
+    format("woff")n  }nn  @font-face {n    font-display: fallback;n    font-family:
+    Roboto;n    font-weight: 600;n    src: url(https://assets.sendinblue.com/font/Roboto/Latin/medium/normal/6e9caeeafb1f3491be3e32744bc30440.woff2)
+    format("woff2"), url(https://assets.sendinblue.com/font/Roboto/Latin/medium/normal/71501f0d8d5aa95960f6475d5487d4c2.woff)
+    format("woff")n  }nn  @font-face {n    font-display: fallback;n    font-family:
+    Roboto;n    font-weight: 700;n    src: url(https://assets.sendinblue.com/font/Roboto/Latin/bold/normal/3ef7cf158f310cf752d5ad08cd0e7e60.woff2)
+    format("woff2"), url(https://assets.sendinblue.com/font/Roboto/Latin/bold/normal/ece3a1d82f18b60bcce0211725c476aa.woff)
+    format("woff")n  }nn  #sib-container input:-ms-input-placeholder {n    text-align:
+    left;n    font-family: "Helvetica", sans-serif;n    color: #c0ccda;n    border-width:
+    px;n  }nn  #sib-container input::placeholder {n    text-align: left;n    font-family:
+    "Helvetica", sans-serif;n    color: #c0ccda;n    border-width: px;n  }n</style>n<link
+    rel="stylesheet" href="https://assets.sendinblue.com/component/form/2ef8d8058c0694a305b0.css">n<link
+    rel="stylesheet" href="https://assets.sendinblue.com/component/progress-indicator/f86d65a4a9331c5e2851.css">n<link
+    rel="stylesheet" href="https://sibforms.com/forms/end-form/build/sib-styles.css">n<!--  END
+    - We recommend to place the above code in head tag of your website html -->n<!--
+    START - We recommend to place the below code where you want the form in your website
+    html  -->n<div class="sib-form" style="text-align: center;">n  <div id="sib-form-container"
+    class="sib-form-container">n    <div id="error-message" class="sib-form-message-panel"
+    style="font-size:16px; text-align:left; font-family:&quot;Helvetica&quot;, sans-serif;
+    color:#661d1d; background-color:#ffeded; border-radius:3px; border-width:px; border-color:#ff4949;max-width:540px;
+    border-width:px;">n      <div class="sib-form-message-panel__text sib-form-message-panel__text--center">n        <svg
+    viewBox="0 0 512 512" class="sib-icon sib-notification__icon">n          <path
+    d="M256 40c118.621 0 216 96.075 216 216 0 119.291-96.61 216-216 216-119.244 0-216-96.562-216-216
+    0-119.203 96.602-216 216-216m0-32C119.043 8 8 119.083 8 256c0 136.997 111.043
+    248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm-11.49 120h22.979c6.823
+    0 12.274 5.682 11.99 12.5l-7 168c-.268 6.428-5.556 11.5-11.99 11.5h-8.979c-6.433
+    0-11.722-5.073-11.99-11.5l-7-168c-.283-6.818 5.167-12.5 11.99-12.5zM256 340c-15.464
+    0-28 12.536-28 28s12.536 28 28 28 28-12.536 28-28-12.536-28-28-28z"n          />n        </svg>n        <span
+    class="sib-form-message-panel__inner-text">n                          Your subscription
+    could not be saved. Please try again.n                      </span>n      </div>n    </div>n    <div></div>n    <div
+    id="success-message" class="sib-form-message-panel" style="font-size:16px; text-align:left;
+    font-family:&quot;Helvetica&quot;, sans-serif; color:#085229; background-color:#e7faf0;
+    border-radius:3px; border-width:px; border-color:#13ce66;max-width:540px; border-width:px;">n      <div
+    class="sib-form-message-panel__text sib-form-message-panel__text--center">n        <svg
+    viewBox="0 0 512 512" class="sib-icon sib-notification__icon">n          <path
+    d="M256 8C119.033 8 8 119.033 8 256s111.033 248 248 248 248-111.033 248-248S392.967
+    8 256 8zm0 464c-118.664 0-216-96.055-216-216 0-118.663 96.055-216 216-216 118.664
+    0 216 96.055 216 216 0 118.663-96.055 216-216 216zm141.63-274.961L217.15 376.071c-4.705
+    4.667-12.303 4.637-16.97-.068l-85.878-86.572c-4.667-4.705-4.637-12.303.068-16.97l8.52-8.451c4.705-4.667
+    12.303-4.637 16.97.068l68.976 69.533 163.441-162.13c4.705-4.667 12.303-4.637 16.97.068l8.451
+    8.52c4.668 4.705 4.637 12.303-.068 16.97z"n          />n        </svg>n        <span
+    class="sib-form-message-panel__inner-text">n                          Your subscription
+    has been successful.n                      </span>n      </div>n    </div>n    <div></div>n    <div
+    id="sib-container" class="sib-container--large sib-container--vertical" style="text-align:center;
+    background-color:rgba(255,255,255,1); max-width:540px;">n      <form id="sib-form"
+    method="POST" action="https://899bf3e8.sibforms.com/serve/MUIEAEHjAQ0dXhLPFmkMJjxKCLESrKzuAVnkQB32eIplNbDmPUcK3N5imJxLRCM_HA-8Dl39jyo29Vjn7Xsp-Jdt6eeFmLQTCQ7GKj7nofNHjBVZFi3XskKyWj9xKIaeDmGV1gjBHgEZrss2vvV97vBiR4EIXejnY3ex2VdIwOwY3tU4bNhXYpPGalnceEEMq59-x0j6sR-JWYqr"n        data-type="subscription">n        <div
+    style="padding: 16px 0;">n          <div class="sib-form-block" style="font-size:32px;
+    text-align:left; font-weight:700; font-family:&quot;Helvetica&quot;, sans-serif;
+    color:#3C4858; background-color:transparent; border-width:px;">n            <p>Keep
+    up to date with Learn Game Boy</p>n          </div>n        </div>n        <div
+    style="padding: 16px 0;">n          <div class="sib-form-block" style="font-size:16px;
+    text-align:left; font-family:&quot;Helvetica&quot;, sans-serif; color:#3C4858;
+    background-color:transparent; border-width:px;">n            <div class="sib-text-form-block">n              <p>Subscribe
+    to our mailing list and keep up to date with new tutorials, information on upcoming
+    events and progress on our games.</p>n              <p>n                <br>n              </p>n              <p>We
+    want our updates to be as useful as possible, therefore we will never email you
+    more than once in a calendar month and updates are strictly limited to the Learn
+    Game Boy website and other projects that we are working on, which may fromn                time
+    to time include links to other Educational resources and events.</p>n              <p>n                <br>n              </p>n              <p>Your
+    email address will remain in our records for as long as this maling list exists.
+    You are free to unsubscribe at any time and can do so by clicking this link.</p>n            </div>n          </div>n        </div>n        <div
+    style="padding: 16px 0;">n          <div class="sib-input sib-form-block">n            <div
+    class="form__entry entry_block">n              <div class="form__label-row ">n                <label
+    class="entry__label" style="font-size:16px; text-align:left; font-weight:700;
+    font-family:&quot;Helvetica&quot;, sans-serif; color:#3c4858; border-width:px;"
+    for="EMAIL" data-required="*">n                  Enter your email to subscriben                </label>nn                <div
+    class="entry__field">n                  <input class="input" type="text" id="EMAIL"
+    name="EMAIL" autocomplete="off" placeholder="EMAIL" data-required="true" required
+    />n                </div>n              </div>nn              <label class="entry__error
+    entry__error--primary" style="font-size:16px; text-align:left; font-family:&quot;Helvetica&quot;,
+    sans-serif; color:#661d1d; background-color:#ffeded; border-radius:3px; border-width:px;
+    border-color:#ff4949;">n              </label>n            </div>n          </div>n        </div>n        <div
+    style="padding: 16px 0;">n          <div class="sib-captcha sib-form-block">n            <div
+    class="form__entry entry_block">n              <div class="form__label-row ">n                <script>n                  function
+    handleCaptchaResponse() {n                    var event = new Event(''captchaChange'');n                    document.getElementById(''sib-captcha'').dispatchEvent(event);n                  }n                </script>n                <div
+    class="g-recaptcha" id="sib-captcha" data-sitekey="6LdKNtIUAAAAACSloXWtptwOOBYtfPFF55vj2ZSG"
+    data-callback="handleCaptchaResponse"></div>n              </div>n              <label
+    class="entry__error entry__error--primary" style="font-size:16px; text-align:left;
+    font-family:&quot;Helvetica&quot;, sans-serif; color:#661d1d; background-color:#ffeded;
+    border-radius:3px; border-width:px; border-color:#ff4949;">n              </label>n            </div>n          </div>n        </div>n        <div
+    style="padding: 16px 0;">n          <div class="sib-form-block" style="text-align:
+    left">n            <button class="sib-form-block__button sib-form-block__button-with-loader"
+    style="font-size:16px; text-align:left; font-weight:700; font-family:&quot;Helvetica&quot;,
+    sans-serif; color:#FFFFFF; background-color:#3E4857; border-radius:3px; border-width:0px;"n              form="sib-form"
+    type="submit">n              <svg class="icon clickable__icon progress-indicator__icon
+    sib-hide-loader-icon" viewBox="0 0 512 512">n                <path d="M460.116
+    373.846l-20.823-12.022c-5.541-3.199-7.54-10.159-4.663-15.874 30.137-59.886 28.343-131.652-5.386-189.946-33.641-58.394-94.896-95.833-161.827-99.676C261.028
+    55.961 256 50.751 256 44.352V20.309c0-6.904 5.808-12.337 12.703-11.982 83.556
+    4.306 160.163 50.864 202.11 123.677 42.063 72.696 44.079 162.316 6.031 236.832-3.14
+    6.148-10.75 8.461-16.728 5.01z"n                />n              </svg>n              SUBSCRIBEn            </button>n          </div>n        </div>nn        <input
+    type="text" name="email_address_check" value="" class="input--hidden">n        <input
+    type="hidden" name="locale" value="en">n      </form>n    </div>n  </div>n</div>n<!--
+    END - We recommend to place the below code where you want the form in your website
+    html  -->n<!-- START - We recommend to place the below code in footer or bottom
+    of your website html  -->n<script>n  window.REQUIRED_CODE_ERROR_MESSAGE = ''Please
+    choose a country code'';nn  window.EMAIL_INVALID_MESSAGE = window.SMS_INVALID_MESSAGE
+    = "The information provided is invalid. Please review the field format and try
+    again.";nn  window.REQUIRED_ERROR_MESSAGE = "This field cannot be left blank.
+    ";nn  window.GENERIC_INVALID_MESSAGE = "The information provided is invalid. Please
+    review the field format and try again.";nn  window.translation = {n    common:
+    {n      selectedList: '' list selected'',n      selectedLists: '' lists selected''n    }n  };nn  var
+    AUTOHIDE = Boolean(1);n</script>n<script src="https://sibforms.com/forms/end-form/build/main.js">n</script>n<script
+    src="https://www.google.com/recaptcha/api.js?hl=en"></script>n<!-- END - We recommend
+    to place the above code in footer or bottom of your website html  -->n<!-- End
+    Sendinblue Form -->'
+  id: 28
+  menu_order: 5
+  name: Mailing List
+  parent: 0
+  show_in_menu: true
+  slug: mailing-list
+  title: Mailing List
+- html: <p>All about binary logic.</p>
+  id: 29
+  menu_order: 0
+  name: Logic
+  parent: 24
+  show_in_menu: false
+  slug: logic
+  title: Logic

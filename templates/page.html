@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+{% if page.parent_slug %}
+<p class="parent-link"><a href="/{{ page.parent_slug }}/">&lt; {{ page_map[page.parent_slug].title }}</a></p>
+{% endif %}
+<h1>{{ page.title }}</h1>
+{{ page.html|safe }}
+{% if page.children %}
+<h2>In this section</h2>
+<ul>
+    {% for child in page.children %}
+    <li><a href="/{{ child.slug }}/">{{ child.title }}</a></li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endblock %}

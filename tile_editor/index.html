@@ -1,0 +1,43 @@
+<html>
+    <head>
+        <title>Billy Rebecchi - GB Map Editor</title>
+        <link rel="stylesheet" href="style.css">
+        <script src="https://cdn.jsdelivr.net/npm/p5@1.5.0/lib/p5.js"></script>
+        <script src="conversionUtils.js"></script>
+        <script src="editor.js"></script>
+    </head>
+
+    <body id="body">
+        <div id="tiledata"></div>
+        <div id="tilemap"></div>
+        <div id="controls">
+            <button style="margin-top:15px;" onclick="toggleColours()">Toggle Colours</button>
+            <hr>
+            <input type="text" id="tiledata_filename" placeholder="tiledata_filename.asm">
+            <button onclick="exportTileData()">Export Tile Data</button>
+            <button onclick="importTileData()">Import Tile Data</button>
+            <hr>
+            <input type="text" id="tilemap_filename" placeholder="tilemap_filename.asm">
+            <button onclick="exportTileMap()">Export Map Data</button>
+            <button onclick="importTileMap()">Import Map Data</button>
+        </div>
+        <div id="tileeditor">
+            <div id="editorTools">
+                <div id="white" class="colourSelect" onclick="selectColour(3)"></div>
+                <div id="light" class="colourSelect" onclick="selectColour(2)"></div>
+                <div id="dark" class="colourSelect" onclick="selectColour(1)"></div>
+                <div id="black" class="colourSelect" onclick="selectColour(0)"></div>
+            </div>
+            <div id="editorcanvas"></div>
+            <input id="tilehex" type="text">
+            <div id="canvasbuttons">
+                <button onclick="closeClick()">Close</button>
+            </div>
+        </div>
+        <form onsubmit="download(this['name'].value, this['text'].value)" style="display: none;">
+            <input type="text" name="name" value="test.txt">
+            <textarea name="text"></textarea>
+            <input type="submit" value="Download">
+        </form>
+    </body>
+</html>

@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+<article class="blog-post">
+    <h1>{{ post.title }}</h1>
+    <p class="post-date">{{ post.created }}</p>
+    <p class="post-category">{{ post.category }}</p>
+    {{ post.html|safe }}
+</article>
+{% endblock %}
