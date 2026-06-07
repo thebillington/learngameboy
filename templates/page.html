@@ -1,16 +1,24 @@
 {% extends "base.html" %}
 {% block content %}
-{% if page.parent_slug %}
-<p class="parent-link"><a href="/{{ page.parent_slug }}/">&lt; {{ page_map[page.parent_slug].title }}</a></p>
-{% endif %}
-<h1>{{ page.title }}</h1>
-{{ page.html|safe }}
-{% if page.children %}
-<h2>In this section</h2>
-<ul>
-    {% for child in page.children %}
-    <li><a href="/{{ child.slug }}/">{{ child.title }}</a></li>
-    {% endfor %}
-</ul>
-{% endif %}
+<article>
+    <header>
+        <h1 class="post-title">{{ page.title }}</h1>
+    </header>
+    <section class="post-content">
+        {% if page.parent_slug %}
+        {% set parent = page_map[page.parent_slug] %}
+        <p class="parent-link"><a href="{{ root_path }}{% if parent.id == home_id %}index.html{% else %}{{ page.parent_slug }}/index.html{% endif %}">&lt; {{ parent.title }}</a></p>
+        {% endif %}
+        {{ page.html|safe }}
+    </section>
+    {% if page.children %}
+    <nav>
+        <ul>
+            {% for child in page.children %}
+            <li><a href="{{ root_path }}{{ child.slug }}/index.html" title="{{ child.title }}">{{ child.title }}</a></li>
+            {% endfor %}
+        </ul>
+    </nav>
+    {% endif %}
+</article>
 {% endblock %}

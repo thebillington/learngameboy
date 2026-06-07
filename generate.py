@@ -13,14 +13,28 @@ OUTPUT_DIR = os.path.join(BASE_DIR, 'output')
 ASSETS_DIR = os.path.join(BASE_DIR, 'assets')
 IMAGES_DIR = os.path.join(BASE_DIR, 'images')
 
+N_ARTIFACT_RE = re.compile(r'>\s*n\s*<')
+IMG_RE = re.compile(r'(src=["\'])(/images/|https?://learngameboy\.com/images/)')
+LINK_RE = re.compile(r'href=["\']https?://learngameboy\.com/([^"\']*)["\']')
+
 
 def load_yaml(filename):
     with open(os.path.join(DATA_DIR, filename)) as f:
         return yaml.safe_load(f)
 
 
-def fix_html(html):
-    return re.sub(r'(?<=>)n(?=<)', '\n', html) if html else html
+def clean_n_artifacts(html):
+    if not html:
+        return html
+    return N_ARTIFACT_RE.sub('>\n<', html)
+
+
+def fix_content_paths(html, root_path):
+    if not html:
+        return html
+    html = IMG_RE.sub(r'\1' + root_path + 'images/', html)
+    html = LINK_RE.sub(lambda m: 'href="' + root_path + m.group(1).rstrip('/') + '/index.html"', html)
+    return html
 
 
 def build_page_tree(pages):
@@ -29,7 +43,6 @@ def build_page_tree(pages):
     for p in pages:
         p['children'] = []
         p['parent_slug'] = None
-        p['html'] = fix_html(p.get('html', ''))
 
     for p in pages:
         parent_id = p.get('parent', 0)
@@ -59,10 +72,6 @@ def render_page(template, context, output_path):
 def main():
     site = load_yaml('site.yml')
     pages = load_yaml('pages.yml')
-    posts = load_yaml('posts.yml')
-
-    for post in posts:
-        post['html'] = fix_html(post.get('html', ''))
 
     env = Environment(loader=FileSystemLoader(TEMPLATES_DIR))
 
@@ -76,20 +85,23 @@ def main():
     shutil.copytree(IMAGES_DIR, os.path.join(OUTPUT_DIR, 'images'))
 
     home_id = site.get('home_page', 2)
-    posts_id = site.get('posts_page', 11)
+
+    for page in pages:
+        page['html'] = clean_n_artifacts(page.get('html', ''))
 
     base_context = {
         'site': site,
         'top_pages': top_pages,
         'page_map': page_map,
+        'home_id': home_id,
     }
 
     for page in pages:
-        if page['id'] == posts_id:
-            continue
-
         slug = page['slug']
-        context = dict(base_context, page_title=page['title'], page_slug=slug, page=page)
+        root_path = '' if page['id'] == home_id else '../'
+        html = fix_content_paths(page.get('html', ''), root_path)
+        context = dict(base_context, page_title=page['title'], page_slug=slug, page=page, root_path=root_path)
+        context['page'] = dict(page, html=html)
 
         if page['id'] == home_id:
             template = env.get_template('index.html')
@@ -97,15 +109,6 @@ def main():
         else:
             template = env.get_template('page.html')
             render_page(template, context, os.path.join(OUTPUT_DIR, slug, 'index.html'))
-
-    blog_context = dict(base_context, page_title='Blog', page_slug='blog', posts=posts)
-    template = env.get_template('blog.html')
-    render_page(template, blog_context, os.path.join(OUTPUT_DIR, 'blog', 'index.html'))
-
-    template = env.get_template('post.html')
-    for post in posts:
-        context = dict(base_context, page_title=post['title'], page_slug=None, post=post)
-        render_page(template, context, os.path.join(OUTPUT_DIR, 'blog', post['slug'], 'index.html'))
 
     print('Site generated successfully!')
 

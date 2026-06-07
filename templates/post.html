@@ -1,9 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
-<article class="blog-post">
-    <h1>{{ post.title }}</h1>
-    <p class="post-date">{{ post.created }}</p>
-    <p class="post-category">{{ post.category }}</p>
-    {{ post.html|safe }}
+<article>
+    <header>
+        <h1 class="post-title">{{ post.title }}</h1>
+    </header>
+    <p class="post-meta">{{ post.created }}</p>
+    <section class="post-content">
+        {{ post.html|safe }}
+    </section>
 </article>
 {% endblock %}

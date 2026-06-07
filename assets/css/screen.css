@@ -647,7 +647,28 @@ table tfoot {
 .question:hover .answer {
     visibility: visible;
 }
-/* === Media Queries === */
+#site-head,
+article,
+article.preview {
+  max-width: 800px;
+  width: 88%;
+}
+.parent-link {
+  font-size: 14px;
+  text-transform: uppercase;
+  font-family: "Open Sans Condensed", "Open Sans", "Helvetica Neue", Helvetica, Arial, "Nimbus L", sans-serif;
+}
+.parent-link a:before {
+  content: "\2190 ";
+}
+section.post-content img,
+main.content img {
+  display: block;
+  margin: 1em auto;
+  max-width: 100%;
+  height: auto;
+}
+
 @media only screen and (min-width: 320px) and (max-width: 500px) {
   footer section span.copyright {
     display: block;
